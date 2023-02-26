@@ -7,6 +7,6 @@ namespace KerbalWebProgram
     [ModConfig]
     public class KerbalWebProgramConfig
     {
-         [ConfigField("pi")] [ConfigDefaultValue(3.14159)] public double pi;
+         [ConfigField("port")] [ConfigDefaultValue(8080)] public int port;
     }
 }
