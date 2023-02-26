@@ -10,7 +10,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Text.RegularExpressions;
-using NUnit.Framework.Internal;
+
 
 namespace KerbalWebProgram
 {
@@ -49,6 +49,7 @@ namespace KerbalWebProgram
         }
         internal class WebSocketServer
         {
+            List<TcpClient> clients = new List<TcpClient>();
             public WebSocketServer() { }
             internal async void start()
             {
@@ -60,6 +61,7 @@ namespace KerbalWebProgram
                 for (; ; )
                 {
                     TcpClient client = await server.AcceptTcpClientAsync();
+                    clients.Add(client);
                     new Thread(new WebSocketWorker(client).ProcessRequest).Start();
                 }
             }
@@ -89,6 +91,7 @@ namespace KerbalWebProgram
         internal class WebSocketWorker
         {
             TcpClient client { get; set; }
+            
 
             public WebSocketWorker(TcpClient client)
             {
@@ -100,7 +103,7 @@ namespace KerbalWebProgram
                 NetworkStream stream = client.GetStream();
                 while (true)
                 {
-                    Debug.Log("e");
+                    
                     while (!stream.DataAvailable) ;
                     while (client.Available < 3) ;
 
@@ -141,40 +144,67 @@ namespace KerbalWebProgram
                         for (ulong i = 0; i < msglen; ++i)
                             decoded[i] = (byte)(bytes[offset + (int)i] ^ masks[i % 4]);
 
-                        string text = Encoding.UTF8.GetString(decoded);
-                        Debug.Log(text);
+                        string ClientOutputData = Encoding.UTF8.GetString(decoded);
+                        ApiHandler(client, ClientOutputData, stream);
                     }
                 }
 
             }
         }
-    }
-    internal class WebWorker
-    {
-        private HttpListenerContext ctx;
-
-        public WebWorker(HttpListenerContext ctx)
+        internal class WebWorker
         {
-            this.ctx = ctx;
-        }
+            private HttpListenerContext ctx;
 
-        internal void ProcessRequest()
-        {
-            ctx.Response.SendChunked = false;
-            ctx.Response.ContentType = System.Net.Mime.MediaTypeNames.Text.Html;
-
-            using (var stream = ctx.Response.OutputStream)
+            public WebWorker(HttpListenerContext ctx)
             {
-                string responseString = "<HTML><BODY> Hello world!</BODY></HTML>";
-                byte[] buffer = Encoding.UTF8.GetBytes(responseString);
-                stream.Write(buffer, 0, buffer.Length);
-                stream.Close();
+                this.ctx = ctx;
             }
 
-            ctx.Response.StatusCode = (int)HttpStatusCode.OK;
-            ctx.Response.StatusDescription = "OK";
+            internal void ProcessRequest()
+            {
+                ctx.Response.SendChunked = false;
+                ctx.Response.ContentType = System.Net.Mime.MediaTypeNames.Text.Html;
 
+                using (var stream = ctx.Response.OutputStream)
+                {
+                    string responseString = "<HTML><BODY> Hello world!</BODY></HTML>";
+                    byte[] buffer = Encoding.UTF8.GetBytes(responseString);
+                    stream.Write(buffer, 0, buffer.Length);
+                    stream.Close();
+                }
+
+                ctx.Response.StatusCode = (int)HttpStatusCode.OK;
+                ctx.Response.StatusDescription = "OK";
+
+            }
         }
+        public class ApiRequestData
+        {
+            public string ID { get; set; }
+            public string Action { get; set; }
+            public Dictionary<string, dynamic> paramters { get; set; }
+        }
+        public class ApiResponseData
+        {
+            public string Type { get; set; }
+            public string ID { get; set; }
+            public Dictionary<string, dynamic> Data { get; set; }
+        }
+        static byte[] GenerateBytes(string data)
+        {
+            byte[] response = Encoding.UTF8.GetBytes(data);
+            return response;
+        }
+        static void ApiHandler(TcpClient client, string ClientOutputData, NetworkStream stream)
+        {
+            Debug.Log("got to api");
+            stream = client.GetStream();
+            
+            byte[] response = GenerateBytes("aaaaaaaaaaaaa");
+            Debug.Log("sending");
+            stream.Write(response,0, response.Length);
+        }
+
     }
 
 }
