@@ -8,421 +8,421 @@
   </PropertyGroup>
 <ItemGroup>
     <Reference Include="Accessibility">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Accessibility.dll</HintPath>
+      <HintPath>external_dlls\Accessibility.dll</HintPath>
     </Reference>
     <Reference Include="Ak.Wwise.Api.WAAPI">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Ak.Wwise.Api.WAAPI.dll</HintPath>
+      <HintPath>external_dlls\Ak.Wwise.Api.WAAPI.dll</HintPath>
     </Reference>
     <Reference Include="AK.Wwise.Unity.API">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\AK.Wwise.Unity.API.dll</HintPath>
+      <HintPath>external_dlls\AK.Wwise.Unity.API.dll</HintPath>
     </Reference>
     <Reference Include="AK.Wwise.Unity.API.WwiseTypes">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\AK.Wwise.Unity.API.WwiseTypes.dll</HintPath>
+      <HintPath>external_dlls\AK.Wwise.Unity.API.WwiseTypes.dll</HintPath>
     </Reference>
     <Reference Include="AK.Wwise.Unity.MonoBehaviour">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\AK.Wwise.Unity.MonoBehaviour.dll</HintPath>
+      <HintPath>external_dlls\AK.Wwise.Unity.MonoBehaviour.dll</HintPath>
     </Reference>
     <Reference Include="AK.Wwise.Unity.Timeline">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\AK.Wwise.Unity.Timeline.dll</HintPath>
+      <HintPath>external_dlls\AK.Wwise.Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="AmplifyShaderEditor.Samples.BuiltIn">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\AmplifyShaderEditor.Samples.BuiltIn.dll</HintPath>
+      <HintPath>external_dlls\AmplifyShaderEditor.Samples.BuiltIn.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Assembly-CSharp.dll</HintPath>
+      <HintPath>external_dlls\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>external_dlls\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="Backtrace.Unity">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Backtrace.Unity.dll</HintPath>
+      <HintPath>external_dlls\Backtrace.Unity.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Core">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Castle.Core.dll</HintPath>
+      <HintPath>external_dlls\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="com.rlabrecque.steamworks.net">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\com.rlabrecque.steamworks.net.dll</HintPath>
+      <HintPath>external_dlls\com.rlabrecque.steamworks.net.dll</HintPath>
     </Reference>
     <Reference Include="DataLink.Shared.Net">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\DataLink.Shared.Net.dll</HintPath>
+      <HintPath>external_dlls\DataLink.Shared.Net.dll</HintPath>
     </Reference>
     <Reference Include="DemiLib">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\DemiLib.dll</HintPath>
+      <HintPath>external_dlls\DemiLib.dll</HintPath>
     </Reference>
     <Reference Include="DOTween">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\DOTween.dll</HintPath>
+      <HintPath>external_dlls\DOTween.dll</HintPath>
     </Reference>
     <Reference Include="DOTweenPro">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\DOTweenPro.dll</HintPath>
+      <HintPath>external_dlls\DOTweenPro.dll</HintPath>
     </Reference>
     <Reference Include="IGTools">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\IGTools.dll</HintPath>
+      <HintPath>external_dlls\IGTools.dll</HintPath>
     </Reference>
     <Reference Include="Intercept.Metrics">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Intercept.Metrics.dll</HintPath>
+      <HintPath>external_dlls\Intercept.Metrics.dll</HintPath>
     </Reference>
     <Reference Include="KSPLogging">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\KSPLogging.dll</HintPath>
+      <HintPath>external_dlls\KSPLogging.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Microsoft.CSharp.dll</HintPath>
+      <HintPath>external_dlls\Microsoft.CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Data.Sqlite">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Mono.Data.Sqlite.dll</HintPath>
+      <HintPath>external_dlls\Mono.Data.Sqlite.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Posix">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Mono.Posix.dll</HintPath>
+      <HintPath>external_dlls\Mono.Posix.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Security">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Mono.Security.dll</HintPath>
+      <HintPath>external_dlls\Mono.Security.dll</HintPath>
     </Reference>
     <Reference Include="Mono.WebBrowser">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Mono.WebBrowser.dll</HintPath>
+      <HintPath>external_dlls\Mono.WebBrowser.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Moq.dll</HintPath>
+      <HintPath>external_dlls\Moq.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Newtonsoft.Json.dll</HintPath>
+      <HintPath>external_dlls\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json.UnityConverters">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Newtonsoft.Json.UnityConverters.dll</HintPath>
+      <HintPath>external_dlls\Newtonsoft.Json.UnityConverters.dll</HintPath>
     </Reference>
     <Reference Include="Novell.Directory.Ldap">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Novell.Directory.Ldap.dll</HintPath>
+      <HintPath>external_dlls\Novell.Directory.Ldap.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\nunit.framework.dll</HintPath>
+      <HintPath>external_dlls\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="PriorityQueue">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\PriorityQueue.dll</HintPath>
+      <HintPath>external_dlls\PriorityQueue.dll</HintPath>
     </Reference>
     <Reference Include="ShapesRuntime">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\ShapesRuntime.dll</HintPath>
+      <HintPath>external_dlls\ShapesRuntime.dll</HintPath>
     </Reference>
     <Reference Include="SpaceWarp">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\SpaceWarp.dll</HintPath>
+      <HintPath>external_dlls\SpaceWarp.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\System.ComponentModel.DataAnnotations.dll</HintPath>
+      <HintPath>external_dlls\System.ComponentModel.DataAnnotations.dll</HintPath>
     </Reference>
     <Reference Include="System.Configuration">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\System.Configuration.dll</HintPath>
+      <HintPath>external_dlls\System.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="System.Design">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\System.Design.dll</HintPath>
+      <HintPath>external_dlls\System.Design.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.StackTrace">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\System.Diagnostics.StackTrace.dll</HintPath>
+      <HintPath>external_dlls\System.Diagnostics.StackTrace.dll</HintPath>
     </Reference>
     <Reference Include="System.DirectoryServices">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\System.DirectoryServices.dll</HintPath>
+      <HintPath>external_dlls\System.DirectoryServices.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing.Design">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\System.Drawing.Design.dll</HintPath>
+      <HintPath>external_dlls\System.Drawing.Design.dll</HintPath>
     </Reference>
     <Reference Include="System.EnterpriseServices">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\System.EnterpriseServices.dll</HintPath>
+      <HintPath>external_dlls\System.EnterpriseServices.dll</HintPath>
     </Reference>
     <Reference Include="System.Globalization.Extensions">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\System.Globalization.Extensions.dll</HintPath>
+      <HintPath>external_dlls\System.Globalization.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization.Formatters.Soap">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\System.Runtime.Serialization.Formatters.Soap.dll</HintPath>
+      <HintPath>external_dlls\System.Runtime.Serialization.Formatters.Soap.dll</HintPath>
     </Reference>
     <Reference Include="System.Security">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\System.Security.dll</HintPath>
+      <HintPath>external_dlls\System.Security.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceModel.Internals">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\System.ServiceModel.Internals.dll</HintPath>
+      <HintPath>external_dlls\System.ServiceModel.Internals.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.ApplicationServices">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\System.Web.ApplicationServices.dll</HintPath>
+      <HintPath>external_dlls\System.Web.ApplicationServices.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Services">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\System.Web.Services.dll</HintPath>
+      <HintPath>external_dlls\System.Web.Services.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\System.Windows.Forms.dll</HintPath>
+      <HintPath>external_dlls\System.Windows.Forms.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.XPath.XDocument">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\System.Xml.XPath.XDocument.dll</HintPath>
+      <HintPath>external_dlls\System.Xml.XPath.XDocument.dll</HintPath>
     </Reference>
     <Reference Include="TrackIRUnity">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\TrackIRUnity.dll</HintPath>
+      <HintPath>external_dlls\TrackIRUnity.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Addressables">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Unity.Addressables.dll</HintPath>
+      <HintPath>external_dlls\Unity.Addressables.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Unity.Analytics.DataPrivacy.dll</HintPath>
+      <HintPath>external_dlls\Unity.Analytics.DataPrivacy.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Unity.Burst.dll</HintPath>
+      <HintPath>external_dlls\Unity.Burst.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Cecil">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Unity.Burst.Cecil.dll</HintPath>
+      <HintPath>external_dlls\Unity.Burst.Cecil.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Cecil.Mdb">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Unity.Burst.Cecil.Mdb.dll</HintPath>
+      <HintPath>external_dlls\Unity.Burst.Cecil.Mdb.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Cecil.Pdb">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Unity.Burst.Cecil.Pdb.dll</HintPath>
+      <HintPath>external_dlls\Unity.Burst.Cecil.Pdb.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Cecil.Rocks">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Unity.Burst.Cecil.Rocks.dll</HintPath>
+      <HintPath>external_dlls\Unity.Burst.Cecil.Rocks.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Unsafe">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Unity.Burst.Unsafe.dll</HintPath>
+      <HintPath>external_dlls\Unity.Burst.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Collections">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Unity.Collections.dll</HintPath>
+      <HintPath>external_dlls\Unity.Collections.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Collections.LowLevel.ILSupport">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
+      <HintPath>external_dlls\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Formats.USD.Runtime">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Unity.Formats.USD.Runtime.dll</HintPath>
+      <HintPath>external_dlls\Unity.Formats.USD.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.InputSystem">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Unity.InputSystem.dll</HintPath>
+      <HintPath>external_dlls\Unity.InputSystem.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Jobs">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Unity.Jobs.dll</HintPath>
+      <HintPath>external_dlls\Unity.Jobs.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mathematics">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Unity.Mathematics.dll</HintPath>
+      <HintPath>external_dlls\Unity.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="Unity.MemoryProfiler">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Unity.MemoryProfiler.dll</HintPath>
+      <HintPath>external_dlls\Unity.MemoryProfiler.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Postprocessing.Runtime">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Unity.Postprocessing.Runtime.dll</HintPath>
+      <HintPath>external_dlls\Unity.Postprocessing.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.ResourceManager">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Unity.ResourceManager.dll</HintPath>
+      <HintPath>external_dlls\Unity.ResourceManager.dll</HintPath>
     </Reference>
     <Reference Include="Unity.ScriptableBuildPipeline">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Unity.ScriptableBuildPipeline.dll</HintPath>
+      <HintPath>external_dlls\Unity.ScriptableBuildPipeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Unity.TextMeshPro.dll</HintPath>
+      <HintPath>external_dlls\Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\Unity.Timeline.dll</HintPath>
+      <HintPath>external_dlls\Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AccessibilityModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.AccessibilityModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.AccessibilityModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.AIModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.AIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AndroidJNIModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.AndroidJNIModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.AndroidJNIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AnimationModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.AnimationModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.AnimationModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ARModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.ARModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.ARModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.AssetBundleModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.AssetBundleModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AudioModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.AudioModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.AudioModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ClothModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.ClothModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.ClothModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ClusterInputModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.ClusterInputModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.ClusterInputModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ClusterRendererModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.ClusterRendererModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.ClusterRendererModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CrashReportingModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.CrashReportingModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.CrashReportingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.DirectorModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.DirectorModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.DirectorModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.DSPGraphModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.DSPGraphModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.DSPGraphModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.GameCenterModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.GameCenterModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.GameCenterModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.GIModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.GIModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.GIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.GridModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.GridModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.GridModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.HotReloadModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.HotReloadModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.HotReloadModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.ImageConversionModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.ImageConversionModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.InputLegacyModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.InputLegacyModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.InputLegacyModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.InputModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.InputModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.InputModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.JSONSerializeModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.JSONSerializeModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.JSONSerializeModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.LocalizationModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.LocalizationModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.LocalizationModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ParticleSystemModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.ParticleSystemModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.ParticleSystemModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PerformanceReportingModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.PerformanceReportingModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.PerformanceReportingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Physics2DModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.Physics2DModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.Physics2DModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ProfilerModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.ProfilerModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.ProfilerModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ScreenCaptureModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.ScreenCaptureModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.ScreenCaptureModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SharedInternalsModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.SharedInternalsModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.SharedInternalsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SpatialTracking">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.SpatialTracking.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SpriteMaskModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.SpriteMaskModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.SpriteMaskModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SpriteShapeModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.SpriteShapeModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.SpriteShapeModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.StreamingModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.StreamingModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.StreamingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SubstanceModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.SubstanceModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.SubstanceModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SubsystemsModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.SubsystemsModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.SubsystemsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TerrainModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.TerrainModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.TerrainModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TerrainPhysicsModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.TerrainPhysicsModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.TerrainPhysicsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TestRunner">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.TestRunner.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.TestRunner.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TextCoreModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.TextCoreModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.TextCoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.TextRenderingModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TilemapModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.TilemapModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.TilemapModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TLSModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.TLSModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.TLSModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.UI.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIElementsModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.UIElementsModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.UIElementsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIElementsNativeModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.UIElementsNativeModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.UIElementsNativeModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.UIModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.UIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UmbraModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.UmbraModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.UmbraModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UNETModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.UNETModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.UNETModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityAnalyticsModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.UnityAnalyticsModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.UnityAnalyticsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityConnectModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.UnityConnectModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.UnityConnectModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityCurlModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.UnityCurlModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.UnityCurlModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityTestProtocolModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.UnityTestProtocolModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.UnityTestProtocolModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestAudioModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.UnityWebRequestModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.UnityWebRequestModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestTextureModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestWWWModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VehiclesModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.VehiclesModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.VehiclesModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VFXModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.VFXModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.VFXModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VideoModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.VideoModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.VideoModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VirtualTexturingModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.VirtualTexturingModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.VirtualTexturingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VRModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.VRModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.VRModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.WindModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.WindModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.WindModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.XR.LegacyInputHelpers">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.XRModule">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\UnityEngine.XRModule.dll</HintPath>
+      <HintPath>external_dlls\UnityEngine.XRModule.dll</HintPath>
     </Reference>
     <Reference Include="USD.NET">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\USD.NET.dll</HintPath>
+      <HintPath>external_dlls\USD.NET.dll</HintPath>
     </Reference>
     <Reference Include="USD.NET.Unity">
-      <HintPath>\\STORAGE1\accounts\nathan\Downloads\space-warp-release-0.0.2\Test Mod\external_dlls\USD.NET.Unity.dll</HintPath>
+      <HintPath>external_dlls\USD.NET.Unity.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>
