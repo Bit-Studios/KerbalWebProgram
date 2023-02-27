@@ -96,7 +96,10 @@ namespace KerbalWebProgram
             {
                 this.ctx = ctx;
             }
-
+            internal class pageJSON
+            {
+                Dictionary<string,string> Pages {  get; set; }
+            }
             internal void ProcessRequest()
             {
                 Stream body = ctx.Request.InputStream;
@@ -130,9 +133,12 @@ namespace KerbalWebProgram
                         responseString = JsonConvert.SerializeObject(responseData);
                     }
                     else {
+
                         ctx.Response.ContentType = System.Net.Mime.MediaTypeNames.Text.Html;
                         responseString = $"<HTML><BODY>{ctx.Request.Url.AbsolutePath}</BODY></HTML>";
                     }
+                    string jsonString = File.ReadAllText("./Frontend/Standalone/pages.json");
+                    pageJSON jsonData = JsonConvert.DeserializeObject<pageJSON>(jsonString);
                     
                     byte[] buffer = Encoding.UTF8.GetBytes(responseString);
                     stream.Write(buffer, 0, buffer.Length);
