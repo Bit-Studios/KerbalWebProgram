@@ -11,6 +11,7 @@ using KSP.Sim.Definitions;
 using KSP.Sim.impl;
 using KSP.Sim.State;
 using Newtonsoft.Json;
+using Shapes;
 using UnityEngine;
 
 namespace KerbalWebProgram.KerbalWebProgram
@@ -224,11 +225,13 @@ namespace KerbalWebProgram.KerbalWebProgram
             apiResponseData.ID = apiRequestData.ID;
             apiResponseData.Type = "response";
             apiResponseData.Data = new Dictionary<string, object>();
-
-            foreach (ObjectComponent component in GameManager.Instance.Game.ViewController.GetActiveVehicle().GetSimulationObject().Components)
+            var parts = GameManager.Instance.Game.ViewController.GetActiveVehicle().GetSimulationObject().PartOwner.Parts;
+            List<PartData> partsData = new List<PartData>();
+            foreach ( var part in parts )
             {
-                apiResponseData.Data.Add(component.SimulationObject.Part.Guid, JsonConvert.SerializeObject(component.SimulationObject.Part));
+                partsData.Add(part.PartData);
             }
+            apiResponseData.Data.Add("Parts", partsData);
 
             return apiResponseData;
         }
