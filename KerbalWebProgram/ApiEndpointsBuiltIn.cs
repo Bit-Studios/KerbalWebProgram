@@ -93,4 +93,74 @@ namespace KerbalWebProgram.KerbalWebProgram
             return apiResponseData;
         }
     }
+
+    public class setShipAutoPilotMode: KWPapi
+    {
+        public override ApiResponseData Run(ApiRequestData apiRequestData)
+        {
+            ApiResponseData apiResponseData = new ApiResponseData();
+            apiResponseData.ID = apiRequestData.ID;
+            apiResponseData.Type = "response";
+            apiResponseData.Data = new Dictionary<string, object>();
+
+            VesselComponent vesselComponent = GameManager.Instance.Game.ViewController.GetActiveSimVessel();
+            switch (apiRequestData.paramters["Mode"])
+            {
+                case "Antinormal":
+                    vesselComponent.Autopilot.Activate(AutopilotMode.Antinormal);
+                    apiResponseData.Data.Add("Mode", "Antinormal");
+                    break;
+                case "AntiTarget":
+                    vesselComponent.Autopilot.Activate(AutopilotMode.AntiTarget);
+                    apiResponseData.Data.Add("Mode", "AntiTarget");
+                    break;
+                case "Autopilot":
+                    vesselComponent.Autopilot.Activate(AutopilotMode.Autopilot);
+                    apiResponseData.Data.Add("Mode", "Autopilot");
+                    break;
+                case "Maneuver":
+                    vesselComponent.Autopilot.Activate(AutopilotMode.Maneuver);
+                    apiResponseData.Data.Add("Mode", "Maneuver");
+                    break;
+                case "Navigation":
+                    vesselComponent.Autopilot.Activate(AutopilotMode.Navigation);
+                    apiResponseData.Data.Add("Mode", "Navigation");
+                    break;
+                case "Normal":
+                    vesselComponent.Autopilot.Activate(AutopilotMode.Normal);
+                    apiResponseData.Data.Add("Mode", "Normal");
+                    break;
+                case "Prograde":
+                    vesselComponent.Autopilot.Activate(AutopilotMode.Prograde);
+                    apiResponseData.Data.Add("Mode", "Prograde");
+                    break;
+                case "RadialIn":
+                    vesselComponent.Autopilot.Activate(AutopilotMode.RadialIn);
+                    apiResponseData.Data.Add("Mode", "RadialIn");
+                    break;
+                case "RadialOut":
+                    vesselComponent.Autopilot.Activate(AutopilotMode.RadialOut);
+                    apiResponseData.Data.Add("Mode", "RadialOut");
+                    break;
+                case "Retrograde":
+                    vesselComponent.Autopilot.Activate(AutopilotMode.Retrograde);
+                    apiResponseData.Data.Add("Mode", "Retrograde");
+                    break;
+                case "StabilityAssist":
+                    vesselComponent.Autopilot.Activate(AutopilotMode.StabilityAssist);
+                    apiResponseData.Data.Add("Mode", "StabilityAssist");
+                    break;
+                case "Target":
+                    vesselComponent.Autopilot.Activate(AutopilotMode.Target);
+                    apiResponseData.Data.Add("Mode", "Normal");
+                    break;
+                default:
+                    apiResponseData.Data.Add("Mode", "Invalid mode");
+                    break;
+            }
+            
+
+            return apiResponseData;
+        }
+    }
 }
