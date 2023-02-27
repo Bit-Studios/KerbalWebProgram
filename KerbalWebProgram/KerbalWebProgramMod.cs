@@ -12,7 +12,7 @@ namespace KerbalWebProgram
     {
         public string ID { get; set; }
         public string Action { get; set; }
-        public Dictionary<string, object> paramters  { get; set; }
+        public Dictionary<string, string> paramters  { get; set; }
     }
     public class ApiResponseData
     {
@@ -123,7 +123,7 @@ namespace KerbalWebProgram
                         Debug.Log("==================");
                         Debug.Log(data.ID);
                         Debug.Log(data.Action);
-                        Debug.Log(data.paramters);
+                        Debug.Log(string.Join(",", data.paramters));
                         ApiResponseData responseData = ApiHandler(data);
                         Debug.Log("==================");
                         Debug.Log(responseData.ID);
