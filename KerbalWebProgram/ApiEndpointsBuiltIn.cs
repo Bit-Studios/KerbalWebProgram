@@ -4,7 +4,11 @@ using System.Text;
 using KerbalWebProgram;
 using KSP;
 using KSP.Game;
+using KSP.Sim;
 using KSP.Sim.Definitions;
+using KSP.Sim.impl;
+using Newtonsoft.Json;
+using UnityEngine;
 
 namespace KerbalWebProgram.KerbalWebProgram
 {
@@ -13,18 +17,20 @@ namespace KerbalWebProgram.KerbalWebProgram
         public static void Init()
         {
             KerbalWebProgramMod.webAPI.Add("getCelestialBodyData", new getCelestialBodyData());
+            KerbalWebProgramMod.webAPI.Add("getAllCelestialBodyData", new getALLCelestialBodyData());
         }
     }
-    internal class getCelestialBodyData : KWPapi
+
+    //get Celestial Body Data
+    public class getCelestialBodyData : KWPapi
     {
         public override ApiResponseData Run(ApiRequestData apiRequestData)
         {
             ApiResponseData apiResponseData = new ApiResponseData();
             apiResponseData.ID = apiRequestData.ID;
             apiResponseData.Type = "response";
-
+            apiResponseData.Data = new Dictionary<string, object>();
             CelestialBodyCore celestialBodyCore = GameManager.Instance.Game.CelestialBodies.Get(apiRequestData.paramters["name"].ToString());
-            
             apiResponseData.Data.Add("bodyName", celestialBodyCore.data.bodyName);
             apiResponseData.Data.Add("assetKeyScaled", celestialBodyCore.data.assetKeyScaled);
             apiResponseData.Data.Add("assetKeySimulation", celestialBodyCore.data.assetKeySimulation);
@@ -47,8 +53,43 @@ namespace KerbalWebProgram.KerbalWebProgram
             apiResponseData.Data.Add("TimeWarpAltitudeOffset", celestialBodyCore.data.TimeWarpAltitudeOffset);
             apiResponseData.Data.Add("SphereOfInfluenceCalculationType", celestialBodyCore.data.SphereOfInfluenceCalculationType);
             apiResponseData.Data.Add("hasSolarRotationPeriod", celestialBodyCore.data.hasSolarRotationPeriod);
+            return apiResponseData;
+        }
+    }
+    public class getALLCelestialBodyData : KWPapi
+    {
+        public override ApiResponseData Run(ApiRequestData apiRequestData)
+        {
+            ApiResponseData apiResponseData = new ApiResponseData();
+            apiResponseData.ID = apiRequestData.ID;
+            apiResponseData.Type = "response";
+            apiResponseData.Data = new Dictionary<string, object>();
+            var bodys = GameManager.Instance.Game.CelestialBodies.GetAllBodiesData();
+            foreach (var body in bodys)
+            {
+                apiResponseData.Data.Add(body.Value.data.bodyName, JsonConvert.SerializeObject(body.Value.data));
+            }
+            return apiResponseData;
+        }
+    }
 
-            return new ApiResponseData();
+
+    //Ship data
+
+    public class getShiptelemetry : KWPapi
+    {
+        public override ApiResponseData Run(ApiRequestData apiRequestData)
+        {
+            ApiResponseData apiResponseData = new ApiResponseData();
+            apiResponseData.ID = apiRequestData.ID;
+            apiResponseData.Type = "response";
+            apiResponseData.Data = new Dictionary<string, object>();
+
+            VesselComponent vesselComponent = GameManager.Instance.Game.ViewController.GetActiveSimVessel();
+
+            apiResponseData.Data.Add(vesselComponent.DisplayName, JsonConvert.SerializeObject(vesselComponent));
+
+            return apiResponseData;
         }
     }
 }
