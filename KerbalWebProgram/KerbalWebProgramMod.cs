@@ -12,7 +12,7 @@ namespace KerbalWebProgram
     {
         public string ID { get; set; }
         public string Action { get; set; }
-        public Dictionary<string, string> paramters  { get; set; }
+        public Dictionary<string, string> parameters  { get; set; }
     }
     public class ApiResponseData
     {
@@ -43,13 +43,11 @@ namespace KerbalWebProgram
         }
         void Update()
         {
-            if(Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.W) ){
-                if (IsWebLoaded == false)
-                {
-                    IsWebLoaded = true;
-                    WebServer webServer = new WebServer();
-                    webServer.Start();
-                }
+            if (IsWebLoaded == false)
+            {
+                IsWebLoaded = true;
+                WebServer webServer = new WebServer();
+                webServer.Start();
             }
         }
         void OnGUI()
@@ -123,7 +121,7 @@ namespace KerbalWebProgram
                         Debug.Log("==================");
                         Debug.Log(data.ID);
                         Debug.Log(data.Action);
-                        Debug.Log(string.Join(",", data.paramters));
+                        Debug.Log(string.Join(",", data.parameters));
                         ApiResponseData responseData = ApiHandler(data);
                         Debug.Log("==================");
                         Debug.Log(responseData.ID);

@@ -7,6 +7,7 @@ using KSP.Game;
 using KSP.Sim;
 using KSP.Sim.Definitions;
 using KSP.Sim.impl;
+using KSP.Sim.State;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -19,6 +20,11 @@ namespace KerbalWebProgram.KerbalWebProgram
             KerbalWebProgramMod.webAPI.Add("getCelestialBodyData", new getCelestialBodyData());
             KerbalWebProgramMod.webAPI.Add("getAllCelestialBodyData", new getALLCelestialBodyData());
             KerbalWebProgramMod.webAPI.Add("getShiptelemetry", new getShiptelemetry());
+            KerbalWebProgramMod.webAPI.Add("setShipAutoPilotMode", new setShipAutoPilotMode());
+            KerbalWebProgramMod.webAPI.Add("setShipThrottle", new setShipThrottle());
+            KerbalWebProgramMod.webAPI.Add("getShipThrottle", new setShipThrottle());
+            KerbalWebProgramMod.webAPI.Add("getStage", new getStage());
+            KerbalWebProgramMod.webAPI.Add("doStage", new doStage());
         }
     }
 
@@ -31,7 +37,7 @@ namespace KerbalWebProgram.KerbalWebProgram
             apiResponseData.ID = apiRequestData.ID;
             apiResponseData.Type = "response";
             apiResponseData.Data = new Dictionary<string, object>();
-            CelestialBodyCore celestialBodyCore = GameManager.Instance.Game.CelestialBodies.Get(apiRequestData.paramters["name"].ToString());
+            CelestialBodyCore celestialBodyCore = GameManager.Instance.Game.CelestialBodies.Get(apiRequestData.parameters["name"].ToString());
             apiResponseData.Data.Add("bodyName", celestialBodyCore.data.bodyName);
             apiResponseData.Data.Add("assetKeyScaled", celestialBodyCore.data.assetKeyScaled);
             apiResponseData.Data.Add("assetKeySimulation", celestialBodyCore.data.assetKeySimulation);
@@ -94,7 +100,7 @@ namespace KerbalWebProgram.KerbalWebProgram
         }
     }
 
-    public class setShipAutoPilotMode: KWPapi
+    public class setShipAutoPilotMode : KWPapi
     {
         public override ApiResponseData Run(ApiRequestData apiRequestData)
         {
@@ -104,7 +110,7 @@ namespace KerbalWebProgram.KerbalWebProgram
             apiResponseData.Data = new Dictionary<string, object>();
 
             VesselComponent vesselComponent = GameManager.Instance.Game.ViewController.GetActiveSimVessel();
-            switch (apiRequestData.paramters["Mode"])
+            switch (apiRequestData.parameters["Mode"])
             {
                 case "Antinormal":
                     vesselComponent.Autopilot.Activate(AutopilotMode.Antinormal);
@@ -158,7 +164,69 @@ namespace KerbalWebProgram.KerbalWebProgram
                     apiResponseData.Data.Add("Mode", "Invalid mode");
                     break;
             }
-            
+
+
+            return apiResponseData;
+        }
+    }
+    public class setShipThrottle : KWPapi
+    {
+        public override ApiResponseData Run(ApiRequestData apiRequestData)
+        {
+            ApiResponseData apiResponseData = new ApiResponseData();
+            apiResponseData.ID = apiRequestData.ID;
+            apiResponseData.Type = "response";
+            apiResponseData.Data = new Dictionary<string, object>();
+
+            GameManager.Instance.Game.ViewController.flightInputHandler.OverrideInputThrottle(float.Parse(apiRequestData.parameters["Throttle"]));
+
+            apiResponseData.Data.Add("Throttle", GameManager.Instance.Game.ViewController.GetActiveVehicle().FlightControlInput.mainThrottle);
+
+            return apiResponseData;
+        }
+    }
+
+    public class getShipThrottle : KWPapi
+    {
+        public override ApiResponseData Run(ApiRequestData apiRequestData)
+        {
+            ApiResponseData apiResponseData = new ApiResponseData();
+            apiResponseData.ID = apiRequestData.ID;
+            apiResponseData.Type = "response";
+            apiResponseData.Data = new Dictionary<string, object>
+            {
+                { "Throttle", GameManager.Instance.Game.ViewController.GetActiveVehicle().FlightControlInput.mainThrottle }
+            };
+
+            return apiResponseData;
+        }
+    }
+
+    public class getStage : KWPapi
+    {
+        public override ApiResponseData Run(ApiRequestData apiRequestData)
+        {
+            ApiResponseData apiResponseData = new ApiResponseData();
+            apiResponseData.ID = apiRequestData.ID;
+            apiResponseData.Type = "response";
+            apiResponseData.Data = new Dictionary<string, object>();
+            apiResponseData.Data.Add("Stages", GameManager.Instance.Game.ViewController.GetActiveVehicle().GetSimulationObject().Staging.AvailableStages.Count);
+
+            return apiResponseData;
+        }
+    }
+
+    public class doStage : KWPapi
+    {
+        public override ApiResponseData Run(ApiRequestData apiRequestData)
+        {
+            ApiResponseData apiResponseData = new ApiResponseData();
+            apiResponseData.ID = apiRequestData.ID;
+            apiResponseData.Type = "response";
+            apiResponseData.Data = new Dictionary<string, object>();
+
+            GameManager.Instance.Game.ViewController.GetActiveSimVessel().ActivateNextStage();
+            apiResponseData.Data.Add("Stages", GameManager.Instance.Game.ViewController.GetActiveVehicle().GetSimulationObject().Staging.AvailableStages.Count - 1);
 
             return apiResponseData;
         }
