@@ -18,6 +18,7 @@ namespace KerbalWebProgram.KerbalWebProgram
         {
             KerbalWebProgramMod.webAPI.Add("getCelestialBodyData", new getCelestialBodyData());
             KerbalWebProgramMod.webAPI.Add("getAllCelestialBodyData", new getALLCelestialBodyData());
+            KerbalWebProgramMod.webAPI.Add("getShiptelemetry", new getShiptelemetry());
         }
     }
 
