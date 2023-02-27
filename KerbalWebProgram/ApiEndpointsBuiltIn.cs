@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Castle.Components.DictionaryAdapter.Xml;
 using KerbalWebProgram;
 using KSP;
 using KSP.Game;
+using KSP.Iteration.UI.Binding;
 using KSP.Sim;
 using KSP.Sim.Definitions;
 using KSP.Sim.impl;
@@ -25,6 +27,7 @@ namespace KerbalWebProgram.KerbalWebProgram
             KerbalWebProgramMod.webAPI.Add("getShipThrottle", new setShipThrottle());
             KerbalWebProgramMod.webAPI.Add("getStage", new getStage());
             KerbalWebProgramMod.webAPI.Add("doStage", new doStage());
+            KerbalWebProgramMod.webAPI.Add("getCraftFile", new getCraftFile());
         }
     }
 
@@ -38,28 +41,7 @@ namespace KerbalWebProgram.KerbalWebProgram
             apiResponseData.Type = "response";
             apiResponseData.Data = new Dictionary<string, object>();
             CelestialBodyCore celestialBodyCore = GameManager.Instance.Game.CelestialBodies.Get(apiRequestData.parameters["name"].ToString());
-            apiResponseData.Data.Add("bodyName", celestialBodyCore.data.bodyName);
-            apiResponseData.Data.Add("assetKeyScaled", celestialBodyCore.data.assetKeyScaled);
-            apiResponseData.Data.Add("assetKeySimulation", celestialBodyCore.data.assetKeySimulation);
-            apiResponseData.Data.Add("bodyDisplayName", celestialBodyCore.data.bodyDisplayName);
-            apiResponseData.Data.Add("bodyDescription", celestialBodyCore.data.bodyDescription);
-            apiResponseData.Data.Add("isStar", celestialBodyCore.data.isStar);
-            apiResponseData.Data.Add("isHomeWorld", celestialBodyCore.data.isHomeWorld);
-            apiResponseData.Data.Add("navballSwitchAltitudeHigh", celestialBodyCore.data.navballSwitchAltitudeHigh);
-            apiResponseData.Data.Add("navballSwitchAltitudeLow", celestialBodyCore.data.navballSwitchAltitudeLow);
-            apiResponseData.Data.Add("hasSolidSurface", celestialBodyCore.data.hasSolidSurface);
-            apiResponseData.Data.Add("hasOcean", celestialBodyCore.data.hasOcean);
-            apiResponseData.Data.Add("HasLocalSpace", celestialBodyCore.data.HasLocalSpace);
-            apiResponseData.Data.Add("radius", celestialBodyCore.data.radius);
-            apiResponseData.Data.Add("gravityASL", celestialBodyCore.data.gravityASL);
-            apiResponseData.Data.Add("oceanAltitude", celestialBodyCore.data.oceanAltitude);
-            apiResponseData.Data.Add("oceanDensity", celestialBodyCore.data.oceanDensity);
-            apiResponseData.Data.Add("MinTerrainHeight", celestialBodyCore.data.MinTerrainHeight);
-            apiResponseData.Data.Add("MaxTerrainHeight", celestialBodyCore.data.MaxTerrainHeight);
-            apiResponseData.Data.Add("TerrainHeightScale", celestialBodyCore.data.TerrainHeightScale);
-            apiResponseData.Data.Add("TimeWarpAltitudeOffset", celestialBodyCore.data.TimeWarpAltitudeOffset);
-            apiResponseData.Data.Add("SphereOfInfluenceCalculationType", celestialBodyCore.data.SphereOfInfluenceCalculationType);
-            apiResponseData.Data.Add("hasSolarRotationPeriod", celestialBodyCore.data.hasSolarRotationPeriod);
+            apiResponseData.Data.Add("body", celestialBodyCore.data);
             return apiResponseData;
         }
     }
@@ -74,7 +56,7 @@ namespace KerbalWebProgram.KerbalWebProgram
             var bodys = GameManager.Instance.Game.CelestialBodies.GetAllBodiesData();
             foreach (var body in bodys)
             {
-                apiResponseData.Data.Add(body.Value.data.bodyName, JsonConvert.SerializeObject(body.Value.data));
+                apiResponseData.Data.Add(body.Value.data.bodyName, body.Value.data);
             }
             return apiResponseData;
         }
@@ -92,9 +74,12 @@ namespace KerbalWebProgram.KerbalWebProgram
             apiResponseData.Type = "response";
             apiResponseData.Data = new Dictionary<string, object>();
 
-            VesselComponent vesselComponent = GameManager.Instance.Game.ViewController.GetActiveSimVessel();
-
-            apiResponseData.Data.Add(vesselComponent.DisplayName, JsonConvert.SerializeObject(vesselComponent));
+            VesselComponent vesselComponent = GameManager.Instance.Game.ViewController.GetActiveVehicle().GetSimVessel();
+            
+            apiResponseData.Data.Add("HorizontalSrfSpeed", vesselComponent.HorizontalSrfSpeed);
+            apiResponseData.Data.Add("VerticalSrfSpeed", vesselComponent.VerticalSrfSpeed);
+            apiResponseData.Data.Add("OrbitalSpeed", vesselComponent.OrbitalSpeed);
+            apiResponseData.Data.Add("TargetSpeed", vesselComponent.TargetSpeed);
 
             return apiResponseData;
         }
@@ -227,6 +212,23 @@ namespace KerbalWebProgram.KerbalWebProgram
 
             GameManager.Instance.Game.ViewController.GetActiveSimVessel().ActivateNextStage();
             apiResponseData.Data.Add("Stages", GameManager.Instance.Game.ViewController.GetActiveVehicle().GetSimulationObject().Staging.AvailableStages.Count - 1);
+
+            return apiResponseData;
+        }
+    }
+    public class getCraftFile: KWPapi
+    {
+        public override ApiResponseData Run(ApiRequestData apiRequestData)
+        {
+            ApiResponseData apiResponseData = new ApiResponseData();
+            apiResponseData.ID = apiRequestData.ID;
+            apiResponseData.Type = "response";
+            apiResponseData.Data = new Dictionary<string, object>();
+
+            foreach (ObjectComponent component in GameManager.Instance.Game.ViewController.GetActiveVehicle().GetSimulationObject().Components)
+            {
+                apiResponseData.Data.Add(component.SimulationObject.Part.Guid, JsonConvert.SerializeObject(component.SimulationObject.Part));
+            }
 
             return apiResponseData;
         }
