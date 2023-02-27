@@ -104,7 +104,7 @@ namespace KerbalWebProgram
                 StreamReader reader = new StreamReader(body, encoding);
                 string requestBody = reader.ReadToEnd();
                 ctx.Response.SendChunked = false;
-
+                ctx.Response.Headers.Add("Access-Control-Allow-Origin: *");
                 
 
                 using (var stream = ctx.Response.OutputStream)
