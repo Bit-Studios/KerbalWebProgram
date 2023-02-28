@@ -6,6 +6,8 @@ using KerbalWebProgram;
 using KerbalWebProgram.KerbalWebProgram;
 using Newtonsoft.Json;
 using Shapes;
+using Random = System.Random;
+
 namespace KerbalWebProgram
 {
     public class pageJSON
@@ -72,12 +74,13 @@ namespace KerbalWebProgram
 
         public override void OnInitialized()
         {
+            //init built in apis
             ApiEndpointsBuiltIn.Init();
 
             PageJSON.Pages = new Dictionary<string, string>();
 
 
-
+            //init local standalone pages
             string jsonString = string.Empty;
             if (Directory.Exists("./KerbalWebProgram")){}
             else
@@ -161,6 +164,63 @@ namespace KerbalWebProgram
         {
             if (IsWebLoaded == false)
             {
+                //init documentation
+                if (Directory.Exists("./KerbalWebProgram/public/docs")) { }
+                else
+                {
+                    Directory.CreateDirectory("./KerbalWebProgram/public/docs");
+                }
+                string docsPage = $"<html><head><link rel='stylesheet' href='/docs.css'></head><body>";
+                Dictionary<string, string> apiTagType = new();
+                int cT = 0;
+                foreach (var apiData in webAPI)
+                {
+                    cT = (cT + 42) + ((int)DateTime.Now.Ticks / 2) ;
+                    Debug.Log($"{apiData.Value.Name} api does {apiData.Value.Description}");
+                    docsPage = $"{docsPage}<div class='doclink' onclick='document.location=`docs/{apiData.Key}`'><div class='doclinkname'>{apiData.Value.Name}</div><div class='doclinktagarea'>";
+                    
+                    foreach(var apiTag in apiData.Value.Tags)
+                    {
+                        if (apiTagType.ContainsKey(apiTag)){}
+                        else
+                        {
+                            Random rnd = new Random((int)DateTime.Now.Ticks + cT);
+                            string randomColor = $"{rnd.Next(0, 255)},{rnd.Next(0, 255)},{rnd.Next(0, 255)}";
+                            apiTagType.Add(apiTag, randomColor);
+                            Debug.Log($"new tag color {apiTagType[apiTag]}");
+                        }
+                        docsPage = $"{docsPage}<div class='doclinktag' style='background-color:rgba({apiTagType[apiTag]},0.4);border-color:rgb({apiTagType[apiTag]})'>{apiTag}</div>";
+                    }
+                    docsPage = $"{docsPage}</div></div>";
+                    //generate api doc page
+                    string apiPageTags = string.Empty;
+                    foreach (var apiTag in apiData.Value.Tags)
+                    {
+                        apiPageTags = $"{apiPageTags}<div class='doclinktag' style='background-color:rgba({apiTagType[apiTag]},0.4);border-color:rgb({apiTagType[apiTag]})'>{apiTag}</div>";
+                    }
+                    string apiPage = @$"
+<html>
+    <head>
+        <link rel='stylesheet' href='/docs.css'>
+    </head>
+    <body>
+        <h1>{apiData.Value.Name} (by {apiData.Value.Author})</h1>
+        <h3>{apiData.Key}</h3>
+        <div class='doclinktagarea'>
+            {apiPageTags}
+        </div>
+        <p>{apiData.Value.Description}</p>
+    </body>
+</html>
+";
+                    File.WriteAllText($"./KerbalWebProgram/public/docs/{apiData.Key}.html", apiPage);
+                    PageJSON.Pages.Add($"/docs/{apiData.Key}", $"docs/{apiData.Key}.html");
+
+                }
+                docsPage = $"{docsPage}</body></html>";
+                File.WriteAllText("./KerbalWebProgram/public/docs/docs.html", docsPage);
+                PageJSON.Pages.Add("/docs", "docs/docs.html");
+                //init webserver
                 IsWebLoaded = true;
                 WebServer webServer = new WebServer();
                 webServer.Start();

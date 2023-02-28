@@ -53,7 +53,7 @@ namespace KerbalWebProgram.KerbalWebProgram
                 "Set Ship Auto Pilot Mode",
                 "Allows you to set the mode of the ships Autopilot",
                 "KWP dev team",
-                new List<string> { "Vessel" }
+                new List<string> { "Vessel", "Control" }
                 ));
 
             KerbalWebProgramMod.webAPI.Add("setShipThrottle", new setShipThrottle(
@@ -62,7 +62,7 @@ namespace KerbalWebProgram.KerbalWebProgram
                 "Set Ship Throttle",
                 "Allows you to update the throttle change, Equivalant of holding Shift or Ctrl",
                 "KWP dev team",
-                new List<string> { "Vessel" }
+                new List<string> { "Vessel", "Control" }
                 ));
 
             KerbalWebProgramMod.webAPI.Add("getShipThrottle", new setShipThrottle(
@@ -89,7 +89,7 @@ namespace KerbalWebProgram.KerbalWebProgram
                 "Do Stage",
                 "Executes the next stage action. AKA press space",
                 "KWP dev team",
-                new List<string> { "Vessel" }
+                new List<string> { "Vessel", "Control" }
                 ));
 
             KerbalWebProgramMod.webAPI.Add("getCraftFile", new getCraftFile(
