@@ -11,7 +11,7 @@
     overflow-wrap:break-word;
 }
 
-a,h1,h2,h3,h4,h5,span,ul,ol,li,p{
+a,h1,h2,h3,h4,h5,span,ul,ol,li,p,div{
     overflow-wrap:break-word;
     color: var(--ColorText);
 }
