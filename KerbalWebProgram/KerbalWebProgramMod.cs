@@ -6,7 +6,6 @@ using KerbalWebProgram;
 using KerbalWebProgram.KerbalWebProgram;
 using Newtonsoft.Json;
 using Shapes;
-
 namespace KerbalWebProgram
 {
     public class pageJSON
@@ -114,33 +113,31 @@ namespace KerbalWebProgram
             if (File.Exists("./KerbalWebProgram/public/pages.json"))
             {
                 jsonString = File.ReadAllText("./KerbalWebProgram/public/pages.json");
+                Debug.Log("Exists");
                 PageJSON = JsonConvert.DeserializeObject<pageJSON>(jsonString);
             }
             else
             {
-                using (WebClient wc = new WebClient())
+                Debug.Log("Downloading");
+                WebClient wc = new WebClient();
+                wc.DownloadFile("https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/pages.json", "./KerbalWebProgram/public/tmppages.json");
+                
+                pageJSON tmpPageJSON = new pageJSON();
+                tmpPageJSON.Pages = new Dictionary<string, string>();
+                string tmpjsonString = File.ReadAllText("./KerbalWebProgram/public/tmppages.json");
+                Debug.Log(tmpjsonString);
+                tmpPageJSON = JsonConvert.DeserializeObject<pageJSON>(tmpjsonString);
+                foreach (var jsonPage in tmpPageJSON.Pages)
                 {
-                    try
-                    {
-                        wc.DownloadFile("https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/pages.json", "./KerbalWebProgram/public/tmppages.json");
-                        pageJSON tmpPageJSON = new pageJSON();
-                        tmpPageJSON.Pages = new Dictionary<string, string>();
-                        string tmpjsonString = File.ReadAllText("./KerbalWebProgram/public/tmppages.json");
-                        tmpPageJSON = JsonConvert.DeserializeObject<pageJSON>(tmpjsonString);
-                        foreach (var jsonPage in PageJSON.Pages)
-                        {
-                            if (File.Exists($"./KerbalWebProgram/public/{jsonPage.Value}")) { }
-                            else
-                            {
-                                wc.DownloadFile($"https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/{jsonPage.Value}", $"./KerbalWebProgram/public/{jsonPage.Value}");
-                            }
-                            PageJSON.Pages.Add(jsonPage.Key, jsonPage.Value);
-                        }
+                    if (File.Exists($"./KerbalWebProgram/public/{jsonPage.Value}")) {
+                        Debug.Log("Exists");
                     }
-                    catch (Exception e)
+                    else
                     {
-                        Debug.Log(e);
+                        Debug.Log($"Getting required web file 'https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/{jsonPage.Value}' ./KerbalWebProgram/public/{jsonPage.Value}");
+                        wc.DownloadFile($"https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/{jsonPage.Value}", $"./KerbalWebProgram/public/{jsonPage.Value}");
                     }
+                    PageJSON.Pages.Add(jsonPage.Key, jsonPage.Value);
                 }
 
                 jsonString = JsonConvert.SerializeObject(PageJSON);
