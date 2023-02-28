@@ -37,13 +37,13 @@ body {
   border-radius:10px;
   border-color: var(--ColorComponents);
   margin-bottom:5px;
-  max-width: calc(100% - 10px)
+  max-width: calc(100% - 45px)
 }
 .doclinktagarea{
   display:flex;
   flex-direction: row;
   flex-wrap:wrap;
-  max-width: calc(100% - 10px)
+  max-width: calc(100% - 45px)
 }
 .doclinktag{
   padding:5px;
