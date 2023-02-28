@@ -17,5 +17,24 @@ const notificationBottom = Swal.mixin({
     didOpen: (toast) => {
       toast.addEventListener('mouseenter', Swal.stopTimer)
       toast.addEventListener('mouseleave', Swal.resumeTimer)
+      toast.addEventListener('click', Swal.close)
+    }
+  })
+
+  const settings = Swal.mixin({
+    toast: false,
+    position: 'center',
+    showConfirmButton: true,
+    iconColor: 'white',
+    customClass: {
+      popup: 'dark-bg'
+    },
+    showClass: {
+        popup: 'animate__animated animate__fadeInRight'
+    },
+    hideClass: {
+        popup: 'animate__animated animate__fadeOutRight'
+    },
+    didOpen: (toast) => {
     }
   })

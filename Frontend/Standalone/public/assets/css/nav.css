@@ -21,6 +21,7 @@ section#nav{
     background-color: rgba(255, 255, 255, 0.02);
     backdrop-filter: blur(10px);
     z-index: 1;
+    align-items: center;
     }
     
     section#nav div#wrapper a{ 
@@ -32,6 +33,7 @@ section#nav{
     display: flex;
     align-items: center;
     text-align: center;
+    justify-content: center;
     
     color: #FFFFFF;
     
@@ -49,4 +51,13 @@ section#nav{
     
     section#nav div#wrapper a:not(:hover){
         color:#FFFFFF;
+    }
+
+    @font-face {
+        font-family: 'Potra';
+        src: url('../lib/fonts/Potra.ttf');
+    }
+    .logoFont {
+        font-family: 'Potra';
+        font-size: 45px;
     }

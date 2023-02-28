@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
+@import url('../lib/fonts/Potra.ttf');
+
 .centerScreen {
     position: absolute;
     top: 50%;
@@ -17,3 +19,31 @@
 .ubuntuFont {
     font-family: 'Ubuntu', sans-serif;
 }
+
+.box {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    background-color: #1e1e1e;
+    border-radius: 7px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    display: inline-block;
+    margin: 10px;
+    vertical-align: top;
+    overflow: hidden;
+    color: #FFF;
+    padding: 20px;
+  }
+  
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: flex-start;
+    justify-content: flex-start;
+  }
+  
+  .grid .box {
+    flex-basis: calc(33.33% - 20px);
+  }
