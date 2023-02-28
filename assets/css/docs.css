@@ -37,13 +37,15 @@ body {
   border-radius:10px;
   border-color: var(--ColorComponents);
   margin-bottom:5px;
-  max-width: calc(100% - 45px)
+  max-width: calc(100% - 45px);
+      cursor: pointer;
 }
 .doclinktagarea{
   display:flex;
   flex-direction: row;
   flex-wrap:wrap;
-  max-width: calc(100% - 45px)
+  max-width: calc(100% - 45px);
+      cursor: pointer;
 }
 .doclinktag{
   padding:5px;
@@ -52,4 +54,5 @@ body {
   border-width:2px;
   border-radius:10px;
   margin-left:5px;
+    cursor: pointer;
 }
