@@ -5,6 +5,7 @@ using System.Text;
 using KerbalWebProgram;
 using KerbalWebProgram.KerbalWebProgram;
 using Newtonsoft.Json;
+using I2.Loc.SimpleJSON;
 
 namespace KerbalWebProgram
 {
@@ -98,7 +99,7 @@ namespace KerbalWebProgram
             }
             internal class pageJSON
             {
-                Dictionary<string,string> Pages {  get; set; }
+                public Dictionary<string,string> Pages {  get; set; }
             }
             internal void ProcessRequest()
             {
@@ -137,8 +138,12 @@ namespace KerbalWebProgram
                         ctx.Response.ContentType = System.Net.Mime.MediaTypeNames.Text.Html;
                         responseString = $"<HTML><BODY>{ctx.Request.Url.AbsolutePath}</BODY></HTML>";
                     }
-                    string jsonString = File.ReadAllText("./Frontend/Standalone/pages.json");
-                    pageJSON jsonData = JsonConvert.DeserializeObject<pageJSON>(jsonString);
+                    pageJSON jsonData = new pageJSON();
+                    jsonData.Pages.Add("/", "index.html");
+                    string jsonString = JsonConvert.SerializeObject(jsonData);
+                    File.WriteAllText("./Frontend/Standalone/pages.json", jsonString);
+                    //string jsonString = File.ReadAllText("./Frontend/Standalone/pages.json");
+                    
                     
                     byte[] buffer = Encoding.UTF8.GetBytes(responseString);
                     stream.Write(buffer, 0, buffer.Length);
