@@ -43,10 +43,8 @@ body {
   flex-wrap:wrap;
 }
 .doclinktag{
-  --randomcolor: rgb(random(255), random(255), random(255));
+  padding:5px;
   border-style:solid;
   border-width:2px;
   border-radius:10px;
-  background-color: rgba(var(--randomcolor),0.3);
-  border-color: var(--randomcolor);
 }
