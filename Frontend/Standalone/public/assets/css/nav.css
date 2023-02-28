@@ -3,12 +3,10 @@ section#nav{
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
-    
-    position: absolute;
+    position: relative;
     width: 845px;
-    height: 110px;
-    left: 1%;
-    top: 25px;
+    padding-bottom: 30px;
+    width: 100%;
     }
     
     section#nav div#wrapper{
@@ -16,15 +14,20 @@ section#nav{
     flex-direction: row;
     align-items: flex-start;
     gap: 30px;
-    width: 845px;
-    height: 110px;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    background-color: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(10px);
+    z-index: 1;
     }
     
     section#nav div#wrapper a{ 
     
     font-style: normal;
     font-weight: 700;
-    font-size: 40px;
+    font-size: 20px;
     line-height: 47px;
     display: flex;
     align-items: center;

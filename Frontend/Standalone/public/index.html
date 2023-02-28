@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/loading.css"/>
     <link rel="stylesheet" type="text/css" href="assets/css/nav.css"/>
     <link rel="stylesheet" type="text/css" href="assets/css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/css/rawData.css"/>
     <link rel="stylesheet" type="text/css" href="assets/lib/animateCss/animate.min.css"/>
     <link rel="stylesheet" type="text/css" href="assets/lib/OverlayScrollbarsMin/css/OverlayScrollbars.min.css" />
     <script type="text/javascript" src="assets/lib/jQuery/jquery-3.6.3.min.js"></script>
@@ -15,6 +16,7 @@
     <script type="text/javascript" src="assets/lib/OverlayScrollbarsMin/js/jquery.overlayScrollbars.min.js"></script>
     <script type="text/javascript" src="assets/js/scroll.js"></script>
     <script type="text/javascript" src="assets/js/loadingScreen.js"></script>
+    <script type="text/javascript" src="assets/js/rawData.js"></script>
   </head>
   <body class="background">
     <section id="loading">
@@ -24,13 +26,19 @@
           <span id="countdown"></span>
         </div>
     </section>
-    <section id="nav" class="ubuntuFont hide">
+    <section id="nav" class="ubuntuFont hide postConnect">
         <div id="wrapper">
-          <a id="home_BTN" href="#home">HOME</a>
-          <a id="about_BTN" href="#about">ABOUT</a>
-          <a id="portfolio_BTN" href="#portfolio">PORTFOLIO</a>
-          <a id="github_BTN" href="#github">GITHUB</a>
+          <a id="home_BTN" href="#dash">DASH</a>
+          <a id="about_BTN" href="#settings">SETTINGS</a>
+          <a id="portfolio_BTN" href="#github">GITHUB</a>
         </div>
+    </section>
+    <section id="dash" class="ubuntuFont postConnect">
+      <div id="output" class="grid"></div> 
+    </section>
+    <section id="settings" class="ubuntuFont hide postConnect">
+    </section>
+    <section id="rawData" class="ubuntuFont hide postConnect">
     </section>
   </body>
   </html>
