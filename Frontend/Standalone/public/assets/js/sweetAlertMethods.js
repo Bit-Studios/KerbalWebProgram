@@ -9,10 +9,10 @@ const notificationBottom = Swal.mixin({
       popup: 'colored-toast'
     },
     showClass: {
-        popup: 'animate__animated animate__slideInRight'
+        popup: 'animate__animated animate__fadeInRight'
     },
     hideClass: {
-        popup: 'animate__animated animate__slideOutRight'
+        popup: 'animate__animated animate__fadeOutRight'
     },
     didOpen: (toast) => {
       toast.addEventListener('mouseenter', Swal.stopTimer)
