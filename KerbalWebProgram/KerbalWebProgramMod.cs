@@ -5,9 +5,13 @@ using System.Text;
 using KerbalWebProgram;
 using KerbalWebProgram.KerbalWebProgram;
 using Newtonsoft.Json;
-
+using Shapes;
 namespace KerbalWebProgram
 {
+    public class pageJSON
+    {
+        public Dictionary<string, string> Pages { get; set; }
+    }
     public class ApiRequestData
     {
         public string ID { get; set; }
@@ -20,8 +24,42 @@ namespace KerbalWebProgram
         public string ID { get; set; }
         public Dictionary<string, object> Data { get; set; }
     }
+    public class KWPapiParameter
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Type { get; set; }
+        public int? min { get; set; }
+        public int? max { get; set; }
+        public KWPapiParameter(string name, string description, string type, int? min = null, int? max = null)
+        {
+            this.Name = name;
+            this.Description = description;
+            this.Type = type;
+            this.min = min;
+            this.max = max;
+
+        }
+    }
     public abstract class KWPapi
     {
+        public abstract List<KWPapiParameter> parameters { get; set; }
+        //Api parameters
+
+        public abstract string Type { get; set; }
+        //Api type
+
+        public abstract string Name { get; set; }
+        //Api name
+
+        public abstract string Description { get; set; }
+        //Api Description
+
+        public abstract string Author { get; set; }
+        //Api Author
+
+        public abstract List<string> Tags { get; set; }
+        //Api tags
         public abstract ApiResponseData Run(ApiRequestData apiRequestData);
     }
     [MainMod]
@@ -30,10 +68,88 @@ namespace KerbalWebProgram
         private bool IsWebLoaded = false;
 
         public static Dictionary<string, KWPapi> webAPI = new Dictionary<string, KWPapi>();
+        public static pageJSON PageJSON = new pageJSON();
 
         public override void OnInitialized()
         {
             ApiEndpointsBuiltIn.Init();
+
+            PageJSON.Pages = new Dictionary<string, string>();
+
+
+
+            string jsonString = string.Empty;
+            if (Directory.Exists("./KerbalWebProgram")){}
+            else
+            {
+                Directory.CreateDirectory("./KerbalWebProgram");
+            }
+            if (Directory.Exists("./KerbalWebProgram/public")){}
+            else
+            {
+                Directory.CreateDirectory("./KerbalWebProgram/public");
+            }
+            if (Directory.Exists("./KerbalWebProgram/public/assets")) { }
+            else
+            {
+                Directory.CreateDirectory("./KerbalWebProgram/public/assets");
+            }
+            if (Directory.Exists("./KerbalWebProgram/public/assets/css")) { }
+            else
+            {
+                Directory.CreateDirectory("./KerbalWebProgram/public/assets/css");
+            }
+            if (Directory.Exists("./KerbalWebProgram/public/assets/img")) { }
+            else
+            {
+                Directory.CreateDirectory("./KerbalWebProgram/public/assets/img");
+            }
+            if (Directory.Exists("./KerbalWebProgram/public/assets/js")) { }
+            else
+            {
+                Directory.CreateDirectory("./KerbalWebProgram/public/assets/js");
+            }
+
+            if (File.Exists("./KerbalWebProgram/public/pages.json"))
+            {
+                jsonString = File.ReadAllText("./KerbalWebProgram/public/pages.json");
+                Debug.Log("Exists");
+                PageJSON = JsonConvert.DeserializeObject<pageJSON>(jsonString);
+            }
+            else
+            {
+                Debug.Log("Downloading");
+                WebClient wc = new WebClient();
+                wc.DownloadFile("https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/pages.json", "./KerbalWebProgram/public/tmppages.json");
+                
+                pageJSON tmpPageJSON = new pageJSON();
+                tmpPageJSON.Pages = new Dictionary<string, string>();
+                string tmpjsonString = File.ReadAllText("./KerbalWebProgram/public/tmppages.json");
+                Debug.Log(tmpjsonString);
+                tmpPageJSON = JsonConvert.DeserializeObject<pageJSON>(tmpjsonString);
+                foreach (var jsonPage in tmpPageJSON.Pages)
+                {
+                    if (File.Exists($"./KerbalWebProgram/public/{jsonPage.Value}")) {
+                        Debug.Log("Exists");
+                    }
+                    else
+                    {
+                        Debug.Log($"Getting required web file 'https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/{jsonPage.Value}' ./KerbalWebProgram/public/{jsonPage.Value}");
+                        wc.DownloadFile($"https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/{jsonPage.Value}", $"./KerbalWebProgram/public/{jsonPage.Value}");
+                    }
+                    PageJSON.Pages.Add(jsonPage.Key, jsonPage.Value);
+                }
+
+                jsonString = JsonConvert.SerializeObject(PageJSON);
+                File.WriteAllText("./KerbalWebProgram/public/pages.json", jsonString);
+            }
+            foreach (var jsonPage in PageJSON.Pages)
+            {
+                Debug.Log($"{jsonPage.Key} goes to {jsonPage.Value}");
+            }
+
+            Debug.Log(Directory.GetCurrentDirectory());
+
             Logger.Info("Mod is initialized");
         }
         void Awake()
@@ -79,7 +195,39 @@ namespace KerbalWebProgram
         {
             try
             {
-                ApiResponseData apiResponseData = webAPI[apiRequestData.Action].Run(apiRequestData);
+                KWPapi ApiEndpoint = webAPI[apiRequestData.Action];
+                ApiResponseData apiResponseData = new ApiResponseData();
+                apiResponseData.Data = new Dictionary<string, object>();
+                bool hasError = false;
+                ApiEndpoint.parameters.ForEach(param =>
+                {
+                    if (apiRequestData.parameters.Keys.Contains(param.Name)){}
+                    else
+                    {
+                        apiResponseData.Data.Add("error", $"Missing parameters, Required {ApiEndpoint.parameters.ToArray()}");
+                        hasError = true;
+                        return;
+                    }
+                    if(param.min == null ||  param.max == null) { } else
+                    {
+                        if(apiRequestData.parameters[param.Name].Length < param.min || apiRequestData.parameters[param.Name].Length > param.max)
+                        {
+                            apiResponseData.Data.Add("error", $"parameter {param.Name} has a minimum length of {param.min} and a maximum length of {param.max}");
+                            hasError = true;
+                            return;
+                        }
+                        
+                    }
+                });
+                if (hasError)
+                {
+                    apiResponseData.Data = new Dictionary<string, object>();
+                    apiResponseData.Type = "error";
+                }
+                else
+                {
+                    apiResponseData = ApiEndpoint.Run(apiRequestData);
+                }
                 return apiResponseData;
             }
             catch (Exception e)
@@ -96,7 +244,7 @@ namespace KerbalWebProgram
             {
                 this.ctx = ctx;
             }
-
+            
             internal void ProcessRequest()
             {
                 Stream body = ctx.Request.InputStream;
@@ -105,7 +253,7 @@ namespace KerbalWebProgram
                 string requestBody = reader.ReadToEnd();
                 ctx.Response.SendChunked = false;
                 ctx.Response.Headers.Add("Access-Control-Allow-Origin: *");
-                
+                ctx.Response.Headers.Add("Access-Control-Allow-Headers: *");
 
                 using (var stream = ctx.Response.OutputStream)
                 {
@@ -130,10 +278,53 @@ namespace KerbalWebProgram
                         responseString = JsonConvert.SerializeObject(responseData);
                     }
                     else {
-                        ctx.Response.ContentType = System.Net.Mime.MediaTypeNames.Text.Html;
-                        responseString = $"<HTML><BODY>{ctx.Request.Url.AbsolutePath}</BODY></HTML>";
+                        if(PageJSON.Pages.ContainsKey(ctx.Request.Url.AbsolutePath))
+                        {
+                            responseString = File.ReadAllText($"./KerbalWebProgram/public/{PageJSON.Pages[ctx.Request.Url.AbsolutePath]}");
+                            switch (PageJSON.Pages[ctx.Request.Url.AbsolutePath].Split('.')[PageJSON.Pages[ctx.Request.Url.AbsolutePath].Split('.').Length - 1])
+                            {
+                                case "html":
+                                    ctx.Response.ContentType = "text/html";
+                                    break;
+                                case "js":
+                                    ctx.Response.ContentType = "text/javascript";
+                                    break;
+                                case "json":
+                                    ctx.Response.ContentType = "application/json";
+                                    break;
+                                case "css":
+                                    ctx.Response.ContentType = "text/css";
+                                    break;
+                                case "png":
+                                    ctx.Response.ContentType = "image/png";
+                                    break;
+                                case "svg":
+                                    ctx.Response.ContentType = "image/svg+xml";
+                                    break;
+                                case "jpg":
+                                    ctx.Response.ContentType = "image/jpeg";
+                                    break;
+                                case "jepg":
+                                    ctx.Response.ContentType = "image/jpeg";
+                                    break;
+                                case "gif":
+                                    ctx.Response.ContentType = "image/gif";
+                                    break;
+                                default:
+                                    ctx.Response.ContentType = "text/html";
+                                    break;
+                            }
+                        }
+                        else //404
+                        {
+                            ctx.Response.ContentType = "text/html";
+                            responseString = File.ReadAllText($"./KerbalWebProgram/public/{PageJSON.Pages["/404"]}");
+                        }
+                        
                     }
-                    
+
+
+
                     byte[] buffer = Encoding.UTF8.GetBytes(responseString);
                     stream.Write(buffer, 0, buffer.Length);
                     stream.Close();

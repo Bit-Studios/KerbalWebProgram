@@ -20,21 +20,114 @@ namespace KerbalWebProgram.KerbalWebProgram
     {
         public static void Init()
         {
-            KerbalWebProgramMod.webAPI.Add("getCelestialBodyData", new getCelestialBodyData());
-            KerbalWebProgramMod.webAPI.Add("getAllCelestialBodyData", new getALLCelestialBodyData());
-            KerbalWebProgramMod.webAPI.Add("getShiptelemetry", new getShiptelemetry());
-            KerbalWebProgramMod.webAPI.Add("setShipAutoPilotMode", new setShipAutoPilotMode());
-            KerbalWebProgramMod.webAPI.Add("setShipThrottle", new setShipThrottle());
-            KerbalWebProgramMod.webAPI.Add("getShipThrottle", new setShipThrottle());
-            KerbalWebProgramMod.webAPI.Add("getStage", new getStage());
-            KerbalWebProgramMod.webAPI.Add("doStage", new doStage());
-            KerbalWebProgramMod.webAPI.Add("getCraftFile", new getCraftFile());
+            KerbalWebProgramMod.webAPI.Add("getCelestialBodyData", new getCelestialBodyData(
+                new List<KWPapiParameter> { new KWPapiParameter("name", "Name of the Celestial Body","String") },
+                "response",
+                "Get Celestial Body Data",
+                "Allows you to get the Celestial Body Data of a specified Celestial Body",
+                "KWP dev team",
+                new List<string> { "CelestialBody" }
+                ));
+
+            KerbalWebProgramMod.webAPI.Add("getAllCelestialBodyData", new getALLCelestialBodyData(
+                new List<KWPapiParameter> { },
+                "response",
+                "Get All Celestial Body Data",
+                "Allows you to get the Celestial Body Data of all Celestial Bodies",
+                "KWP dev team",
+                new List<string> { "CelestialBody" }
+                ));
+
+            KerbalWebProgramMod.webAPI.Add("getShiptelemetry", new getShiptelemetry(
+                new List<KWPapiParameter> {},
+                "response",
+                "Get Ship Telemetry",
+                "Allows you to get the ships telemetry data",
+                "KWP dev team",
+                new List<string> { "Vessel" }
+                ));
+
+            KerbalWebProgramMod.webAPI.Add("setShipAutoPilotMode", new setShipAutoPilotMode(
+                new List<KWPapiParameter> { new KWPapiParameter("Mode", "Auto pilot mode", "String") },
+                "response",
+                "Set Ship Auto Pilot Mode",
+                "Allows you to set the mode of the ships Autopilot",
+                "KWP dev team",
+                new List<string> { "Vessel" }
+                ));
+
+            KerbalWebProgramMod.webAPI.Add("setShipThrottle", new setShipThrottle(
+                new List<KWPapiParameter> { new KWPapiParameter("Throttle", "Throttle change amount. 0.1 will change the throttle by 0.1 evey game update", "Float") },
+                "response",
+                "Set Ship Throttle",
+                "Allows you to update the throttle change, Equivalant of holding Shift or Ctrl",
+                "KWP dev team",
+                new List<string> { "Vessel" }
+                ));
+
+            KerbalWebProgramMod.webAPI.Add("getShipThrottle", new setShipThrottle(
+                new List<KWPapiParameter> { },
+                "response",
+                "Get Ship Throttle",
+                "Outputs the current Throttle position",
+                "KWP dev team",
+                new List<string> { "Vessel" }
+                ));
+
+            KerbalWebProgramMod.webAPI.Add("getStage", new getStage(
+                new List<KWPapiParameter> {  },
+                "response",
+                "Get Stage",
+                "Gets the current stage that you are on",
+                "KWP dev team",
+                new List<string> { "Vessel" }
+                ));
+
+            KerbalWebProgramMod.webAPI.Add("doStage", new doStage(
+                new List<KWPapiParameter> { },
+                "response",
+                "Do Stage",
+                "Executes the next stage action. AKA press space",
+                "KWP dev team",
+                new List<string> { "Vessel" }
+                ));
+
+            KerbalWebProgramMod.webAPI.Add("getCraftFile", new getCraftFile(
+                new List<KWPapiParameter> { },
+                "response",
+                "Get Craft File",
+                "This outputs your crafts parts in a json format",
+                "KWP dev team",
+                new List<string> { "Vessel" }
+                ));
+
         }
     }
 
     //get Celestial Body Data
     public class getCelestialBodyData : KWPapi
     {
+        public override List<KWPapiParameter> parameters { get; set; }
+
+        public override string Type { get; set; }
+
+        public override string Name { get; set; }
+
+        public override string Description { get; set; }
+
+        public override string Author { get; set; }
+
+        public override List<string> Tags { get; set; }
+        public getCelestialBodyData(List<KWPapiParameter> parameters, string type, string name, string description, string author, List<string> tags)
+        {
+            this.parameters = parameters;
+            this.Type = type;
+            this.Name = name;
+            this.Description = description;
+            this.Author = author;
+            this.Tags = tags;
+        }
+
         public override ApiResponseData Run(ApiRequestData apiRequestData)
         {
             ApiResponseData apiResponseData = new ApiResponseData();
@@ -48,6 +141,26 @@ namespace KerbalWebProgram.KerbalWebProgram
     }
     public class getALLCelestialBodyData : KWPapi
     {
+        public override List<KWPapiParameter> parameters { get; set; }
+
+        public override string Type { get; set; }
+
+        public override string Name { get; set; }
+
+        public override string Description { get; set; }
+
+        public override string Author { get; set; }
+
+        public override List<string> Tags { get; set; }
+        public getALLCelestialBodyData(List<KWPapiParameter> parameters, string type, string name, string description, string author, List<string> tags)
+        {
+            this.parameters = parameters;
+            this.Type = type;
+            this.Name = name;
+            this.Description = description;
+            this.Author = author;
+            this.Tags = tags;
+        }
         public override ApiResponseData Run(ApiRequestData apiRequestData)
         {
             ApiResponseData apiResponseData = new ApiResponseData();
@@ -68,6 +181,26 @@ namespace KerbalWebProgram.KerbalWebProgram
 
     public class getShiptelemetry : KWPapi
     {
+        public override List<KWPapiParameter> parameters { get; set; }
+
+        public override string Type { get; set; }
+
+        public override string Name { get; set; }
+
+        public override string Description { get; set; }
+
+        public override string Author { get; set; }
+
+        public override List<string> Tags { get; set; }
+        public getShiptelemetry(List<KWPapiParameter> parameters, string type, string name, string description, string author, List<string> tags)
+        {
+            this.parameters = parameters;
+            this.Type = type;
+            this.Name = name;
+            this.Description = description;
+            this.Author = author;
+            this.Tags = tags;
+        }
         public override ApiResponseData Run(ApiRequestData apiRequestData)
         {
             ApiResponseData apiResponseData = new ApiResponseData();
@@ -88,6 +221,26 @@ namespace KerbalWebProgram.KerbalWebProgram
 
     public class setShipAutoPilotMode : KWPapi
     {
+        public override List<KWPapiParameter> parameters { get; set; }
+
+        public override string Type { get; set; }
+
+        public override string Name { get; set; }
+
+        public override string Description { get; set; }
+
+        public override string Author { get; set; }
+
+        public override List<string> Tags { get; set; }
+        public setShipAutoPilotMode(List<KWPapiParameter> parameters, string type, string name, string description, string author, List<string> tags)
+        {
+            this.parameters = parameters;
+            this.Type = type;
+            this.Name = name;
+            this.Description = description;
+            this.Author = author;
+            this.Tags = tags;
+        }
         public override ApiResponseData Run(ApiRequestData apiRequestData)
         {
             ApiResponseData apiResponseData = new ApiResponseData();
@@ -157,6 +310,26 @@ namespace KerbalWebProgram.KerbalWebProgram
     }
     public class setShipThrottle : KWPapi
     {
+        public override List<KWPapiParameter> parameters { get; set; }
+
+        public override string Type { get; set; }
+
+        public override string Name { get; set; }
+
+        public override string Description { get; set; }
+
+        public override string Author { get; set; }
+
+        public override List<string> Tags { get; set; }
+        public setShipThrottle(List<KWPapiParameter> parameters, string type, string name, string description, string author, List<string> tags)
+        {
+            this.parameters = parameters;
+            this.Type = type;
+            this.Name = name;
+            this.Description = description;
+            this.Author = author;
+            this.Tags = tags;
+        }
         public override ApiResponseData Run(ApiRequestData apiRequestData)
         {
             ApiResponseData apiResponseData = new ApiResponseData();
@@ -174,6 +347,26 @@ namespace KerbalWebProgram.KerbalWebProgram
 
     public class getShipThrottle : KWPapi
     {
+        public override List<KWPapiParameter> parameters { get; set; }
+
+        public override string Type { get; set; }
+
+        public override string Name { get; set; }
+
+        public override string Description { get; set; }
+
+        public override string Author { get; set; }
+
+        public override List<string> Tags { get; set; }
+        public getShipThrottle(List<KWPapiParameter> parameters, string type, string name, string description, string author, List<string> tags)
+        {
+            this.parameters = parameters;
+            this.Type = type;
+            this.Name = name;
+            this.Description = description;
+            this.Author = author;
+            this.Tags = tags;
+        }
         public override ApiResponseData Run(ApiRequestData apiRequestData)
         {
             ApiResponseData apiResponseData = new ApiResponseData();
@@ -190,6 +383,26 @@ namespace KerbalWebProgram.KerbalWebProgram
 
     public class getStage : KWPapi
     {
+        public override List<KWPapiParameter> parameters { get; set; }
+
+        public override string Type { get; set; }
+
+        public override string Name { get; set; }
+
+        public override string Description { get; set; }
+
+        public override string Author { get; set; }
+
+        public override List<string> Tags { get; set; }
+        public getStage(List<KWPapiParameter> parameters, string type, string name, string description, string author, List<string> tags)
+        {
+            this.parameters = parameters;
+            this.Type = type;
+            this.Name = name;
+            this.Description = description;
+            this.Author = author;
+            this.Tags = tags;
+        }
         public override ApiResponseData Run(ApiRequestData apiRequestData)
         {
             ApiResponseData apiResponseData = new ApiResponseData();
@@ -204,6 +417,26 @@ namespace KerbalWebProgram.KerbalWebProgram
 
     public class doStage : KWPapi
     {
+        public override List<KWPapiParameter> parameters { get; set; }
+
+        public override string Type { get; set; }
+
+        public override string Name { get; set; }
+
+        public override string Description { get; set; }
+
+        public override string Author { get; set; }
+
+        public override List<string> Tags { get; set; }
+        public doStage(List<KWPapiParameter> parameters, string type, string name, string description, string author, List<string> tags)
+        {
+            this.parameters = parameters;
+            this.Type = type;
+            this.Name = name;
+            this.Description = description;
+            this.Author = author;
+            this.Tags = tags;
+        }
         public override ApiResponseData Run(ApiRequestData apiRequestData)
         {
             ApiResponseData apiResponseData = new ApiResponseData();
@@ -219,6 +452,26 @@ namespace KerbalWebProgram.KerbalWebProgram
     }
     public class getCraftFile: KWPapi
     {
+        public override List<KWPapiParameter> parameters { get; set; }
+
+        public override string Type { get; set; }
+
+        public override string Name { get; set; }
+
+        public override string Description { get; set; }
+
+        public override string Author { get; set; }
+
+        public override List<string> Tags { get; set; }
+        public getCraftFile(List<KWPapiParameter> parameters, string type, string name, string description, string author, List<string> tags)
+        {
+            this.parameters = parameters;
+            this.Type = type;
+            this.Name = name;
+            this.Description = description;
+            this.Author = author;
+            this.Tags = tags;
+        }
         public override ApiResponseData Run(ApiRequestData apiRequestData)
         {
             ApiResponseData apiResponseData = new ApiResponseData();
