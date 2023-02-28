@@ -1,5 +1,14 @@
 {
   "Pages": {
-    "/": "index.html"
+    "/": "index.html",
+    "/assets/css/loading.css": "assets/css/loading.css",
+    "/assets/css/nav.css": "assets/css/nav.css",
+    "/assets/css/main.css": "assets/css/main.css",
+    "/assets/img/arrow-down-24.svg": "assets/img/arrow-down-24.svg",
+    "/assets/img/image.svg": "assets/img/image.svg",
+    "/assets/img/x-24.svg": "assets/img/x-24.svg",
+    "/assets/js/loadingScreen.js": "assets/js/loadingScreen.js",
+    "/assets/js/scroll.js": "assets/js/scroll.js",
+    "/assets/js/wave.js": "assets/js/wave.js",
   }
 }
