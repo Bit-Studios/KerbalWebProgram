@@ -5,6 +5,7 @@ using System.Text;
 using KerbalWebProgram;
 using KerbalWebProgram.KerbalWebProgram;
 using Newtonsoft.Json;
+using I2.Loc.SimpleJSON;
 
 namespace KerbalWebProgram
 {
@@ -96,7 +97,10 @@ namespace KerbalWebProgram
             {
                 this.ctx = ctx;
             }
-
+            internal class pageJSON
+            {
+                public Dictionary<string,string> Pages {  get; set; }
+            }
             internal void ProcessRequest()
             {
                 Stream body = ctx.Request.InputStream;
@@ -105,7 +109,7 @@ namespace KerbalWebProgram
                 string requestBody = reader.ReadToEnd();
                 ctx.Response.SendChunked = false;
                 ctx.Response.Headers.Add("Access-Control-Allow-Origin: *");
-                
+                ctx.Response.Headers.Add("Access-Control-Allow-Headers: *");
 
                 using (var stream = ctx.Response.OutputStream)
                 {
@@ -130,10 +134,18 @@ namespace KerbalWebProgram
                         responseString = JsonConvert.SerializeObject(responseData);
                     }
                     else {
+
                         ctx.Response.ContentType = System.Net.Mime.MediaTypeNames.Text.Html;
                         responseString = $"<HTML><BODY>{ctx.Request.Url.AbsolutePath}</BODY></HTML>";
                     }
-                    
+                    pageJSON jsonData = new pageJSON();
+                    jsonData.Pages.Add("/", "index.html");
+                    string jsonString = JsonConvert.SerializeObject(jsonData);
+                    File.WriteAllText("./Frontend/Standalone/pages.json", jsonString);
+                    Debug.Log(Directory.GetCurrentDirectory());
+                    //string jsonString = File.ReadAllText("./Frontend/Standalone/pages.json");
+
+
                     byte[] buffer = Encoding.UTF8.GetBytes(responseString);
                     stream.Write(buffer, 0, buffer.Length);
                     stream.Close();
