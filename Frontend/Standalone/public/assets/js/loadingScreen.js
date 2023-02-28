@@ -1,3 +1,5 @@
+var debug = true;
+if (!debug){
 $(document).ready(function() {
   setTimeout(retryConnect, 2000); // Wait 2 seconds
 
@@ -8,8 +10,12 @@ $(document).ready(function() {
     var socket = new WebSocket('ws://localhost:8080/');
 
     socket.onopen = function(event) {
-      $('#loading-screen').hide(); //Hide the loading screen if the server responds with a 200 OK status code
+      $('#loading').hide(); //Hide the loading screen if the server responds with a 200 OK status code
       $('section#nav').removeClass('hide');
+      notificationBottom.fire({
+        icon: 'success',
+        title: 'Connected to Kerbal Web Program'
+      })          
     };
 
     socket.addEventListener('error', (event) => {
@@ -41,6 +47,11 @@ $(document).ready(function() {
       xhr.onload = function() {
           $('#loading').hide(); //Hide the loading screen if the server responds with a 200 OK status code
           $('section#nav').removeClass('hide');
+
+          notificationBottom.fire({
+            icon: 'warning',
+            title: 'Websocket connection failed, connected to REST API'
+          })          
         };
 
       xhr.onerror = function() {
@@ -72,5 +83,15 @@ $(document).ready(function() {
         }
       })
     }
-  });
-
+});
+} else {
+    $(document).ready(function() {
+      $('#loading').hide(); //Hide the loading screen if the server responds with a 200 OK status code
+      $('section#nav').removeClass('hide');   
+      notificationBottom.fire({
+        icon: 'warning',
+        title: 'No connection to backend, running in debug mode'
+      })          
+    });
+}
+  
