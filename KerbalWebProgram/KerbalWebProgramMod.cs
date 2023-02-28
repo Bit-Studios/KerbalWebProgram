@@ -135,15 +135,31 @@ namespace KerbalWebProgram
                     }
                     else {
 
-                        ctx.Response.ContentType = System.Net.Mime.MediaTypeNames.Text.Html;
-                        responseString = $"<HTML><BODY>{ctx.Request.Url.AbsolutePath}</BODY></HTML>";
+                        pageJSON jsonData = new pageJSON();
+                        jsonData.Pages = new Dictionary<string, string>();
+                        jsonData.Pages.Add("/", "index.html");
+                        string jsonString = JsonConvert.SerializeObject(jsonData);
+                        if (Directory.Exists("./KerbalWebProgram"))
+                        {
+                            if (Directory.Exists("./KerbalWebProgram/public"))
+                            {
+                                File.WriteAllText("./KerbalWebProgram/public/pages.json", jsonString);
+                            }
+                            else
+                            {
+                                Directory.CreateDirectory("./KerbalWebProgram/public");
+                            }
+                        }
+                        else
+                        {
+                            Directory.CreateDirectory("./KerbalWebProgram");
+                        }
+
+
+                        Debug.Log(Directory.GetCurrentDirectory());
+                        //string jsonString = File.ReadAllText("./Frontend/Standalone/pages.json");
                     }
-                    pageJSON jsonData = new pageJSON();
-                    jsonData.Pages.Add("/", "index.html");
-                    string jsonString = JsonConvert.SerializeObject(jsonData);
-                    File.WriteAllText("./Frontend/Standalone/pages.json", jsonString);
-                    Debug.Log(Directory.GetCurrentDirectory());
-                    //string jsonString = File.ReadAllText("./Frontend/Standalone/pages.json");
+
 
 
                     byte[] buffer = Encoding.UTF8.GetBytes(responseString);
