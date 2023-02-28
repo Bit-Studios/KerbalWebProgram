@@ -29,6 +29,7 @@ body {
     width: 0px;
   }
 .doclink{
+  font-size:25px;
   padding:10px;
   background-color: var(--ColorForeground);
   border-style:solid;
@@ -36,15 +37,19 @@ body {
   border-radius:10px;
   border-color: var(--ColorComponents);
   margin-bottom:5px;
+  max-width: calc(100% - 10px)
 }
 .doclinktagarea{
   display:flex;
   flex-direction: row;
   flex-wrap:wrap;
+  max-width: calc(100% - 10px)
 }
 .doclinktag{
   padding:5px;
+  font-size:10px;
   border-style:solid;
   border-width:2px;
   border-radius:10px;
+  margin-left:5px;
 }
