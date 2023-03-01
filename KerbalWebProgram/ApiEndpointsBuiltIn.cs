@@ -150,6 +150,10 @@ namespace KerbalWebProgram.KerbalWebProgram
             apiResponseData.Data.Add("VerticalSrfSpeed", vesselComponent.VerticalSrfSpeed);
             apiResponseData.Data.Add("OrbitalSpeed", vesselComponent.OrbitalSpeed);
             apiResponseData.Data.Add("TargetSpeed", vesselComponent.TargetSpeed);
+            apiResponseData.Data.Add("Heading", vesselComponent.Heading);
+            apiResponseData.Data.Add("AltitudeFromTerrain", vesselComponent.AltitudeFromTerrain);
+            apiResponseData.Data.Add("AltitudeFromSeaLevel", vesselComponent.AltitudeFromSeaLevel);
+            apiResponseData.Data.Add("AltitudeFromRadius", vesselComponent.AltitudeFromRadius);
 
             return apiResponseData;
         }
