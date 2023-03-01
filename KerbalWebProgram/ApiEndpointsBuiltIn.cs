@@ -101,78 +101,22 @@ namespace KerbalWebProgram.KerbalWebProgram
                 new List<string> { "Vessel" }
                 ));
 
-        }
-    }
-
-    //get Celestial Body Data
-    public class getCelestialBodyData : KWPapi
-    {
-        public override List<KWPapiParameter> parameters { get; set; }
-
-        public override string Type { get; set; }
-
-        public override string Name { get; set; }
-
-        public override string Description { get; set; }
-
-        public override string Author { get; set; }
-
-        public override List<string> Tags { get; set; }
-        public getCelestialBodyData(List<KWPapiParameter> parameters, string type, string name, string description, string author, List<string> tags)
-        {
-            this.parameters = parameters;
-            this.Type = type;
-            this.Name = name;
-            this.Description = description;
-            this.Author = author;
-            this.Tags = tags;
-        }
-
-        public override ApiResponseData Run(ApiRequestData apiRequestData)
-        {
-            ApiResponseData apiResponseData = new ApiResponseData();
-            apiResponseData.ID = apiRequestData.ID;
-            apiResponseData.Type = "response";
-            apiResponseData.Data = new Dictionary<string, object>();
-            CelestialBodyCore celestialBodyCore = GameManager.Instance.Game.CelestialBodies.Get(apiRequestData.parameters["name"].ToString());
-            apiResponseData.Data.Add("body", celestialBodyCore.data);
-            return apiResponseData;
-        }
-    }
-    public class getALLCelestialBodyData : KWPapi
-    {
-        public override List<KWPapiParameter> parameters { get; set; }
-
-        public override string Type { get; set; }
-
-        public override string Name { get; set; }
-
-        public override string Description { get; set; }
-
-        public override string Author { get; set; }
-
-        public override List<string> Tags { get; set; }
-        public getALLCelestialBodyData(List<KWPapiParameter> parameters, string type, string name, string description, string author, List<string> tags)
-        {
-            this.parameters = parameters;
-            this.Type = type;
-            this.Name = name;
-            this.Description = description;
-            this.Author = author;
-            this.Tags = tags;
-        }
-        public override ApiResponseData Run(ApiRequestData apiRequestData)
-        {
-            ApiResponseData apiResponseData = new ApiResponseData();
-            apiResponseData.ID = apiRequestData.ID;
-            apiResponseData.Type = "response";
-            apiResponseData.Data = new Dictionary<string, object>();
-            var bodys = GameManager.Instance.Game.CelestialBodies.GetAllBodiesData();
-            foreach (var body in bodys)
-            {
-                apiResponseData.Data.Add(body.Value.data.bodyName, body.Value.data);
-            }
-            return apiResponseData;
+            KerbalWebProgramMod.webAPI.Add("getUniverseTime", new getUniverseTime(
+                new List<KWPapiParameter> { },
+                "response",
+                "Gets the universe time",
+                "This outputs the current universe time",
+                "KWP dev team",
+                new List<string> { "time" }
+                ));
+            KerbalWebProgramMod.webAPI.Add("getShipOrbit", new getShipOrbit(
+                new List<KWPapiParameter> { },
+                "response",
+                "Gets the current orbit of the active vessel",
+                "This outputs the current orbital data of the active vessel and what body it is currently orbiting",
+                "KWP dev team",
+                new List<string> { "Vessel", "CelestialBody", "Orbit" }
+                ));
         }
     }
 
@@ -214,6 +158,10 @@ namespace KerbalWebProgram.KerbalWebProgram
             apiResponseData.Data.Add("VerticalSrfSpeed", vesselComponent.VerticalSrfSpeed);
             apiResponseData.Data.Add("OrbitalSpeed", vesselComponent.OrbitalSpeed);
             apiResponseData.Data.Add("TargetSpeed", vesselComponent.TargetSpeed);
+            apiResponseData.Data.Add("Heading", vesselComponent.Heading);
+            apiResponseData.Data.Add("AltitudeFromTerrain", vesselComponent.AltitudeFromTerrain);
+            apiResponseData.Data.Add("AltitudeFromSeaLevel", vesselComponent.AltitudeFromSeaLevel);
+            apiResponseData.Data.Add("AltitudeFromRadius", vesselComponent.AltitudeFromRadius);
 
             return apiResponseData;
         }
@@ -486,6 +434,193 @@ namespace KerbalWebProgram.KerbalWebProgram
             }
             apiResponseData.Data.Add("Parts", partsData);
 
+            return apiResponseData;
+        }
+    }
+    public class getShipOrbit : KWPapi
+    {
+        public override List<KWPapiParameter> parameters { get; set; }
+
+        public override string Type { get; set; }
+
+        public override string Name { get; set; }
+
+        public override string Description { get; set; }
+
+        public override string Author { get; set; }
+
+        public override List<string> Tags { get; set; }
+        public getShipOrbit(List<KWPapiParameter> parameters, string type, string name, string description, string author, List<string> tags)
+        {
+            this.parameters = parameters;
+            this.Type = type;
+            this.Name = name;
+            this.Description = description;
+            this.Author = author;
+            this.Tags = tags;
+        }
+        public override ApiResponseData Run(ApiRequestData apiRequestData)
+        {
+            ApiResponseData apiResponseData = new ApiResponseData();
+            apiResponseData.ID = apiRequestData.ID;
+            apiResponseData.Type = "response";
+            apiResponseData.Data = new Dictionary<string, object>();
+
+            VesselComponent vesselComponent = GameManager.Instance.Game.ViewController.GetActiveVehicle().GetSimVessel();
+
+            apiResponseData.Data.Add("OrbitalSpeed", vesselComponent.OrbitalSpeed);
+            apiResponseData.Data.Add("OrbitalVelocity", vesselComponent.OrbitalVelocity);
+            apiResponseData.Data.Add("altitude", vesselComponent.Orbit.altitude);
+            apiResponseData.Data.Add("an", vesselComponent.Orbit.an);
+            apiResponseData.Data.Add("collisionPointUT", vesselComponent.Orbit.collisionPointUT);
+            apiResponseData.Data.Add("Apoapsis", vesselComponent.Orbit.Apoapsis);
+            apiResponseData.Data.Add("Periapsis", vesselComponent.Orbit.Periapsis);
+            apiResponseData.Data.Add("Velocity", vesselComponent.Orbit.Velocity);
+            apiResponseData.Data.Add("eccentricity", vesselComponent.Orbit.eccentricity);
+            apiResponseData.Data.Add("inclination", vesselComponent.Orbit.inclination);
+            apiResponseData.Data.Add("Apoapsis", vesselComponent.Orbit.period);
+            apiResponseData.Data.Add("radius", vesselComponent.Orbit.radius);
+            apiResponseData.Data.Add("body", vesselComponent.Orbit.referenceBody.Name);
+
+            return apiResponseData;
+        }
+    }
+    //Universe Data
+    public class getUniverseTime : KWPapi
+    {
+        public override List<KWPapiParameter> parameters { get; set; }
+
+        public override string Type { get; set; }
+
+        public override string Name { get; set; }
+
+        public override string Description { get; set; }
+
+        public override string Author { get; set; }
+
+        public override List<string> Tags { get; set; }
+        public getUniverseTime(List<KWPapiParameter> parameters, string type, string name, string description, string author, List<string> tags)
+        {
+            this.parameters = parameters;
+            this.Type = type;
+            this.Name = name;
+            this.Description = description;
+            this.Author = author;
+            this.Tags = tags;
+        }
+        public override ApiResponseData Run(ApiRequestData apiRequestData)
+        {
+            ApiResponseData apiResponseData = new ApiResponseData();
+            apiResponseData.ID = apiRequestData.ID;
+            apiResponseData.Type = "response";
+            apiResponseData.Data = new Dictionary<string, object>();
+            
+            apiResponseData.Data.Add("time", GameManager.Instance.Game.ViewController.universalTime);
+
+            return apiResponseData;
+        }
+    }
+    public class getMissionTime : KWPapi
+    {
+        public override List<KWPapiParameter> parameters { get; set; }
+
+        public override string Type { get; set; }
+
+        public override string Name { get; set; }
+
+        public override string Description { get; set; }
+
+        public override string Author { get; set; }
+
+        public override List<string> Tags { get; set; }
+        public getMissionTime(List<KWPapiParameter> parameters, string type, string name, string description, string author, List<string> tags)
+        {
+            this.parameters = parameters;
+            this.Type = type;
+            this.Name = name;
+            this.Description = description;
+            this.Author = author;
+            this.Tags = tags;
+        }
+        public override ApiResponseData Run(ApiRequestData apiRequestData)
+        {
+            ApiResponseData apiResponseData = new ApiResponseData();
+            apiResponseData.ID = apiRequestData.ID;
+            apiResponseData.Type = "response";
+            apiResponseData.Data = new Dictionary<string, object>();
+
+            apiResponseData.Data.Add("time", GameManager.Instance.Game.ViewController);
+
+            return apiResponseData;
+        }
+    }
+    public class getCelestialBodyData : KWPapi
+    {
+        public override List<KWPapiParameter> parameters { get; set; }
+
+        public override string Type { get; set; }
+
+        public override string Name { get; set; }
+
+        public override string Description { get; set; }
+
+        public override string Author { get; set; }
+
+        public override List<string> Tags { get; set; }
+        public getCelestialBodyData(List<KWPapiParameter> parameters, string type, string name, string description, string author, List<string> tags)
+        {
+            this.parameters = parameters;
+            this.Type = type;
+            this.Name = name;
+            this.Description = description;
+            this.Author = author;
+            this.Tags = tags;
+        }
+
+        public override ApiResponseData Run(ApiRequestData apiRequestData)
+        {
+            ApiResponseData apiResponseData = new ApiResponseData();
+            apiResponseData.ID = apiRequestData.ID;
+            apiResponseData.Type = "response";
+            apiResponseData.Data = new Dictionary<string, object>();
+            CelestialBodyCore celestialBodyCore = GameManager.Instance.Game.CelestialBodies.Get(apiRequestData.parameters["name"].ToString());
+            apiResponseData.Data.Add("body", celestialBodyCore.data);
+            return apiResponseData;
+        }
+    }
+    public class getALLCelestialBodyData : KWPapi
+    {
+        public override List<KWPapiParameter> parameters { get; set; }
+
+        public override string Type { get; set; }
+
+        public override string Name { get; set; }
+
+        public override string Description { get; set; }
+
+        public override string Author { get; set; }
+
+        public override List<string> Tags { get; set; }
+        public getALLCelestialBodyData(List<KWPapiParameter> parameters, string type, string name, string description, string author, List<string> tags)
+        {
+            this.parameters = parameters;
+            this.Type = type;
+            this.Name = name;
+            this.Description = description;
+            this.Author = author;
+            this.Tags = tags;
+        }
+        public override ApiResponseData Run(ApiRequestData apiRequestData)
+        {
+            ApiResponseData apiResponseData = new ApiResponseData();
+            apiResponseData.ID = apiRequestData.ID;
+            apiResponseData.Type = "response";
+            apiResponseData.Data = new Dictionary<string, object>();
+            var bodys = GameManager.Instance.Game.CelestialBodies.GetAllBodiesData();
+            foreach (var body in bodys)
+            {
+                apiResponseData.Data.Add(body.Value.data.bodyName, body.Value.data);
+            }
             return apiResponseData;
         }
     }
