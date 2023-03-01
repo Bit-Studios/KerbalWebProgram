@@ -5,10 +5,23 @@ $(document).ready(function() {
             icon: 'none',
             html: `
             <div class="settingsContainer">
+            <div class="settingsModuleContainer">
+                        <span class="alignLeft">Test</span>
             <label class="switch">
             <input type="checkbox">
             <span class="slider round"></span>
           </label>
+                                  <span class="alignLeft">Test</span>
+            <label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+          </label>
+                                  <span class="alignLeft">Test</span>
+            <label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+          </label>
+          </div>
           </div>
             `
         })

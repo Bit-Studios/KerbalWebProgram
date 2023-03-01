@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
 @import url('../lib/fonts/Potra.ttf');
 
+body {
+  background-image: '../img/bg-1.jpg';
+}
 .centerScreen {
     position: absolute;
     top: 50%;
@@ -46,4 +49,12 @@
   
   .grid .box {
     flex-basis: calc(33.33% - 20px);
+  }
+
+  .alignLeft {
+  align-self: flex-start;
+  }
+
+    .alignRight {
+  align-self: flex-end;
   }
