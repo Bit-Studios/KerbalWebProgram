@@ -4,26 +4,29 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Kerbal Web Program</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" type="text/css" href="assets/lib/bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="assets/css/loading.css"/>
-    <link rel="stylesheet" type="text/css" href="assets/css/nav.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/css/header.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/css/footer.css"/>
     <link rel="stylesheet" type="text/css" href="assets/css/main.css"/>
-    <link rel="stylesheet" type="text/css" href="assets/css/rawData.css"/>
     <link rel="stylesheet" type="text/css" href="assets/css/settings.css"/>
     <link rel="stylesheet" type="text/css" href="assets/css/swalExtra.css"/>
     <link rel="stylesheet" type="text/css" href="assets/lib/toggles/toggle.css"/>
     <link rel="stylesheet" type="text/css" href="assets/lib/animateCss/animate.min.css"/>
     <link rel="stylesheet" type="text/css" href="assets/lib/OverlayScrollbarsMin/css/OverlayScrollbars.min.css" />
     <link rel="stylesheet" type="text/css" href="assets/lib/@sweetalert2/theme-material-ui/material-ui.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/dash.css">
     <script type="text/javascript" src="assets/lib/jQuery/jquery-3.6.3.min.js"></script>
     <script type="text/javascript" src="assets/lib/jQuery/jquery.simple.websocket.js"></script>
     <script type="text/javascript" src="assets/lib/OverlayScrollbarsMin/js/jquery.overlayScrollbars.min.js"></script>
     <script type="text/javascript" src="assets/lib/sweetalert2/dist/sweetalert2.all.js"></script>
     <script type="text/javascript" src="assets/js/scroll.js"></script>
     <script type="text/javascript" src="assets/js/loadingScreen.js"></script>
-    <script type="text/javascript" src="assets/js/rawData.js"></script>
     <script type="text/javascript" src="assets/js/sweetAlertMethods.js"></script>
     <script type="text/javascript" src="assets/js/settingsManager.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-array@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-geo@3"></script>
   </head>
   <body class="background">
     <section id="loading">
@@ -33,20 +36,50 @@
           <span id="countdown"></span>
         </div>
     </section>
-    <section id="nav" class="ubuntuFont hide postConnect">
+    <section id="header" class="ubuntuFont hide postConnect">
         <div id="wrapper">
           <span class="logoFont">KWP</span>
-          <a id="home_BTN" href="#dash">DASH</a>
-          <a id="settings_BTN" href="#settings">SETTINGS</a>
-          <a id="portfolio_BTN" href="#github">GITHUB</a>
+          <div class="timeWrapper">
+            <span id="t+">T+00:00:00 |</span>
+            <span id="time"> 00:00:00 UTC</span>
+          </div>
+          <div class="logoWrapper">
+          <img src="assets/img/CommNetGood.svg" alt="Kerbal Space Program" id="commNetLogo"/>
+          <img src="assets/img/ServerBad.svg" alt="Kerbal Space Program" id="serverConnectionLogo"/>
+          <span class="material-symbols-outlined" id="netLogo">public</span>
+          <img src="assets/img/SasOff.svg" alt="Kerbal Space Program" id="sasLogo"/>
+          <img src="assets/img/RcsOff.svg" alt="Kerbal Space Program" id="rcsLogo"/>
+          <span class="material-symbols-outlined" id="rocketLogo">rocket</span>
+        </div>
         </div>
     </section>
     <section id="dash" class="ubuntuFont postConnect">
-      <div id="output" class="grid"></div> 
+      <div class="rightBar">
+      <div class="currentPlanet">
+      <div id="observablehq-chart-9d8c4108"></div>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@observablehq/inspector@5/dist/inspector.css">
+      <script type="module">
+      import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5/dist/runtime.js";
+      import define from "https://api.observablehq.com/d/163d4a207bbfed29@106.js?v=3";
+      new Runtime().module(define, name => {
+        if (name === "chart") return new Inspector(document.querySelector("#observablehq-chart-9d8c4108"));
+      });
+      </script>
+      <span>LOCATION: KERBIN</span>
+      <span>GRAVITY: 1.0</span>
+      <span>DIAMETER: 1,200,000</span>
+      </div>
+      <div class="cockpitStream">
+        <img src="assets/img/kspCockpitExample.svg" alt="Kerbal Space Program" id="cockpitStream"/>
+      </div>
+      </div>
     </section>
-    <section id="settings" class="ubuntuFont hide postConnect">
-    </section>
-    <section id="rawData" class="ubuntuFont hide postConnect">
+    <section id="footer">
+      <div id="wrapper">
+        <span class="material-symbols-outlined" id="home">home</span>
+        <span class="material-symbols-outlined" id="settings">settings</span>
+        <span class="material-symbols-outlined" id="expand">expand</span>
+      </div>
     </section>
   </body>
   </html>

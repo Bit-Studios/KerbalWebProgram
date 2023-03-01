@@ -50,4 +50,5 @@
 
   section#loading {
     background-color: #141414;
+    z-index: -1;
   }

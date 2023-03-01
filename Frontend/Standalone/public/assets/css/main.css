@@ -1,9 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
 @import url('../lib/fonts/Potra.ttf');
 
+/*
 body {
-  background-image: '../img/bg-1.jpg';
+  background: url('../img/bg-1.jpg') no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
 }
+*/
+
 .centerScreen {
     position: absolute;
     top: 50%;

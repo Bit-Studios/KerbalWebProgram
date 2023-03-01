@@ -1,0 +1,35 @@
+#dash {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+div.rightBar {
+    position: absolute;
+    right: 10px;
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+div.currentPlanet {
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    background-color: #232323;
+    border-radius: 5px;
+    padding: 10px 10px 10px 10px;
+}
+
+div.cockpitStream {
+    align-self: flex-start;
+    display: flex;
+    flex-direction: row;
+    background-color: #232323;
+    border-radius: 5px;
+    padding: 10px 10px 10px 10px;
+}
+
+#cockpitStream {
+    height: 200px;
+    width: 200px;
+}

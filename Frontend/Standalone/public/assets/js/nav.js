@@ -1,5 +1,3 @@
-var debug = true;
-if (!debug){
 $(document).ready(function() {
   setTimeout(retryConnect, 2000); // Wait 2 seconds
 
@@ -11,7 +9,7 @@ $(document).ready(function() {
 
     socket.onopen = function(event) {
       $('#loading').hide(); //Hide the loading screen if the server responds with a 200 OK status code
-      $('section#header').removeClass('hide');
+      $('section#nav').removeClass('hide');
       notificationBottom.fire({
         icon: 'success',
         title: 'Connected to Kerbal Web Program'
@@ -46,7 +44,7 @@ $(document).ready(function() {
 
       xhr.onload = function() {
           $('#loading').hide(); //Hide the loading screen if the server responds with a 200 OK status code
-          $('section#header').removeClass('hide');
+          $('section#nav').removeClass('hide');
 
           notificationBottom.fire({
             icon: 'warning',
@@ -84,14 +82,4 @@ $(document).ready(function() {
       })
     }
 });
-} else {
-    $(document).ready(function() {
-      $('#loading').hide(); //Hide the loading screen if the server responds with a 200 OK status code
-      $('section#header').removeClass('hide');   
-      notificationBottom.fire({
-        icon: 'warning',
-        title: 'No connection to backend, running in debug mode'
-      })          
-    });
-}
-  
+
