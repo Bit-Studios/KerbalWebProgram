@@ -29,8 +29,9 @@
     <script src="https://cdn.jsdelivr.net/npm/d3-array@3"></script>
     <script src="https://cdn.jsdelivr.net/npm/d3-geo@3"></script>
     <script src="assets/js/mapHandler.js"></script>
+    <script src="assets/js/connectionHandler.js"></script>
   </head>
-  <body class="background">
+  <body class="ms-bgColor-gray190">
     <section id="loading">
         <div class="loading-spinner">
           <div class="spinner"></div><br><br>
@@ -39,15 +40,15 @@
         </div>
     </section>
     <section id="header" class="ubuntuFont hide postConnect">
-        <div id="wrapper">
-          <span class="logoFont">KWP</span>
+        <div id="wrapper" class="connectionReactive">
+          <span class="logoFont connectionReactive">KWP</span>
           <div class="timeWrapper">
             <span id="t+">T+00:00:00 |</span>
             <span id="time"> 00:00:00 UTC</span>
           </div>
           <div class="logoWrapper">
           <img src="assets/img/CommNetGood.svg" alt="Kerbal Space Program" id="commNetLogo"/>
-          <img src="assets/img/ServerBad.svg" alt="Kerbal Space Program" id="serverConnectionLogo"/>
+          <img src="assets/img/ServerGood.svg" alt="Kerbal Space Program" id="serverConnectionLogo"/>
           <i class="ms-Icon ms-Icon--World" id="netLogo" aria-hidden="true"></i>
           <img src="assets/img/SasOff.svg" alt="Kerbal Space Program" id="sasLogo"/>
           <img src="assets/img/RcsOff.svg" alt="Kerbal Space Program" id="rcsLogo"/>
@@ -56,8 +57,16 @@
         </div>
     </section>
     <section id="dash" class="ubuntuFont postConnect ms-motion-slideRightIn">
+      <div id="cameraWrapper">
+        <div id="camA" class="cam connectionReactive">
+          <span>CAMERA OFFLINE</span>
+        </div>
+        <div id="camB" class="cam connectionReactive">
+          <span>CAMERA OFFLINE</span>
+        </div>
+      </div>
       <div id="mainMap">
-        <div class="planetWrapper">
+        <div class="planetWrapper ms-bgColor-gray210 ms-motion-slideRightIn ms-depth-16">
           <img src="assets/img/planets/125px-TinyKerbol.webp" id="kerbol" class="planet"/>
           <img src="assets/img/planets/100px-TinyMoho.webp" id="moho" class="planet"/>
           <div id="eveWrapper" class="planetSection">
@@ -96,28 +105,23 @@
             </div>
         </div>
       </div>
-      <div class="ms-depth-16 rightBar ms-motion-scaleDownIn">
+      <div class="ms-depth-16 rightBar ms-motion-scaleDownIn ms-bgColor-gray200">
       <div class="currentPlanet">
-      <div id="observablehq-chart-9d8c4108"></div>
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@observablehq/inspector@5/dist/inspector.css">
-      <script type="module">
-      import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5/dist/runtime.js";
-      import define from "https://api.observablehq.com/d/163d4a207bbfed29@106.js?v=3";
-      new Runtime().module(define, name => {
-        if (name === "chart") return new Inspector(document.querySelector("#observablehq-chart-9d8c4108"));
-      });
-      </script>
-      <span>LOCATION: KERBIN</span>
-      <span>GRAVITY: 1.0</span>
-      <span>DIAMETER: 1,200,000</span>
+        <div id="planetEmbed">
+        </div>
+      <div class="planetInfo">
+      <span><i class="ms-Icon ms-Icon--Home" aria-hidden="true"></i> LOCATION: <span class="value"></span>Kerbin</span>
+      <span><i class="ms-Icon ms-Icon--DoubleDownArrow" aria-hidden="true"></i> GRAVITY: <span class="value">1.0</span></span>
+      <span><i class="ms-Icon ms-Icon--Weights" aria-hidden="true"></i> ATMOSPHERE: <span class="value">1.0</span></span>
+      <span><i class="ms-Icon ms-Icon--SliderHandleSize" aria-hidden="true"></i> DIAMETER: <span class="value">1,200,000</span></span>
+      <span><i class="ms-Icon ms-Icon--Sunny" aria-hidden="true"></i> TEMPERATURE: <span class="value">68deg</span></span>
+      <span><i class="ms-Icon ms-Icon--SpeedHigh" aria-hidden="true"></i> ROTATION SPEED: <span class="value">EXAMPLE VALUE</span></span>
       </div>
-      <!--<div class="cockpitStream">
-        <img src="assets/img/kspCockpitExample.svg" alt="Kerbal Space Program" id="cockpitStream"/>
-      </div>-->
+      </div>
       </div>
     </section>
     <section id="footer">
-      <div id="wrapper">
+      <div id="wrapper" class="connectionReactive">
         <i class="ms-Icon ms-Icon--Home" aria-hidden="true"></i>
         <i class="ms-Icon ms-Icon--Settings" aria-hidden="true"></i>
         <i class="ms-Icon ms-Icon--FullScreen" aria-hidden="true"></i>
