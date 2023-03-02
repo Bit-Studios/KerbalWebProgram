@@ -20,6 +20,14 @@ namespace KerbalWebProgram.KerbalWebProgram
     {
         public static void Init()
         {
+            KerbalWebProgramMod.webAPI.Add("serverPing", new getShipOrbit(
+                new List<KWPapiParameter> { },
+                "pong",
+                "Is server alive",
+                "This outputs the SessionGuidString",
+                "KWP dev team",
+                new List<string> { "Server" }
+                ));
             KerbalWebProgramMod.webAPI.Add("getCelestialBodyData", new getCelestialBodyData(
                 new List<KWPapiParameter> { new KWPapiParameter("name", "Name of the Celestial Body","String") },
                 "response",
@@ -119,7 +127,40 @@ namespace KerbalWebProgram.KerbalWebProgram
                 ));
         }
     }
+    public class serverPing : KWPapi
+    {
+        public override List<KWPapiParameter> parameters { get; set; }
 
+        public override string Type { get; set; }
+
+        public override string Name { get; set; }
+
+        public override string Description { get; set; }
+
+        public override string Author { get; set; }
+
+        public override List<string> Tags { get; set; }
+        public serverPing(List<KWPapiParameter> parameters, string type, string name, string description, string author, List<string> tags)
+        {
+            this.parameters = parameters;
+            this.Type = type;
+            this.Name = name;
+            this.Description = description;
+            this.Author = author;
+            this.Tags = tags;
+        }
+        public override ApiResponseData Run(ApiRequestData apiRequestData)
+        {
+            ApiResponseData apiResponseData = new ApiResponseData();
+            apiResponseData.ID = apiRequestData.ID;
+            apiResponseData.Type = "pong";
+            apiResponseData.Data = new Dictionary<string, object>();
+
+            apiResponseData.Data.Add("pong", GameManager.Instance.Game.SessionGuidString);
+
+            return apiResponseData;
+        }
+    }
 
     //Ship data
 
