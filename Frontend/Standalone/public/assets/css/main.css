@@ -23,7 +23,7 @@ body {
 }
 
 .background {
-    background-color: #141414;
+    background-color: #1b1a19;
 }
 
 .ubuntuFont {
@@ -65,3 +65,10 @@ body {
     .alignRight {
   align-self: flex-end;
   }
+
+.arrow {
+  color: #bebebe;
+  font-size: 35px;
+  margin-right: 10px;
+  margin-left: 10px;
+}

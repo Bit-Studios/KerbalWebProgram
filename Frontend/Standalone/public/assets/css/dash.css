@@ -10,14 +10,19 @@ div.rightBar {
     display: flex;
     flex-direction: column;
     gap: 5px;
+    height: 100vh;
+    background-color: rgba(37, 36, 35, 0.8); /* semi-transparent dark grey */
+    padding-left: 10px;
+    top: 0;
+    right: 0;
+    backdrop-filter: blur(5px); /* apply a 5px blur to the backdrop */
 }
+
 div.currentPlanet {
     align-self: flex-start;
     display: flex;
     flex-direction: column;
-    background-color: #232323;
-    border-radius: 5px;
-    padding: 10px 10px 10px 10px;
+    padding-top: 110px;
 }
 
 div.cockpitStream {
@@ -33,3 +38,169 @@ div.cockpitStream {
     height: 200px;
     width: 200px;
 }
+
+.widget {
+    background-color: #1b1b1b;
+    border-radius: 5px;
+    padding: 10px 10px 10px 10px;
+    outline: 3px solid #BADA55;
+}
+
+.planetWrapper {
+    align-self: flex-start;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 25px;
+    width: auto;
+    height: auto;
+    position: absolute;
+    bottom: 0px;
+    padding-bottom: 57px;
+}
+
+#mainMap {
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+    align-items: flex-end;
+}
+
+img.planet {
+    height: auto;
+    width: 200px;
+}
+
+#kerbol {
+    height: 200px;
+    width: 200px;
+}
+
+#moho {
+    height: 100px;
+    width: 100px;
+}
+
+#eveWrapper {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+#eve {
+    height: 125px;
+    width: 125px;
+}
+
+#gilly {
+    height: 30px;
+    width: 30px;
+}
+
+#kerbinWrapper {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+#kerbin {
+    height: 100px;
+    width: 100px;
+}
+
+#mun {
+    height: 50px;
+    width: 50px;
+}
+
+#minmus {
+    height: 75px;
+    width: 75px;
+}
+
+#dunaWrapper {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+#duna {
+    height: 100px;
+    width: 100px;
+}
+
+#ike {
+    height: 50px;
+    width: 50px;
+}
+
+#dres {
+    height: 75px;
+    width: 75px;
+}
+
+#joolWrapper {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+#jool {
+    height: 150px;
+    width: 150px;
+}
+
+#laythe {
+    height: 75px;
+    width: 75px;
+}
+
+#vall {
+    height: 75px;
+    width: 75px;
+}
+
+#tylo {
+    height: 75px;
+    width: 75px;
+}
+
+#bop {
+    height: 75px;
+    width: 75px;
+}
+
+#pol {
+    height: 75px;
+    width: 75px;
+}
+
+#eeloo {
+    height: 200px;
+    width: 200px;
+}
+
+div.orbitInfo {
+    align-self: flex-start;
+    display: flex;
+    flex-direction: row;
+    background-color: #232323;
+    border-radius: 5px;
+    padding: 10px 10px 10px 10px;
+}
+
+.exoHolder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+

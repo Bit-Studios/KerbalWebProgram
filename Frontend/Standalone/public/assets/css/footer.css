@@ -15,8 +15,6 @@ section#footer{
     align-items: flex-start;
     gap: 30px;
     width: 100%;
-    padding-top: 10px;
-    padding-bottom: 10px;
     padding-left: 10px;
     background-color: rgba(255, 255, 255, 0.02);
     backdrop-filter: blur(4px);
@@ -26,11 +24,11 @@ section#footer{
     outline-style: solid;
     }
     
-    section#footer div#wrapper span{ 
+    section#footer div#wrapper i{ 
     
     font-style: normal;
-    font-weight: 700;
-    font-size: 30px;
+    font-weight: 400;
+    font-size: 20px;
     line-height: 47px;
     display: flex;
     align-items: center;
@@ -46,12 +44,12 @@ section#footer{
     }
     
     
-    section#footer div#wrapper span:hover{
+    section#footer div#wrapper i:hover{
     color: #d2d2d2;
     cursor: pointer;
     }
     
-    section#footer div#wrapper span:not(:hover){
+    section#footer div#wrapper i:not(:hover){
         color:#FFFFFF;
     }
 

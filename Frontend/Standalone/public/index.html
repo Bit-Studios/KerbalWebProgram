@@ -17,6 +17,7 @@
     <link rel="stylesheet" type="text/css" href="assets/lib/OverlayScrollbarsMin/css/OverlayScrollbars.min.css" />
     <link rel="stylesheet" type="text/css" href="assets/lib/@sweetalert2/theme-material-ui/material-ui.css">
     <link rel="stylesheet" type="text/css" href="assets/css/dash.css">
+    <link rel="stylesheet" href="https://res-1.cdn.office.net/files/fabric-cdn-prod_20221209.001/office-ui-fabric-core/11.1.0/css/fabric.min.css"/>
     <script type="text/javascript" src="assets/lib/jQuery/jquery-3.6.3.min.js"></script>
     <script type="text/javascript" src="assets/lib/jQuery/jquery.simple.websocket.js"></script>
     <script type="text/javascript" src="assets/lib/OverlayScrollbarsMin/js/jquery.overlayScrollbars.min.js"></script>
@@ -27,6 +28,7 @@
     <script type="text/javascript" src="assets/js/settingsManager.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/d3-array@3"></script>
     <script src="https://cdn.jsdelivr.net/npm/d3-geo@3"></script>
+    <script src="assets/js/mapHandler.js"></script>
   </head>
   <body class="background">
     <section id="loading">
@@ -46,15 +48,55 @@
           <div class="logoWrapper">
           <img src="assets/img/CommNetGood.svg" alt="Kerbal Space Program" id="commNetLogo"/>
           <img src="assets/img/ServerBad.svg" alt="Kerbal Space Program" id="serverConnectionLogo"/>
-          <span class="material-symbols-outlined" id="netLogo">public</span>
+          <i class="ms-Icon ms-Icon--World" id="netLogo" aria-hidden="true"></i>
           <img src="assets/img/SasOff.svg" alt="Kerbal Space Program" id="sasLogo"/>
           <img src="assets/img/RcsOff.svg" alt="Kerbal Space Program" id="rcsLogo"/>
-          <span class="material-symbols-outlined" id="rocketLogo">rocket</span>
+          <i class="ms-Icon ms-Icon--Rocket" id="rocketLogo" aria-hidden="true"></i>
         </div>
         </div>
     </section>
-    <section id="dash" class="ubuntuFont postConnect">
-      <div class="rightBar">
+    <section id="dash" class="ubuntuFont postConnect ms-motion-slideRightIn">
+      <div id="mainMap">
+        <div class="planetWrapper">
+          <img src="assets/img/planets/125px-TinyKerbol.webp" id="kerbol" class="planet"/>
+          <img src="assets/img/planets/100px-TinyMoho.webp" id="moho" class="planet"/>
+          <div id="eveWrapper" class="planetSection">
+            <img src="assets/img/planets/100px-TinyEve.webp" id="eve" class="planet"/>
+            <i class="ms-Icon ms-Icon--ChevronUp arrow"></i>
+            <div class="exoHolder">
+            <img src="assets/img/planets/75px-TinyGilly.webp" id="gilly" class="planet"/>
+            </div>
+          </div>
+          <div id="kerbinWrapper" class="planetSection">
+            <img src="assets/img/planets/100px-TinyKerbin.webp" id="kerbin" class="planet"/>
+            <i class="ms-Icon ms-Icon--ChevronUp arrow"></i>
+            <div class="exoHolder">
+            <img src="assets/img/planets/75px-TinyMun.webp" id="mun" class="planet"/>
+            <img src="assets/img/planets/75px-TinyMinmus.webp" id="minmus" class="planet"/>
+          </div>
+          </div>
+          <div id="dunaWrapper" class="planetSection">
+            <img src="assets/img/planets/100px-TinyDuna.webp" id="duna" class="planet"/>
+            <i class="ms-Icon ms-Icon--ChevronUp arrow"></i>
+            <div class="exoHolder">
+            <img src="assets/img/planets/75px-TinyIke.webp" id="ike" class="planet"/>
+            </div>
+          </div>
+          <img src="assets/img/planets/100px-TinyDres.webp" id="dres" class="planet"/>
+          <div id="joolWrapper" class="planetSection">
+            <img src="assets/img/planets/100px-TinyJool.webp" id="jool" class="planet"/>
+            <i class="ms-Icon ms-Icon--ChevronUp arrow"></i>
+            <div class="exoHolder">
+            <img src="assets/img/planets/75px-TinyLaythe.webp" id="laythe" class="planet"/>
+            <img src="assets/img/planets/75px-TinyVall.webp" id="vall" class="planet"/>
+            <img src="assets/img/planets/75px-TinyTylo.webp" id="tylo" class="planet"/>
+            <img src="assets/img/planets/75px-TinyBop.webp" id="bop" class="planet"/>
+            <img src="assets/img/planets/75px-TinyPol.webp" id="pol" class="planet"/>
+            </div>
+            </div>
+        </div>
+      </div>
+      <div class="ms-depth-16 rightBar ms-motion-scaleDownIn">
       <div class="currentPlanet">
       <div id="observablehq-chart-9d8c4108"></div>
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@observablehq/inspector@5/dist/inspector.css">
@@ -69,16 +111,16 @@
       <span>GRAVITY: 1.0</span>
       <span>DIAMETER: 1,200,000</span>
       </div>
-      <div class="cockpitStream">
+      <!--<div class="cockpitStream">
         <img src="assets/img/kspCockpitExample.svg" alt="Kerbal Space Program" id="cockpitStream"/>
-      </div>
+      </div>-->
       </div>
     </section>
     <section id="footer">
       <div id="wrapper">
-        <span class="material-symbols-outlined" id="home">home</span>
-        <span class="material-symbols-outlined" id="settings">settings</span>
-        <span class="material-symbols-outlined" id="expand">expand</span>
+        <i class="ms-Icon ms-Icon--Home" aria-hidden="true"></i>
+        <i class="ms-Icon ms-Icon--Settings" aria-hidden="true"></i>
+        <i class="ms-Icon ms-Icon--FullScreen" aria-hidden="true"></i>
       </div>
     </section>
   </body>
