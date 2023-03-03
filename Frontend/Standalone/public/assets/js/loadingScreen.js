@@ -24,11 +24,8 @@ $(document).ready(function() {
       //Fallback to REST API (gets kerbin as example)
       
       var data = JSON.stringify({
-        "ID": "203798423446346",
-        "Action": "getCelestialBodyData",
-        "parameters": {
-          "name": "Kerbin"
-        }
+        "ID": "0000",
+        "Action": "serverPing",
       });
       
       var xhr = new XMLHttpRequest();
@@ -89,7 +86,7 @@ $(document).ready(function() {
       $('#loading').hide(); //Hide the loading screen if the server responds with a 200 OK status code
       $('section#header').removeClass('hide');   
       notificationBottom.fire({
-        icon: 'warning',
+        icon: 'error',
         title: 'No connection to backend, running in debug mode'
       })          
     });

@@ -18,11 +18,8 @@ let goodGlobe = `<div id="observablehq-chart-9d8c4108"></div><link rel="styleshe
 
 function updateColor() {
     var data = JSON.stringify({
-      "ID": "203798423446346",
-      "Action": "getCelestialBodyData",
-      "parameters": {
-        "name": "Kerbin"
-      }
+      "ID": "0001", //CONNECTION TEST ID
+      "Action": "serverPing",
     });
     
     var xhr = new XMLHttpRequest();
@@ -46,6 +43,10 @@ function updateColor() {
       if (!isConnected) {
         $('#planetEmbed').html(goodGlobe);
         isConnected = true;
+        notificationBottom.fire({
+          icon: 'success',
+          title: 'Reconnected!'
+        })          
       }
     };
   
@@ -59,6 +60,10 @@ function updateColor() {
       if (isConnected) {
         $('#planetEmbed').html(badGlobe);
         isConnected = false;
+        notificationBottom.fire({
+          icon: 'error',
+          title: 'Lost connection to Backend Server!'
+        })          
         }
     };
     
