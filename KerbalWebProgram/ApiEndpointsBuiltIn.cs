@@ -13,7 +13,6 @@ using KSP.Sim.State;
 using Newtonsoft.Json;
 using Shapes;
 using UnityEngine;
-using static Mono.Security.X509.X520;
 
 namespace KerbalWebProgram.KerbalWebProgram
 {
@@ -59,11 +58,14 @@ namespace KerbalWebProgram.KerbalWebProgram
             this.Tags = new List<string> { "CelestialBody" };
         }
 
-        public override Dictionary<string, object> Run(dynamic parameters)
+        public override ApiResponseData Run(ApiRequestData request)
         {
-            Dictionary<string, object> response = new Dictionary<string, object>();
-            CelestialBodyCore celestialBodyCore = GameManager.Instance.Game.CelestialBodies.Get(parameters["name"]);
-            response.Add("body", celestialBodyCore.data);
+            ApiResponseData response = new ApiResponseData();
+            response.ID = request.ID;
+            response.Type = "response";
+            response.Data = new Dictionary<string, object>();
+            CelestialBodyCore celestialBodyCore = GameManager.Instance.Game.CelestialBodies.Get(request.parameters["name"]);
+            response.Data.Add("body", celestialBodyCore.data);
             return response;
         }
     }
@@ -90,13 +92,16 @@ namespace KerbalWebProgram.KerbalWebProgram
             this.Tags = new List<string> { "CelestialBody" };
         }
 
-        public override Dictionary<string, object> Run(dynamic parameters)
+        public override ApiResponseData Run(ApiRequestData request)
         {
-            Dictionary<string, object> response = new Dictionary<string, object>();
+            ApiResponseData response = new ApiResponseData();
+            response.ID = request.ID;
+            response.Type = "response";
+            response.Data = new Dictionary<string, object>();
             var bodys = GameManager.Instance.Game.CelestialBodies.GetAllBodiesData();
             foreach (var body in bodys)
             {
-                response.Add(body.Value.data.bodyName, body.Value.data);
+                response.Data.Add(body.Value.data.bodyName, body.Value.data);
             }
             return response;
         }
@@ -129,16 +134,19 @@ namespace KerbalWebProgram.KerbalWebProgram
             this.Tags = new List<string> { "Vessel" };
         }
 
-        public override Dictionary<string, object> Run(dynamic parameters)
+        public override ApiResponseData Run(ApiRequestData request)
         {
-            Dictionary<string, object> response = new Dictionary<string, object>();
+            ApiResponseData response = new ApiResponseData();
+            response.ID = request.ID;
+            response.Type = "response";
+            response.Data = new Dictionary<string, object>();
 
             VesselComponent vesselComponent = GameManager.Instance.Game.ViewController.GetActiveVehicle().GetSimVessel();
 
-            response.Add("HorizontalSrfSpeed", vesselComponent.HorizontalSrfSpeed);
-            response.Add("VerticalSrfSpeed", vesselComponent.VerticalSrfSpeed);
-            response.Add("OrbitalSpeed", vesselComponent.OrbitalSpeed);
-            response.Add("TargetSpeed", vesselComponent.TargetSpeed);
+            response.Data.Add("HorizontalSrfSpeed", vesselComponent.HorizontalSrfSpeed);
+            response.Data.Add("VerticalSrfSpeed", vesselComponent.VerticalSrfSpeed);
+            response.Data.Add("OrbitalSpeed", vesselComponent.OrbitalSpeed);
+            response.Data.Add("TargetSpeed", vesselComponent.TargetSpeed);
 
             return response;
         }
@@ -181,63 +189,66 @@ namespace KerbalWebProgram.KerbalWebProgram
             this.Author = "KWP dev team";
             this.Tags = new List<string> { "Vessel", "Control" };
         }
-        public override Dictionary<string, object> Run(dynamic parameters)
+        public override ApiResponseData Run(ApiRequestData request)
         {
-            Dictionary<string, object> response = new Dictionary<string, object>();
+            ApiResponseData response = new ApiResponseData();
+            response.ID = request.ID;
+            response.Type = "response";
+            response.Data = new Dictionary<string, object>();
 
             VesselComponent vesselComponent = GameManager.Instance.Game.ViewController.GetActiveSimVessel();
-            switch (parameters["Mode"])
+            switch (request.parameters["Mode"])
             {
                 case "Antinormal":
                     vesselComponent.Autopilot.Activate(AutopilotMode.Antinormal);
-                    response.Add("Mode", "Antinormal");
+                    response.Data.Add("Mode", "Antinormal");
                     break;
                 case "AntiTarget":
                     vesselComponent.Autopilot.Activate(AutopilotMode.AntiTarget);
-                    response.Add("Mode", "AntiTarget");
+                    response.Data.Add("Mode", "AntiTarget");
                     break;
                 case "Autopilot":
                     vesselComponent.Autopilot.Activate(AutopilotMode.Autopilot);
-                    response.Add("Mode", "Autopilot");
+                    response.Data.Add("Mode", "Autopilot");
                     break;
                 case "Maneuver":
                     vesselComponent.Autopilot.Activate(AutopilotMode.Maneuver);
-                    response.Add("Mode", "Maneuver");
+                    response.Data.Add("Mode", "Maneuver");
                     break;
                 case "Navigation":
                     vesselComponent.Autopilot.Activate(AutopilotMode.Navigation);
-                    response.Add("Mode", "Navigation");
+                    response.Data.Add("Mode", "Navigation");
                     break;
                 case "Normal":
                     vesselComponent.Autopilot.Activate(AutopilotMode.Normal);
-                    response.Add("Mode", "Normal");
+                    response.Data.Add("Mode", "Normal");
                     break;
                 case "Prograde":
                     vesselComponent.Autopilot.Activate(AutopilotMode.Prograde);
-                    response.Add("Mode", "Prograde");
+                    response.Data.Add("Mode", "Prograde");
                     break;
                 case "RadialIn":
                     vesselComponent.Autopilot.Activate(AutopilotMode.RadialIn);
-                    response.Add("Mode", "RadialIn");
+                    response.Data.Add("Mode", "RadialIn");
                     break;
                 case "RadialOut":
                     vesselComponent.Autopilot.Activate(AutopilotMode.RadialOut);
-                    response.Add("Mode", "RadialOut");
+                    response.Data.Add("Mode", "RadialOut");
                     break;
                 case "Retrograde":
                     vesselComponent.Autopilot.Activate(AutopilotMode.Retrograde);
-                    response.Add("Mode", "Retrograde");
+                    response.Data.Add("Mode", "Retrograde");
                     break;
                 case "StabilityAssist":
                     vesselComponent.Autopilot.Activate(AutopilotMode.StabilityAssist);
-                    response.Add("Mode", "StabilityAssist");
+                    response.Data.Add("Mode", "StabilityAssist");
                     break;
                 case "Target":
                     vesselComponent.Autopilot.Activate(AutopilotMode.Target);
-                    response.Add("Mode", "Normal");
+                    response.Data.Add("Mode", "Normal");
                     break;
                 default:
-                    response.Add("Mode", "Invalid mode");
+                    response.Data.Add("Mode", "Invalid mode");
                     break;
             }
 
@@ -269,13 +280,16 @@ namespace KerbalWebProgram.KerbalWebProgram
             this.Author = "KWP dev team";
             this.Tags = new List<string> { "Vessel", "Control" };
         }
-        public override Dictionary<string, object> Run(dynamic parameters)
+        public override ApiResponseData Run(ApiRequestData request)
         {
-            Dictionary<string, object> response = new Dictionary<string, object>();
+            ApiResponseData response = new ApiResponseData();
+            response.ID = request.ID;
+            response.Type = "response";
+            response.Data = new Dictionary<string, object>();
 
-            GameManager.Instance.Game.ViewController.flightInputHandler.OverrideInputThrottle(parameters["Throttle"]);
+            GameManager.Instance.Game.ViewController.flightInputHandler.OverrideInputThrottle(request.parameters["Throttle"]);
 
-            response.Add("Throttle", GameManager.Instance.Game.ViewController.GetActiveVehicle().FlightControlInput.mainThrottle);
+            response.Data.Add("Throttle", GameManager.Instance.Game.ViewController.GetActiveVehicle().FlightControlInput.mainThrottle);
 
             return response;
         }
@@ -303,9 +317,12 @@ namespace KerbalWebProgram.KerbalWebProgram
             this.Author = "KWP dev team";
             this.Tags = new List<string> { "Vessel" };
         }
-        public override Dictionary<string, object> Run(dynamic parameters)
+        public override ApiResponseData Run(ApiRequestData request)
         {
-            Dictionary<string, object> response =  new Dictionary<string, object>
+            ApiResponseData response = new ApiResponseData();
+            response.ID = request.ID;
+            response.Type = "response";
+            response.Data =   new Dictionary<string, object>
             {
                 { "Throttle", GameManager.Instance.Game.ViewController.GetActiveVehicle().FlightControlInput.mainThrottle }
             };
@@ -336,11 +353,14 @@ namespace KerbalWebProgram.KerbalWebProgram
             this.Author = "KWP dev team";
             this.Tags = new List<string> { "Vessel" };
         }
-        public override Dictionary<string, object> Run(dynamic parameters)
+        public override ApiResponseData Run(ApiRequestData request)
         {
-            Dictionary<string, object> response = new Dictionary<string, object>();
+            ApiResponseData response = new ApiResponseData();
+            response.ID = request.ID;
+            response.Type = "response";
+            response.Data = new Dictionary<string, object>();
 
-            response.Add("Stages", GameManager.Instance.Game.ViewController.GetActiveVehicle().GetSimulationObject().Staging.AvailableStages.Count);
+            response.Data.Add("Stages", GameManager.Instance.Game.ViewController.GetActiveVehicle().GetSimulationObject().Staging.AvailableStages.Count);
 
             return response;
         }
@@ -368,12 +388,15 @@ namespace KerbalWebProgram.KerbalWebProgram
             this.Author = "KWP dev team";
             this.Tags = new List<string> { "Vessel", "Control" };
         }
-        public override Dictionary<string, object> Run(dynamic parameters)
+        public override ApiResponseData Run(ApiRequestData request)
         {
-            Dictionary<string, object> response = new Dictionary<string, object>();
+            ApiResponseData response = new ApiResponseData();
+            response.ID = request.ID;
+            response.Type = "response";
+            response.Data = new Dictionary<string, object>();
 
             GameManager.Instance.Game.ViewController.GetActiveSimVessel().ActivateNextStage();
-            response.Add("Stages", GameManager.Instance.Game.ViewController.GetActiveVehicle().GetSimulationObject().Staging.AvailableStages.Count - 1);
+            response.Data.Add("Stages", GameManager.Instance.Game.ViewController.GetActiveVehicle().GetSimulationObject().Staging.AvailableStages.Count - 1);
 
             return response;
         }
@@ -400,9 +423,12 @@ namespace KerbalWebProgram.KerbalWebProgram
             this.Author = "KWP dev team";
             this.Tags = new List<string> { "Vessel" };
         }
-        public override Dictionary<string, object> Run(dynamic parameters)
+        public override ApiResponseData Run(ApiRequestData request)
         {
-            Dictionary<string, object> response = new Dictionary<string, object>();
+            ApiResponseData response = new ApiResponseData();
+            response.ID = request.ID;
+            response.Type = "response";
+            response.Data = new Dictionary<string, object>();
 
             var parts = GameManager.Instance.Game.ViewController.GetActiveVehicle().GetSimulationObject().PartOwner.Parts;
             List<PartData> partsData = new List<PartData>();
@@ -410,7 +436,7 @@ namespace KerbalWebProgram.KerbalWebProgram
             {
                 partsData.Add(part.PartData);
             }
-            response.Add("Parts", partsData);
+            response.Data.Add("Parts", partsData);
 
             return response;
         }

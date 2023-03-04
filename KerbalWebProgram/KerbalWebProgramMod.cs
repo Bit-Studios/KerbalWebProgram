@@ -20,7 +20,7 @@ namespace KerbalWebProgram
     {
         public string ID { get; set; }
         public string Action { get; set; }
-        public Dictionary<string, object> parameters  { get; set; }
+        public Dictionary<string, dynamic> parameters  { get; set; }
     }
     public class ApiResponseData
     {
@@ -65,7 +65,7 @@ namespace KerbalWebProgram
 
         public abstract List<string> Tags { get; set; }
         //Api tags
-        public abstract Dictionary<string, object> Run(dynamic parameters);
+        public abstract ApiResponseData Run(ApiRequestData request);
     }
     [MainMod]
     public class KerbalWebProgramMod : Mod
@@ -260,7 +260,6 @@ namespace KerbalWebProgram
             {
                 KWPapi ApiEndpoint = webAPI[apiRequestData.Action];
                 ApiResponseData apiResponseData = new ApiResponseData();
-                apiResponseData.ID = apiRequestData.ID;
                 Dictionary<string, object> errors = new Dictionary<string, object>();
                 Dictionary<string, object> transformedParams = new Dictionary<string, object>();
                 ApiEndpoint.parameters.ForEach(param =>
@@ -277,13 +276,14 @@ namespace KerbalWebProgram
                 });
                 if (errors.Keys.Count > 0)
                 {
+                    apiResponseData.ID = apiRequestData.ID;
                     apiResponseData.Type = "error";
                     apiResponseData.Errors = errors;
                 }
                 else
                 {
-                    apiResponseData.Type = "response";
-                    apiResponseData.Data = ApiEndpoint.Run(transformedParams);
+                    apiRequestData.parameters = transformedParams;
+                    apiResponseData = ApiEndpoint.Run(apiRequestData);
                 }
                 return apiResponseData;
             }

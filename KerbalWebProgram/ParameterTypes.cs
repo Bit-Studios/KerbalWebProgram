@@ -147,7 +147,7 @@ namespace KerbalWebProgram.KerbalWebProgram
 
         protected override bool validateInternal(dynamic value)
         {
-            if (value is not double) throw new ParameterValidationException("Value must be of type float");
+            if (value is not double && value is not Int64) throw new ParameterValidationException(String.Format("Value must be of type float, received {0}", value.GetType()));
             if (min != null && ((double)value)< min)
             {
                 if (max != null) throw new ParameterValidationException(String.Format("Value must be between {0} and {1}", min, max));
