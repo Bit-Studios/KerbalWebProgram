@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+﻿<?xml version="1.0" ?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -6,7 +6,7 @@
     <LangVersion>11</LangVersion>
     <ImplicitUsings>true</ImplicitUsings>
   </PropertyGroup>
-<ItemGroup>
+  <ItemGroup>
     <Reference Include="Accessibility">
       <HintPath>external_dlls\Accessibility.dll</HintPath>
     </Reference>
@@ -37,6 +37,9 @@
     <Reference Include="Backtrace.Unity">
       <HintPath>external_dlls\Backtrace.Unity.dll</HintPath>
     </Reference>
+	<Reference Include="BepInEx">
+	  <HintPath>external_dlls\BepInEx.dll</HintPath>
+	</Reference>
     <Reference Include="Castle.Core">
       <HintPath>external_dlls\Castle.Core.dll</HintPath>
     </Reference>

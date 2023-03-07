@@ -7,6 +7,11 @@ using KerbalWebProgram.KerbalWebProgram;
 using Newtonsoft.Json;
 using Shapes;
 using Random = System.Random;
+using System.Dynamic;
+using KSP.OAB;
+using BepInEx;
+using BepInEx.Configuration;
+using SpaceWarp;
 
 namespace KerbalWebProgram
 {
@@ -64,16 +69,21 @@ namespace KerbalWebProgram
         //Api tags
         public abstract ApiResponseData Run(ApiRequestData apiRequestData);
     }
-    [MainMod]
-    public class KerbalWebProgramMod : Mod
+    [BepInPlugin("kwp_dev_team.kerbal_web_program", "kerbal_web_program", "0.0.1")]
+    [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
+    public class KerbalWebProgramMod : BaseSpaceWarpPlugin
     {
+        private static KerbalWebProgramMod Instance { get; set; }
         private bool IsWebLoaded = false;
 
         public static Dictionary<string, KWPapi> webAPI = new Dictionary<string, KWPapi>();
         public static pageJSON PageJSON = new pageJSON();
 
+        private ConfigEntry<int> port;
+
         public override void OnInitialized()
         {
+            Instance = this;
             //init built in apis
             ApiEndpointsBuiltIn.Init();
 
@@ -153,11 +163,11 @@ namespace KerbalWebProgram
 
             Debug.Log(Directory.GetCurrentDirectory());
 
-            Logger.Info("Mod is initialized");
+            Logger.LogInfo("Mod is initialized");
         }
         void Awake()
         {
-            
+            port = Config.Bind("Webserver", "Port", 8080, "The port that the internal webserver will run on");
 
         }
         void Update()
