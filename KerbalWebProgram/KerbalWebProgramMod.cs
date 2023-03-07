@@ -23,13 +23,14 @@ namespace KerbalWebProgram
     {
         public string ID { get; set; }
         public string Action { get; set; }
-        public Dictionary<string, string> parameters  { get; set; }
+        public Dictionary<string, dynamic> parameters  { get; set; }
     }
     public class ApiResponseData
     {
         public string Type { get; set; }
         public string ID { get; set; }
-        public Dictionary<string, object> Data { get; set; }
+        public Dictionary<string, object> Data { get; set; } = null;
+        public Dictionary<string, object> Errors { get; set; } = null;
     }
     public class KWPapiParameter
     {
@@ -50,7 +51,7 @@ namespace KerbalWebProgram
     }
     public abstract class KWPapi
     {
-        public abstract List<KWPapiParameter> parameters { get; set; }
+        public abstract List<KWPParameterType> parameters { get; set; }
         //Api parameters
 
         public abstract string Type { get; set; }
@@ -67,7 +68,7 @@ namespace KerbalWebProgram
 
         public abstract List<string> Tags { get; set; }
         //Api tags
-        public abstract ApiResponseData Run(ApiRequestData apiRequestData);
+        public abstract ApiResponseData Run(ApiRequestData request);
     }
     [BepInPlugin("kwp_dev_team.kerbal_web_program", "kerbal_web_program", "0.0.1")]
     [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
@@ -267,35 +268,29 @@ namespace KerbalWebProgram
             {
                 KWPapi ApiEndpoint = webAPI[apiRequestData.Action];
                 ApiResponseData apiResponseData = new ApiResponseData();
-                apiResponseData.Data = new Dictionary<string, object>();
-                bool hasError = false;
+                Dictionary<string, object> errors = new Dictionary<string, object>();
+                Dictionary<string, object> transformedParams = new Dictionary<string, object>();
                 ApiEndpoint.parameters.ForEach(param =>
                 {
-                    if (apiRequestData.parameters.Keys.Contains(param.Name)){}
-                    else
+                    var value = apiRequestData.parameters.ContainsKey(param.Name) ? apiRequestData.parameters[param.Name] : null;
+                    try
                     {
-                        apiResponseData.Data.Add("error", $"Missing parameters, Required {ApiEndpoint.parameters.ToArray()}");
-                        hasError = true;
-                        return;
-                    }
-                    if(param.min == null ||  param.max == null) { } else
+                        param.validate(value);
+                        transformedParams.Add(param.Name, param.transformValue(value));
+                    } catch (ParameterValidationException ex)
                     {
-                        if(apiRequestData.parameters[param.Name].Length < param.min || apiRequestData.parameters[param.Name].Length > param.max)
-                        {
-                            apiResponseData.Data.Add("error", $"parameter {param.Name} has a minimum length of {param.min} and a maximum length of {param.max}");
-                            hasError = true;
-                            return;
-                        }
-                        
+                        errors.Add(param.Name, ex.Message);
                     }
                 });
-                if (hasError)
+                if (errors.Keys.Count > 0)
                 {
-                    apiResponseData.Data = new Dictionary<string, object>();
+                    apiResponseData.ID = apiRequestData.ID;
                     apiResponseData.Type = "error";
+                    apiResponseData.Errors = errors;
                 }
                 else
                 {
+                    apiRequestData.parameters = transformedParams;
                     apiResponseData = ApiEndpoint.Run(apiRequestData);
                 }
                 return apiResponseData;
