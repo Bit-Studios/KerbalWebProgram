@@ -20,15 +20,18 @@ namespace KerbalWebProgram.KerbalWebProgram
     {
         public static void Init()
         {
-            KerbalWebProgramMod.webAPI.Add("getCelestialBodyData", new getCelestialBodyData());
+            KerbalWebProgramMod.webAPI.Add("doStage", new doStage());
             KerbalWebProgramMod.webAPI.Add("getAllCelestialBodyData", new getAllCelestialBodyData());
+            KerbalWebProgramMod.webAPI.Add("getCelestialBodyData", new getCelestialBodyData());
+            KerbalWebProgramMod.webAPI.Add("getCraftFile", new getCraftFile());
+            KerbalWebProgramMod.webAPI.Add("getMissionTime", new getMissionTime());
+            KerbalWebProgramMod.webAPI.Add("getShipOrbit", new getShipOrbit());
             KerbalWebProgramMod.webAPI.Add("getShiptelemetry", new getShiptelemetry());
-            KerbalWebProgramMod.webAPI.Add("setShipAutoPilotMode", new setShipAutoPilotMode());
-            KerbalWebProgramMod.webAPI.Add("setShipThrottle", new setShipThrottle());
             KerbalWebProgramMod.webAPI.Add("getShipThrottle", new getShipThrottle());
             KerbalWebProgramMod.webAPI.Add("getStage", new getStage());
-            KerbalWebProgramMod.webAPI.Add("doStage", new doStage());
-            KerbalWebProgramMod.webAPI.Add("getCraftFile", new getCraftFile());
+            KerbalWebProgramMod.webAPI.Add("getUniverseTime", new getUniverseTime());
+            KerbalWebProgramMod.webAPI.Add("setShipAutoPilotMode", new setShipAutoPilotMode());
+            KerbalWebProgramMod.webAPI.Add("setShipThrottle", new setShipThrottle());
         }
     }
 
@@ -147,6 +150,10 @@ namespace KerbalWebProgram.KerbalWebProgram
             response.Data.Add("VerticalSrfSpeed", vesselComponent.VerticalSrfSpeed);
             response.Data.Add("OrbitalSpeed", vesselComponent.OrbitalSpeed);
             response.Data.Add("TargetSpeed", vesselComponent.TargetSpeed);
+            response.Data.Add("Heading", vesselComponent.Heading);
+            response.Data.Add("AltitudeFromTerrain", vesselComponent.AltitudeFromTerrain);
+            response.Data.Add("AltitudeFromSeaLevel", vesselComponent.AltitudeFromSeaLevel);
+            response.Data.Add("AltitudeFromRadius", vesselComponent.AltitudeFromRadius);
 
             return response;
         }
@@ -439,6 +446,123 @@ namespace KerbalWebProgram.KerbalWebProgram
             response.Data.Add("Parts", partsData);
 
             return response;
+        }
+    }
+    public class getShipOrbit : KWPapi
+    {
+        public override List<KWPParameterType> parameters { get; set; }
+
+        public override string Type { get; set; }
+
+        public override string Name { get; set; }
+
+        public override string Description { get; set; }
+
+        public override string Author { get; set; }
+
+        public override List<string> Tags { get; set; }
+        public getShipOrbit()
+        {
+            this.parameters = new List<KWPParameterType> {  };
+            this.Type = "response";
+            this.Name = "Get the current orbit of the active vessel";
+            this.Description = "This outputs the current orbital data of the active vessel and what body it is currently orbiting";
+            this.Author = "KWP dev team";
+            this.Tags = new List<string> { "Vessel", "CelestialBody", "Orbit" };
+        }
+        public override ApiResponseData Run(ApiRequestData apiRequestData)
+        {
+            ApiResponseData apiResponseData = new ApiResponseData();
+            apiResponseData.ID = apiRequestData.ID;
+            apiResponseData.Type = "response";
+            apiResponseData.Data = new Dictionary<string, object>();
+
+            VesselComponent vesselComponent = GameManager.Instance.Game.ViewController.GetActiveVehicle().GetSimVessel();
+
+            apiResponseData.Data.Add("OrbitalSpeed", vesselComponent.OrbitalSpeed);
+            apiResponseData.Data.Add("OrbitalVelocity", vesselComponent.OrbitalVelocity);
+            apiResponseData.Data.Add("altitude", vesselComponent.Orbit.altitude);
+            apiResponseData.Data.Add("an", vesselComponent.Orbit.an);
+            apiResponseData.Data.Add("collisionPointUT", vesselComponent.Orbit.collisionPointUT);
+            apiResponseData.Data.Add("Apoapsis", vesselComponent.Orbit.Apoapsis);
+            apiResponseData.Data.Add("Periapsis", vesselComponent.Orbit.Periapsis);
+            apiResponseData.Data.Add("Velocity", vesselComponent.Orbit.Velocity);
+            apiResponseData.Data.Add("eccentricity", vesselComponent.Orbit.eccentricity);
+            apiResponseData.Data.Add("inclination", vesselComponent.Orbit.inclination);
+            apiResponseData.Data.Add("Apoapsis", vesselComponent.Orbit.period);
+            apiResponseData.Data.Add("radius", vesselComponent.Orbit.radius);
+            apiResponseData.Data.Add("body", vesselComponent.Orbit.referenceBody.Name);
+
+            return apiResponseData;
+        }
+    }
+    //Universe Data
+    public class getUniverseTime : KWPapi
+    {
+        public override List<KWPParameterType> parameters { get; set; }
+
+        public override string Type { get; set; }
+
+        public override string Name { get; set; }
+
+        public override string Description { get; set; }
+
+        public override string Author { get; set; }
+
+        public override List<string> Tags { get; set; }
+        public getUniverseTime()
+        {
+            this.parameters = new List<KWPParameterType> {  };
+            this.Type = "response";
+            this.Name = "Get universe time";
+            this.Description = "This outputs the current universe time";
+            this.Author = "KWP dev team";
+            this.Tags = new List<string> { "time" };
+        }
+        public override ApiResponseData Run(ApiRequestData apiRequestData)
+        {
+            ApiResponseData apiResponseData = new ApiResponseData();
+            apiResponseData.ID = apiRequestData.ID;
+            apiResponseData.Type = "response";
+            apiResponseData.Data = new Dictionary<string, object>();
+            
+            apiResponseData.Data.Add("time", GameManager.Instance.Game.ViewController.universalTime);
+
+            return apiResponseData;
+        }
+    }
+    public class getMissionTime : KWPapi
+    {
+        public override List<KWPParameterType> parameters { get; set; }
+
+        public override string Type { get; set; }
+
+        public override string Name { get; set; }
+
+        public override string Description { get; set; }
+
+        public override string Author { get; set; }
+
+        public override List<string> Tags { get; set; }
+        public getMissionTime()
+        {
+            this.parameters = new List<KWPParameterType> { };
+            this.Type = "response";
+            this.Name = "Get mission time";
+            this.Description = "This outputs the current mission time of the active vessel";
+            this.Author = "KWP dev team";
+            this.Tags = new List<string> { "time" };
+        }
+        public override ApiResponseData Run(ApiRequestData apiRequestData)
+        {
+            ApiResponseData apiResponseData = new ApiResponseData();
+            apiResponseData.ID = apiRequestData.ID;
+            apiResponseData.Type = "response";
+            apiResponseData.Data = new Dictionary<string, object>();
+
+            apiResponseData.Data.Add("time", GameManager.Instance.Game.ViewController);
+
+            return apiResponseData;
         }
     }
 }
