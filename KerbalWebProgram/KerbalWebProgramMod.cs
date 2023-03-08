@@ -198,6 +198,12 @@ namespace KerbalWebProgram
                     {
                         apiPageTags = $"{apiPageTags}<div class='doclinktag' style='background-color:rgba({apiTagType[apiTag]},0.4);border-color:rgb({apiTagType[apiTag]})'>{apiTag}</div>";
                     }
+                    string apiParams = @"";
+                    foreach(var apipram in apiData.Value.parameters)
+                    {
+                        apiParams = $@"{apiParams}""{apipram.Name}"":""{apipram.Description}"",";
+                    }
+                    apiParams = apiParams.Remove(apiParams.Length - 1, 1);
                     string apiPage = @$"
 <html>
     <head>
@@ -209,7 +215,21 @@ namespace KerbalWebProgram
         <div class='doclinktagarea'>
             {apiPageTags}
         </div>
-        <p>{apiData.Value.Description}</p>
+        Api Use:
+        <pre><code>
+        var data = JSON.Stringify({{""ID"":""User Provided ID"",""Action"":""{apiData.Key}"",""parameters"":{{{apiParams}}}}});
+        var xhr = new XMLHttpRequest();
+
+        xhr.addEventListener(""readystatechange"", function() {{
+            if(this.readyState === 4) {{
+                console.log(this.responseText);
+            }}
+        }});
+
+        xhr.open(""Post"", ""http://localhost:8080/api"");
+
+        xhr.send(data);
+        </code></pre>
     </body>
 </html>
 ";

@@ -461,18 +461,29 @@ namespace KerbalWebProgram.KerbalWebProgram
             this.Author = author;
             this.Tags = tags;
         }
+        internal class CraftPartData
+        {
+            public string PartName { get; set; }
+        }
         public override ApiResponseData Run(ApiRequestData apiRequestData)
         {
+            
             ApiResponseData apiResponseData = new ApiResponseData();
             apiResponseData.ID = apiRequestData.ID;
             apiResponseData.Type = "response";
             apiResponseData.Data = new Dictionary<string, object>();
-            var parts = GameManager.Instance.Game.ViewController.GetActiveVehicle().GetSimulationObject().PartOwner.Parts;
-            List<PartData> partsData = new List<PartData>();
+            var parts = GameManager.Instance.Game.ViewController.GetActiveVehicle().GetSimulationObject().PartOwner.Parts.ToList();
+            List<CraftPartData> partsData = new List<CraftPartData>();
             foreach ( var part in parts )
             {
-                partsData.Add(part.PartData);
+                partsData.Add(new CraftPartData()
+                {
+                    PartName = part.Name,
+
+                });
+                
             }
+            
             apiResponseData.Data.Add("Parts", partsData);
 
             return apiResponseData;
