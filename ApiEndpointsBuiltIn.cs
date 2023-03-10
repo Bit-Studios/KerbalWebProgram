@@ -295,8 +295,11 @@ namespace ApiEndpoints
             response.Type = "response";
             response.Data = new Dictionary<string, object>();
 
-            GameManager.Instance.Game.ViewController.flightInputHandler.OverrideInputThrottle(request.parameters["Throttle"]);
+            GameManager.Instance.Game.ViewController.TryGetActiveVehicle(out var vessel);
+            var thisvessel = vessel as VesselVehicle;
 
+            thisvessel.AtomicSet((float)request.parameters["Throttle"], null, null, null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null);
             response.Data.Add("Throttle", GameManager.Instance.Game.ViewController.GetActiveVehicle().FlightControlInput.mainThrottle);
 
             return response;
