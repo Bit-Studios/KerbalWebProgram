@@ -12,6 +12,9 @@ using KSP.OAB;
 using BepInEx;
 using BepInEx.Configuration;
 using SpaceWarp;
+using System.Collections.Generic;
+using System.Data;
+using System.Reflection;
 
 namespace KerbalWebProgram
 {
@@ -70,7 +73,7 @@ namespace KerbalWebProgram
         //Api tags
         public abstract ApiResponseData Run(ApiRequestData request);
     }
-    [BepInPlugin("kwp_dev_team.kerbal_web_program", "kerbal_web_program", "0.0.1")]
+    [BepInPlugin("kwp_dev_team.kerbal_web_program", "kerbal_web_program", "0.1.0")]
     [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
     public class KerbalWebProgramMod : BaseSpaceWarpPlugin
     {
@@ -81,12 +84,14 @@ namespace KerbalWebProgram
         public static pageJSON PageJSON = new pageJSON();
 
         private ConfigEntry<int> port;
+        private static bool Initialized = false;
 
         public override void OnInitialized()
         {
             Instance = this;
-            //init built in apis
-            ApiEndpointsBuiltIn.Init();
+
+
+
 
             PageJSON.Pages = new Dictionary<string, string>();
 
@@ -98,6 +103,42 @@ namespace KerbalWebProgram
             {
                 Directory.CreateDirectory("./KerbalWebProgram");
             }
+            if (Directory.Exists("./KerbalWebProgram/apis")) { }
+            else
+            {
+                Directory.CreateDirectory("./KerbalWebProgram/apis");
+            }
+            //dynamic load apis
+
+            //uncompiled .cs apis
+            string[] uncompiledCsFiles = Directory.GetFiles("./KerbalWebProgram/apis", "*.cs");
+            foreach(string fileData in uncompiledCsFiles)
+            {
+
+            }
+
+            //compiled .dll apis
+            string[] compiledCsFiles = Directory.GetFiles("./KerbalWebProgram/apis", "*.dll");
+            foreach (string file in compiledCsFiles)
+            {
+                try
+                {
+                    Debug.Log($"loading {file}");
+                    Assembly apiDll = Assembly.LoadFile(file);
+                    Debug.Log($"{file} loaded as {apiDll.GetName()}");
+
+                    Type apiType = apiDll.GetType($"{apiDll.ExportedTypes.ElementAt(0)}");
+                    Debug.Log(apiType.FullName);
+                    apiType.InvokeMember("init", BindingFlags.InvokeMethod, null, null, null);
+                    Debug.Log("invoked");
+                }
+                catch (Exception e) {
+                    Debug.Log(e);
+                }
+               
+
+            }
+
             if (Directory.Exists("./KerbalWebProgram/public")){}
             else
             {
@@ -163,7 +204,7 @@ namespace KerbalWebProgram
             }
 
             Debug.Log(Directory.GetCurrentDirectory());
-
+            Initialized = true;
             Logger.LogInfo("Mod is initialized");
         }
         void Awake()
@@ -173,52 +214,92 @@ namespace KerbalWebProgram
         }
         void Update()
         {
-            if (IsWebLoaded == false)
-            {
-                //init documentation
-                if (Directory.Exists("./KerbalWebProgram/public/docs")) { }
-                else
+            try {
+                if (IsWebLoaded == false && Initialized == true)
                 {
-                    Directory.CreateDirectory("./KerbalWebProgram/public/docs");
-                }
-                string docsPage = $"<html><head><link rel='stylesheet' href='/docs.css'></head><body>";
-                Dictionary<string, string> apiTagType = new();
-                int cT = 0;
-                foreach (var apiData in webAPI)
-                {
-                    cT = (cT + 42) + ((int)DateTime.Now.Ticks / 2) ;
-                    Debug.Log($"{apiData.Value.Name} api does {apiData.Value.Description}");
-                    docsPage = $"{docsPage}<div class='doclink' onclick='document.location=`docs/{apiData.Key}`'><div class='doclinkname'>{apiData.Value.Name}</div><div class='doclinktagarea'>";
-                    
-                    foreach(var apiTag in apiData.Value.Tags)
+                    //init documentation
+                    if (Directory.Exists("./KerbalWebProgram/public/docs")) { }
+                    else
                     {
-                        if (apiTagType.ContainsKey(apiTag)){}
-                        else
+                        Directory.CreateDirectory("./KerbalWebProgram/public/docs");
+                    }
+                    string docsPage = $"<html><head><link rel='stylesheet' href='/docs.css'></head><body>";
+                    Dictionary<string, string> apiTagType = new Dictionary<string, string>();
+
+                    int cT = 0;
+
+                    foreach (var apiData in webAPI)
+                    {
+                        Debug.Log($"key:{apiData.Key}");
+
+                        cT = (cT + 42) + ((int)DateTime.Now.Ticks / 2);
+
+                        Debug.Log($"{apiData.Value.Name} api does {apiData.Value.Description}");
+
+                        docsPage = $"{docsPage}<div class='doclink' onclick='document.location=`docs/{apiData.Key}`'><div class='doclinkname'>{apiData.Value.Name}</div><div class='doclinktagarea'>";
+
+                        foreach (var apiTag in apiData.Value.Tags)
                         {
-                            Random rnd = new Random((int)DateTime.Now.Ticks + cT);
-                            string randomColor = $"{rnd.Next(0, 255)},{rnd.Next(0, 255)},{rnd.Next(0, 255)}";
-                            apiTagType.Add(apiTag, randomColor);
-                            Debug.Log($"new tag color {apiTagType[apiTag]}");
+
+                            if (apiTagType.ContainsKey(apiTag)) { }
+                            else
+                            {
+
+                                Random rnd = new Random((int)DateTime.Now.Ticks + cT);
+
+                                string randomColor = $"{rnd.Next(0, 255)},{rnd.Next(0, 255)},{rnd.Next(0, 255)}";
+
+                                apiTagType.Add(apiTag, randomColor);
+
+                                Debug.Log($"new tag color {apiTagType[apiTag]}");
+
+                            }
+                            docsPage = $"{docsPage}<div class='doclinktag' style='background-color:rgba({apiTagType[apiTag]},0.4);border-color:rgb({apiTagType[apiTag]})'>{apiTag}</div>";
+
                         }
-                        docsPage = $"{docsPage}<div class='doclinktag' style='background-color:rgba({apiTagType[apiTag]},0.4);border-color:rgb({apiTagType[apiTag]})'>{apiTag}</div>";
-                    }
-                    docsPage = $"{docsPage}</div></div>";
-                    //generate api doc page
-                    string apiPageTags = string.Empty;
-                    foreach (var apiTag in apiData.Value.Tags)
-                    {
-                        apiPageTags = $"{apiPageTags}<div class='doclinktag' style='background-color:rgba({apiTagType[apiTag]},0.4);border-color:rgb({apiTagType[apiTag]})'>{apiTag}</div>";
-                    }
-                    string apiParams = @"";
-                    foreach(var apipram in apiData.Value.parameters)
-                    {
-                        apiParams = $@"{apiParams}""{apipram.Name}"":""{apipram.Description}"",";
-                    }
-                    apiParams = apiParams.Remove(apiParams.Length - 1, 1);
-                    string apiPage = @$"
+                        docsPage = $"{docsPage}</div></div>";
+
+                        //generate api doc page
+                        string apiPageTags = string.Empty;
+
+                        foreach (var apiTag in apiData.Value.Tags)
+                        {
+
+                            apiPageTags = $"{apiPageTags}<div class='doclinktag' style='background-color:rgba({apiTagType[apiTag]},0.4);border-color:rgb({apiTagType[apiTag]})'>{apiTag}</div>";
+                        }
+                        string apiParams = string.Empty;
+                        string apiPramList = string.Empty;
+
+                        foreach (var apipram in apiData.Value.parameters)
+                        {
+                            apiPramList = $@"{apiPramList}<h5>{apipram.Name}</h5>";
+                            if (apipram.GetType() == typeof(StringChoicesParameter))
+                            {
+                                apiPramList = $@"{apiPramList}<ul>";
+                                StringChoicesParameter apipramsc = (StringChoicesParameter)apipram;
+                                List<string> choices = apipramsc.choices;
+                                choices.ForEach(c =>
+                                {
+                                    apiPramList = $@"{apiPramList}<li>{c}</li>";
+                                });
+                                apiPramList = $@"{apiPramList}</ul>";
+                            }
+                            apiParams = $@"{apiParams}""{apipram.Name}"":""{apipram.Description}"",";
+                        }
+                        if(apiParams.Length > 1)
+                        {
+                            apiParams = apiParams.Remove(apiParams.Length - 1, 1);
+                        }
+                        
+                        
+
+
+                        string apiPage = @$"
 <html>
     <head>
         <link rel='stylesheet' href='/docs.css'>
+        <link rel=""stylesheet"" href=""https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/tomorrow-night-bright.min.css"" integrity=""sha512-kihsljiamrbQ3b3s3TXoAWNSbzbp+gYIeeva81nQwCj/zICdiT/QnKbWTV7DElmAm3mc4vuTR3fo0ToTe2cpNw=="" crossorigin=""anonymous"" referrerpolicy=""no-referrer"" />
+        <script src=""https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"" integrity=""sha512-bgHRAiTjGrzHzLyKOnpFvaEpGzJet3z4tZnXGjpsCcqOnAH6VGUx9frc5bcIhKTVLEiCO6vEhNAgx5jtLUYrfA=="" crossorigin=""anonymous"" referrerpolicy=""no-referrer""></script>
     </head>
     <body>
         <h1>{apiData.Value.Name} (by {apiData.Value.Author})</h1>
@@ -226,9 +307,15 @@ namespace KerbalWebProgram
         <div class='doclinktagarea'>
             {apiPageTags}
         </div>
-        Api Use:
-        <pre><code>
-        var data = JSON.Stringify({{""ID"":""User Provided ID"",""Action"":""{apiData.Key}"",""parameters"":{{{apiParams}}}}});
+        <h4>Api Use:</h4>
+        <pre style=""background-color: #282828;width:calc(100% - 40px);border-radius:5px;""><code style=""background-color: #282828;"" language='javascript'>
+        var data = JSON.Stringify(
+            {{""ID"":""User Provided ID"",
+              ""Action"":""{apiData.Key}"",
+              ""parameters"":{{
+                    {apiParams}
+              }}
+            }});
         var xhr = new XMLHttpRequest();
 
         xhr.addEventListener(""readystatechange"", function() {{
@@ -241,21 +328,35 @@ namespace KerbalWebProgram
 
         xhr.send(data);
         </code></pre>
+        <h4>Parameters</h4>
+        {apiPramList}
+<script>hljs.highlightAll();</script>
     </body>
 </html>
 ";
-                    File.WriteAllText($"./KerbalWebProgram/public/docs/{apiData.Key}.html", apiPage);
-                    PageJSON.Pages.Add($"/docs/{apiData.Key}", $"docs/{apiData.Key}.html");
+
+                        File.WriteAllText($"./KerbalWebProgram/public/docs/{apiData.Key}.html", apiPage);
+
+                        PageJSON.Pages.Add($"/docs/{apiData.Key}", $"docs/{apiData.Key}.html");
+
+
+                    }
+                    docsPage = $"{docsPage}</body></html>";
+
+                    File.WriteAllText("./KerbalWebProgram/public/docs/docs.html", docsPage);
+
+                    PageJSON.Pages.Add("/docs", "docs/docs.html");
+
+                    //init webserver
+                    IsWebLoaded = true;
+
+                    WebServer webServer = new WebServer();
+
+                    webServer.Start();
 
                 }
-                docsPage = $"{docsPage}</body></html>";
-                File.WriteAllText("./KerbalWebProgram/public/docs/docs.html", docsPage);
-                PageJSON.Pages.Add("/docs", "docs/docs.html");
-                //init webserver
-                IsWebLoaded = true;
-                WebServer webServer = new WebServer();
-                webServer.Start();
             }
+            catch (Exception e) { Debug.Log($"{e.Message}|{e.InnerException}|{e.StackTrace}|{e.Source}|{e.Data}|{e.TargetSite}"); }
         }
         void OnGUI()
         {
