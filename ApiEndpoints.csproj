@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -63,6 +63,9 @@
     </Reference>
     <Reference Include="Intercept.Metrics">
       <HintPath>external_dlls\Intercept.Metrics.dll</HintPath>
+    </Reference>
+    <Reference Include="KerbalWebProgram">
+      <HintPath>external_dlls\KerbalWebProgram.dll</HintPath>
     </Reference>
     <Reference Include="KSPLogging">
       <HintPath>external_dlls\KSPLogging.dll</HintPath>

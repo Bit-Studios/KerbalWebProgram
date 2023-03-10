@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using Castle.Components.DictionaryAdapter.Xml;
-using KerbalWebProgram;
 using KSP;
 using KSP.Game;
 using KSP.Iteration.UI.Binding;
@@ -13,12 +12,14 @@ using KSP.Sim.State;
 using Newtonsoft.Json;
 using Shapes;
 using UnityEngine;
+using KerbalWebProgram;
+using KerbalWebProgram.KerbalWebProgram;
 
-namespace KerbalWebProgram.KerbalWebProgram
+namespace ApiEndpoints
 {
-    public static class ApiEndpointsBuiltIn
+    public static class ApiEndpoint
     {
-        public static void Init()
+        public static void init()
         {
             KerbalWebProgramMod.webAPI.Add("doStage", new doStage());
             KerbalWebProgramMod.webAPI.Add("getAllCelestialBodyData", new getAllCelestialBodyData());
@@ -51,14 +52,14 @@ namespace KerbalWebProgram.KerbalWebProgram
         public override List<string> Tags { get; set; }
         public getCelestialBodyData()
         {
-            this.parameters = new List<KWPParameterType> {
+            parameters = new List<KWPParameterType> {
                 new StringParameter("name", "Name of the celestial body", true)
             };
-            this.Type = "response";
-            this.Name = "Get Celestial Body Data";
-            this.Description = "Allows you to get the Celestial Body Data of a specified Celestial Body";
-            this.Author = "KWP dev team";
-            this.Tags = new List<string> { "CelestialBody" };
+            Type = "response";
+            Name = "Get Celestial Body Data";
+            Description = "Allows you to get the Celestial Body Data of a specified Celestial Body";
+            Author = "KWP dev team";
+            Tags = new List<string> { "CelestialBody" };
         }
 
         public override ApiResponseData Run(ApiRequestData request)
@@ -87,12 +88,12 @@ namespace KerbalWebProgram.KerbalWebProgram
         public override List<string> Tags { get; set; }
         public getAllCelestialBodyData()
         {
-            this.parameters = new List<KWPParameterType> { };
-            this.Type = "response";
-            this.Name = "Get All Celestial Body Data";                
-            this.Description = "Allows you to get the Celestial Body Data of all Celestial Bodies";
-            this.Author = "KWP dev team";                
-            this.Tags = new List<string> { "CelestialBody" };
+            parameters = new List<KWPParameterType> { };
+            Type = "response";
+            Name = "Get All Celestial Body Data";
+            Description = "Allows you to get the Celestial Body Data of all Celestial Bodies";
+            Author = "KWP dev team";
+            Tags = new List<string> { "CelestialBody" };
         }
 
         public override ApiResponseData Run(ApiRequestData request)
@@ -129,12 +130,12 @@ namespace KerbalWebProgram.KerbalWebProgram
 
         public getShiptelemetry()
         {
-            this.parameters = new List<KWPParameterType> { };
-            this.Type = "response";
-            this.Name = "Get Ship Telemetry";
-            this.Description = "Allows you to get the ships telemetry data";
-            this.Author = "KWP dev team";
-            this.Tags = new List<string> { "Vessel" };
+            parameters = new List<KWPParameterType> { };
+            Type = "response";
+            Name = "Get Ship Telemetry";
+            Description = "Allows you to get the ships telemetry data";
+            Author = "KWP dev team";
+            Tags = new List<string> { "Vessel" };
         }
 
         public override ApiResponseData Run(ApiRequestData request)
@@ -175,7 +176,7 @@ namespace KerbalWebProgram.KerbalWebProgram
 
         public setShipAutoPilotMode()
         {
-            this.parameters = new List<KWPParameterType> { new StringChoicesParameter("Mode", "Auto pilot mode", true, new List<string>
+            parameters = new List<KWPParameterType> { new StringChoicesParameter("Mode", "Auto pilot mode", true, new List<string>
             {
                 "Antinormal",
                 "AntiTarget",
@@ -190,11 +191,11 @@ namespace KerbalWebProgram.KerbalWebProgram
                 "StabilityAssist",
                 "Target"
             }) };
-            this.Type = "response";
-            this.Name = "Set Ship Auto Pilot Mode";
-            this.Description = "Allows you to set the mode of the ships Autopilot";
-            this.Author = "KWP dev team";
-            this.Tags = new List<string> { "Vessel", "Control" };
+            Type = "response";
+            Name = "Set Ship Auto Pilot Mode";
+            Description = "Allows you to set the mode of the ships Autopilot";
+            Author = "KWP dev team";
+            Tags = new List<string> { "Vessel", "Control" };
         }
         public override ApiResponseData Run(ApiRequestData request)
         {
@@ -280,12 +281,12 @@ namespace KerbalWebProgram.KerbalWebProgram
 
         public setShipThrottle()
         {
-            this.parameters = new List<KWPParameterType> { new FloatParameter("Throttle", "Throttle change amount. 0.1 will change the throttle by 0.1 evey game update", true, 0f, 1f) };
-            this.Type = "response";
-            this.Name = "Set Ship Throttle";
-            this.Description = "Allows you to update the throttle change, Equivalant of holding Shift or Ctrl";
-            this.Author = "KWP dev team";
-            this.Tags = new List<string> { "Vessel", "Control" };
+            parameters = new List<KWPParameterType> { new FloatParameter("Throttle", "Throttle change amount. 0.1 will change the throttle by 0.1 evey game update", true, 0f, 1f) };
+            Type = "response";
+            Name = "Set Ship Throttle";
+            Description = "Allows you to update the throttle change, Equivalant of holding Shift or Ctrl";
+            Author = "KWP dev team";
+            Tags = new List<string> { "Vessel", "Control" };
         }
         public override ApiResponseData Run(ApiRequestData request)
         {
@@ -317,19 +318,19 @@ namespace KerbalWebProgram.KerbalWebProgram
         public override List<string> Tags { get; set; }
         public getShipThrottle()
         {
-            this.parameters = new List<KWPParameterType> { };
-            this.Type = "response";
-            this.Name = "Get Ship Throttle";
-            this.Description = "Outputs the current Throttle position";
-            this.Author = "KWP dev team";
-            this.Tags = new List<string> { "Vessel" };
+            parameters = new List<KWPParameterType> { };
+            Type = "response";
+            Name = "Get Ship Throttle";
+            Description = "Outputs the current Throttle position";
+            Author = "KWP dev team";
+            Tags = new List<string> { "Vessel" };
         }
         public override ApiResponseData Run(ApiRequestData request)
         {
             ApiResponseData response = new ApiResponseData();
             response.ID = request.ID;
             response.Type = "response";
-            response.Data =   new Dictionary<string, object>
+            response.Data = new Dictionary<string, object>
             {
                 { "Throttle", GameManager.Instance.Game.ViewController.GetActiveVehicle().FlightControlInput.mainThrottle }
             };
@@ -353,12 +354,12 @@ namespace KerbalWebProgram.KerbalWebProgram
         public override List<string> Tags { get; set; }
         public getStage()
         {
-            this.parameters = new List<KWPParameterType> { };
-            this.Type = "response";
-            this.Name = "Get Stage";
-            this.Description = "Gets the current stage that you are on";
-            this.Author = "KWP dev team";
-            this.Tags = new List<string> { "Vessel" };
+            parameters = new List<KWPParameterType> { };
+            Type = "response";
+            Name = "Get Stage";
+            Description = "Gets the current stage that you are on";
+            Author = "KWP dev team";
+            Tags = new List<string> { "Vessel" };
         }
         public override ApiResponseData Run(ApiRequestData request)
         {
@@ -388,12 +389,12 @@ namespace KerbalWebProgram.KerbalWebProgram
         public override List<string> Tags { get; set; }
         public doStage()
         {
-            this.parameters = new List<KWPParameterType> { };
-            this.Type = "response";
-            this.Name = "Do Stage";
-            this.Description = "Executes the next stage action. AKA press space";
-            this.Author = "KWP dev team";
-            this.Tags = new List<string> { "Vessel", "Control" };
+            parameters = new List<KWPParameterType> { };
+            Type = "response";
+            Name = "Do Stage";
+            Description = "Executes the next stage action. AKA press space";
+            Author = "KWP dev team";
+            Tags = new List<string> { "Vessel", "Control" };
         }
         public override ApiResponseData Run(ApiRequestData request)
         {
@@ -408,7 +409,7 @@ namespace KerbalWebProgram.KerbalWebProgram
             return response;
         }
     }
-    public class getCraftFile: KWPapi
+    public class getCraftFile : KWPapi
     {
         public override List<KWPParameterType> parameters { get; set; }
 
@@ -423,12 +424,12 @@ namespace KerbalWebProgram.KerbalWebProgram
         public override List<string> Tags { get; set; }
         public getCraftFile()
         {
-            this.parameters = new List<KWPParameterType> { };
-            this.Type = "response";
-            this.Name = "Get Craft File";
-            this.Description = "This outputs your crafts parts in a json format";
-            this.Author = "KWP dev team";
-            this.Tags = new List<string> { "Vessel" };
+            parameters = new List<KWPParameterType> { };
+            Type = "response";
+            Name = "Get Craft File";
+            Description = "This outputs your crafts parts in a json format";
+            Author = "KWP dev team";
+            Tags = new List<string> { "Vessel" };
         }
         public override ApiResponseData Run(ApiRequestData request)
         {
@@ -439,7 +440,7 @@ namespace KerbalWebProgram.KerbalWebProgram
 
             var parts = GameManager.Instance.Game.ViewController.GetActiveVehicle().GetSimulationObject().PartOwner.Parts;
             List<PartData> partsData = new List<PartData>();
-            foreach ( var part in parts )
+            foreach (var part in parts)
             {
                 partsData.Add(part.PartData);
             }
@@ -463,12 +464,12 @@ namespace KerbalWebProgram.KerbalWebProgram
         public override List<string> Tags { get; set; }
         public getShipOrbit()
         {
-            this.parameters = new List<KWPParameterType> {  };
-            this.Type = "response";
-            this.Name = "Get the current orbit of the active vessel";
-            this.Description = "This outputs the current orbital data of the active vessel and what body it is currently orbiting";
-            this.Author = "KWP dev team";
-            this.Tags = new List<string> { "Vessel", "CelestialBody", "Orbit" };
+            parameters = new List<KWPParameterType> { };
+            Type = "response";
+            Name = "Get the current orbit of the active vessel";
+            Description = "This outputs the current orbital data of the active vessel and what body it is currently orbiting";
+            Author = "KWP dev team";
+            Tags = new List<string> { "Vessel", "CelestialBody", "Orbit" };
         }
         public override ApiResponseData Run(ApiRequestData apiRequestData)
         {
@@ -512,12 +513,12 @@ namespace KerbalWebProgram.KerbalWebProgram
         public override List<string> Tags { get; set; }
         public getUniverseTime()
         {
-            this.parameters = new List<KWPParameterType> {  };
-            this.Type = "response";
-            this.Name = "Get universe time";
-            this.Description = "This outputs the current universe time";
-            this.Author = "KWP dev team";
-            this.Tags = new List<string> { "time" };
+            parameters = new List<KWPParameterType> { };
+            Type = "response";
+            Name = "Get universe time";
+            Description = "This outputs the current universe time";
+            Author = "KWP dev team";
+            Tags = new List<string> { "time" };
         }
         public override ApiResponseData Run(ApiRequestData apiRequestData)
         {
@@ -525,7 +526,7 @@ namespace KerbalWebProgram.KerbalWebProgram
             apiResponseData.ID = apiRequestData.ID;
             apiResponseData.Type = "response";
             apiResponseData.Data = new Dictionary<string, object>();
-            
+
             apiResponseData.Data.Add("time", GameManager.Instance.Game.ViewController.universalTime);
 
             return apiResponseData;
@@ -546,12 +547,12 @@ namespace KerbalWebProgram.KerbalWebProgram
         public override List<string> Tags { get; set; }
         public getMissionTime()
         {
-            this.parameters = new List<KWPParameterType> { };
-            this.Type = "response";
-            this.Name = "Get mission time";
-            this.Description = "This outputs the current mission time of the active vessel";
-            this.Author = "KWP dev team";
-            this.Tags = new List<string> { "time" };
+            parameters = new List<KWPParameterType> { };
+            Type = "response";
+            Name = "Get mission time";
+            Description = "This outputs the current mission time of the active vessel";
+            Author = "KWP dev team";
+            Tags = new List<string> { "time" };
         }
         public override ApiResponseData Run(ApiRequestData apiRequestData)
         {
