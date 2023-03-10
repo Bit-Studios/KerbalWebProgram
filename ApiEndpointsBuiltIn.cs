@@ -21,6 +21,7 @@ namespace ApiEndpoints
     {
         public static void init()
         {
+            KerbalWebProgramMod.webAPI.Add("serverPing", new serverPing());
             KerbalWebProgramMod.webAPI.Add("doStage", new doStage());
             KerbalWebProgramMod.webAPI.Add("getAllCelestialBodyData", new getAllCelestialBodyData());
             KerbalWebProgramMod.webAPI.Add("getCelestialBodyData", new getCelestialBodyData());
@@ -33,6 +34,43 @@ namespace ApiEndpoints
             KerbalWebProgramMod.webAPI.Add("getUniverseTime", new getUniverseTime());
             KerbalWebProgramMod.webAPI.Add("setShipAutoPilotMode", new setShipAutoPilotMode());
             KerbalWebProgramMod.webAPI.Add("setShipThrottle", new setShipThrottle());
+        }
+    }
+    //server interaction
+    public class serverPing : KWPapi
+    {
+        public override List<KWPParameterType> parameters { get; set; }
+
+        public override string Type { get; set; }
+
+        public override string Name { get; set; }
+
+        public override string Description { get; set; }
+
+        public override string Author { get; set; }
+
+        public override List<string> Tags { get; set; }
+        public serverPing(List<KWPParameterType> parameters, string type, string name, string description, string author, List<string> tags)
+        {
+            parameters = new List<KWPParameterType> {
+
+            };
+            Type = "pong";
+            Name = "See if the server is up";
+            Description = "Ping the server, returns SessionGuidString";
+            Author = "KWP dev team";
+            Tags = new List<string> { "Server" };
+        }
+        public override ApiResponseData Run(ApiRequestData apiRequestData)
+        {
+            ApiResponseData apiResponseData = new ApiResponseData();
+            apiResponseData.ID = apiRequestData.ID;
+            apiResponseData.Type = "pong";
+            apiResponseData.Data = new Dictionary<string, object>();
+
+            apiResponseData.Data.Add("pong", GameManager.Instance.Game.SessionGuidString);
+
+            return apiResponseData;
         }
     }
 
@@ -496,6 +534,48 @@ namespace ApiEndpoints
             apiResponseData.Data.Add("Apoapsis", vesselComponent.Orbit.period);
             apiResponseData.Data.Add("radius", vesselComponent.Orbit.radius);
             apiResponseData.Data.Add("body", vesselComponent.Orbit.referenceBody.Name);
+
+            return apiResponseData;
+        }
+    }
+    public class getShipResourcesAll : KWPapi
+    {
+        public override List<KWPParameterType> parameters { get; set; }
+
+        public override string Type { get; set; }
+
+        public override string Name { get; set; }
+
+        public override string Description { get; set; }
+
+        public override string Author { get; set; }
+
+        public override List<string> Tags { get; set; }
+        public getShipResourcesAll()
+        {
+            parameters = new List<KWPParameterType> { };
+            Type = "response";
+            Name = "Get the current Resources of the active vessel";
+            Description = "This outputs the current Resources of the active vessel";
+            Author = "KWP dev team";
+            Tags = new List<string> { "Vessel", "Resource" };
+        }
+        public override ApiResponseData Run(ApiRequestData apiRequestData)
+        {
+            ApiResponseData apiResponseData = new ApiResponseData();
+            apiResponseData.ID = apiRequestData.ID;
+            apiResponseData.Type = "response";
+            apiResponseData.Data = new Dictionary<string, object>();
+            Dictionary<string,float> VesselResources
+            GameManager.Instance.Game.ViewController.GetActiveVehicle().GetSimulationObject().PartOwner.Parts.ForEach(part =>
+            {
+                part.PartResourceContainer.ForEach(resource =>
+                {
+                    part.PartResourceContainer.GetResourceCapacityUnits(resource);
+                    
+                });
+            });
+            
 
             return apiResponseData;
         }
