@@ -173,6 +173,10 @@ namespace KerbalWebProgram
             }
             else
             {
+                pageJSON tmpPageJSON = new pageJSON();
+                jsonString = JsonConvert.SerializeObject(PageJSON);
+                File.WriteAllText("./KerbalWebProgram/public/pages.json", jsonString);
+                /* V0.2.0
                 Debug.Log("Downloading");
                 WebClient wc = new WebClient();
                 wc.DownloadFile("https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/pages.json", "./KerbalWebProgram/public/tmppages.json");
@@ -197,6 +201,7 @@ namespace KerbalWebProgram
 
                 jsonString = JsonConvert.SerializeObject(PageJSON);
                 File.WriteAllText("./KerbalWebProgram/public/pages.json", jsonString);
+                */
             }
             foreach (var jsonPage in PageJSON.Pages)
             {
