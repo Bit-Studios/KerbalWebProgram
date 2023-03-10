@@ -77,6 +77,8 @@ namespace KerbalWebProgram
     [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
     public class KerbalWebProgramMod : BaseSpaceWarpPlugin
     {
+        public static Dictionary<string, Assembly> APIdll = new Dictionary<string, Assembly>();
+        public static Dictionary<string, Type> APIdllType = new Dictionary<string, Type>();
         private static string LocationFile = Assembly.GetExecutingAssembly().Location;
         private static string LocationDirectory = Path.GetDirectoryName(LocationFile);
         private static KerbalWebProgramMod Instance { get; set; }
@@ -100,27 +102,27 @@ namespace KerbalWebProgram
 
             //init local standalone pages
             string jsonString = string.Empty;
-            if (Directory.Exists($"{LocationDirectory}Server")){}
+            if (Directory.Exists($"{LocationDirectory}/Server")){}
             else
             {
-                Directory.CreateDirectory($"{LocationDirectory}Server");
+                Directory.CreateDirectory($"{LocationDirectory}/Server");
             }
-            if (Directory.Exists($"{LocationDirectory}Server/apis")) { }
+            if (Directory.Exists($"{LocationDirectory}/Server/apis")) { }
             else
             {
-                Directory.CreateDirectory($"{LocationDirectory}Server/apis");
+                Directory.CreateDirectory($"{LocationDirectory}/Server/apis");
             }
             //dynamic load apis
 
             //uncompiled .cs apis
-            string[] uncompiledCsFiles = Directory.GetFiles($"{LocationDirectory}Server/apis", "*.cs");
+            string[] uncompiledCsFiles = Directory.GetFiles($"{LocationDirectory}/Server/apis", "*.cs");
             foreach(string fileData in uncompiledCsFiles)
             {
 
             }
 
             //compiled .dll apis
-            string[] compiledCsFiles = Directory.GetFiles($"{LocationDirectory}Server/apis", "*.dll");
+            string[] compiledCsFiles = Directory.GetFiles($"{LocationDirectory}/Server/apis", "*.dll");
             foreach (string file in compiledCsFiles)
             {
                 try
@@ -128,10 +130,11 @@ namespace KerbalWebProgram
                     Debug.Log($"loading {file}");
                     Assembly apiDll = Assembly.LoadFile(file);
                     Debug.Log($"{file} loaded as {apiDll.GetName()}");
-
-                    Type apiType = apiDll.GetType($"{apiDll.ExportedTypes.ElementAt(0)}");
+                    APIdll.Add(apiDll.GetName().FullName, apiDll);
+                    Type apiType = APIdll[apiDll.GetName().FullName].GetType($"{APIdll[apiDll.GetName().FullName].ExportedTypes.ElementAt(0)}");
                     Debug.Log(apiType.FullName);
-                    apiType.InvokeMember("init", BindingFlags.InvokeMethod, null, null, null);
+                    APIdllType.Add(apiType.FullName, apiType);
+                    APIdllType[apiType.FullName].InvokeMember("init", BindingFlags.InvokeMethod, null, null, null);
                     Debug.Log("invoked");
                 }
                 catch (Exception e) {
@@ -141,35 +144,35 @@ namespace KerbalWebProgram
 
             }
 
-            if (Directory.Exists($"{LocationDirectory}Server/public")){}
+            if (Directory.Exists($"{LocationDirectory}/Server/public")){}
             else
             {
-                Directory.CreateDirectory($"{LocationDirectory}Server/public");
+                Directory.CreateDirectory($"{LocationDirectory}/Server/public");
             }
-            if (Directory.Exists($"{LocationDirectory}Server/public/assets")) { }
+            if (Directory.Exists($"{LocationDirectory}/Server/public/assets")) { }
             else
             {
-                Directory.CreateDirectory($"{LocationDirectory}Server/public/assets");
+                Directory.CreateDirectory($"{LocationDirectory}/Server/public/assets");
             }
-            if (Directory.Exists($"{LocationDirectory}Server/public/assets/css")) { }
+            if (Directory.Exists($"{LocationDirectory}/Server/public/assets/css")) { }
             else
             {
-                Directory.CreateDirectory($"{LocationDirectory}Server/public/assets/css");
+                Directory.CreateDirectory($"{LocationDirectory}/Server/public/assets/css");
             }
-            if (Directory.Exists($"{LocationDirectory}Server/public/assets/img")) { }
+            if (Directory.Exists($"{LocationDirectory}/Server/public/assets/img")) { }
             else
             {
-                Directory.CreateDirectory($"{LocationDirectory}Server/public/assets/img");
+                Directory.CreateDirectory($"{LocationDirectory}/Server/public/assets/img");
             }
-            if (Directory.Exists($"{LocationDirectory}Server/public/assets/js")) { }
+            if (Directory.Exists($"{LocationDirectory}/Server/public/assets/js")) { }
             else
             {
-                Directory.CreateDirectory($"{LocationDirectory}Server/public/assets/js");
+                Directory.CreateDirectory($"{LocationDirectory}/Server/public/assets/js");
             }
 
-            if (File.Exists($"{LocationDirectory}Server/public/pages.json"))
+            if (File.Exists($"{LocationDirectory}/Server/public/pages.json"))
             {
-                jsonString = File.ReadAllText($"{LocationDirectory}Server/public/pages.json");
+                jsonString = File.ReadAllText($"{LocationDirectory}/Server/public/pages.json");
                 Debug.Log("Exists");
                 PageJSON = JsonConvert.DeserializeObject<pageJSON>(jsonString);
             }
@@ -177,32 +180,32 @@ namespace KerbalWebProgram
             {
                 pageJSON tmpPageJSON = new pageJSON();
                 jsonString = JsonConvert.SerializeObject(PageJSON);
-                File.WriteAllText($"{LocationDirectory}Server/public/pages.json", jsonString);
+                File.WriteAllText($"{LocationDirectory}/Server/public/pages.json", jsonString);
                 /* V0.2.0
                 Debug.Log("Downloading");
                 WebClient wc = new WebClient();
-                wc.DownloadFile("https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/pages.json", $"{LocationDirectory}Server/public/tmppages.json");
+                wc.DownloadFile("https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/pages.json", $"{LocationDirectory}/Server/public/tmppages.json");
                 
                 pageJSON tmpPageJSON = new pageJSON();
                 tmpPageJSON.Pages = new Dictionary<string, string>();
-                string tmpjsonString = File.ReadAllText($"{LocationDirectory}Server/public/tmppages.json");
+                string tmpjsonString = File.ReadAllText($"{LocationDirectory}/Server/public/tmppages.json");
                 Debug.Log(tmpjsonString);
                 tmpPageJSON = JsonConvert.DeserializeObject<pageJSON>(tmpjsonString);
                 foreach (var jsonPage in tmpPageJSON.Pages)
                 {
-                    if (File.Exists($"{LocationDirectory}Server/public/{jsonPage.Value}")) {
+                    if (File.Exists($"{LocationDirectory}/Server/public/{jsonPage.Value}")) {
                         Debug.Log("Exists");
                     }
                     else
                     {
                         Debug.Log($"Getting required web file 'https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/{jsonPage.Value}' ./Server/public/{jsonPage.Value}");
-                        wc.DownloadFile($"https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/{jsonPage.Value}", $"{LocationDirectory}Server/public/{jsonPage.Value}");
+                        wc.DownloadFile($"https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/{jsonPage.Value}", $"{LocationDirectory}/Server/public/{jsonPage.Value}");
                     }
                     PageJSON.Pages.Add(jsonPage.Key, jsonPage.Value);
                 }
 
                 jsonString = JsonConvert.SerializeObject(PageJSON);
-                File.WriteAllText($"{LocationDirectory}Server/public/pages.json", jsonString);
+                File.WriteAllText($"{LocationDirectory}/Server/public/pages.json", jsonString);
                 */
             }
             foreach (var jsonPage in PageJSON.Pages)
@@ -225,10 +228,10 @@ namespace KerbalWebProgram
                 if (IsWebLoaded == false && Initialized == true)
                 {
                     //init documentation
-                    if (Directory.Exists($"{LocationDirectory}Server/public/docs")) { }
+                    if (Directory.Exists($"{LocationDirectory}/Server/public/docs")) { }
                     else
                     {
-                        Directory.CreateDirectory($"{LocationDirectory}Server/public/docs");
+                        Directory.CreateDirectory($"{LocationDirectory}/Server/public/docs");
                     }
                     string docsPage = $"<html><head><link rel='stylesheet' href='/docs.css'></head><body>";
                     Dictionary<string, string> apiTagType = new Dictionary<string, string>();
@@ -316,7 +319,7 @@ namespace KerbalWebProgram
         </div>
         <h4>Api Use:</h4>
         <pre style=""background-color: #282828;width:calc(100% - 40px);border-radius:5px;""><code style=""background-color: #282828;"" language='javascript'>
-        var data = JSON.Stringify(
+        var data = JSON.stringify(
             {{""ID"":""User Provided ID"",
               ""Action"":""{apiData.Key}"",
               ""parameters"":{{
@@ -332,7 +335,7 @@ namespace KerbalWebProgram
         }});
 
         xhr.open(""Post"", ""http://localhost:8080/api"");
-
+        xhr.setRequestHeader(""Content-Type"",""application/json"");
         xhr.send(data);
         </code></pre>
         <h4>Parameters</h4>
@@ -342,7 +345,7 @@ namespace KerbalWebProgram
 </html>
 ";
 
-                        File.WriteAllText($"{LocationDirectory}Server/public/docs/{apiData.Key}.html", apiPage);
+                        File.WriteAllText($"{LocationDirectory}/Server/public/docs/{apiData.Key}.html", apiPage);
 
                         PageJSON.Pages.Add($"/docs/{apiData.Key}", $"docs/{apiData.Key}.html");
 
@@ -350,7 +353,7 @@ namespace KerbalWebProgram
                     }
                     docsPage = $"{docsPage}</body></html>";
 
-                    File.WriteAllText($"{LocationDirectory}Server/public/docs/docs.html", docsPage);
+                    File.WriteAllText($"{LocationDirectory}/Server/public/docs/docs.html", docsPage);
 
                     PageJSON.Pages.Add("/docs", "docs/docs.html");
 
@@ -450,6 +453,8 @@ namespace KerbalWebProgram
 
                 using (var stream = ctx.Response.OutputStream)
                 {
+                    Debug.Log($"{ctx.Request.Url.AbsolutePath}");
+                    Debug.Log($"{ctx.Request.ContentType}");
                     ApiRequestData data = new ApiRequestData();
                     string responseString = string.Empty;
                     if (ctx.Request.Url.AbsolutePath.StartsWith("/api") && ctx.Request.ContentType == "application/json")
@@ -471,9 +476,9 @@ namespace KerbalWebProgram
                         responseString = JsonConvert.SerializeObject(responseData);
                     }
                     else {
-                        if(PageJSON.Pages.ContainsKey(ctx.Request.Url.AbsolutePath))
+                        if (PageJSON.Pages.ContainsKey(ctx.Request.Url.AbsolutePath))
                         {
-                            responseString = File.ReadAllText($"{LocationDirectory}Server/public/{PageJSON.Pages[ctx.Request.Url.AbsolutePath]}");
+                            responseString = File.ReadAllText($"{LocationDirectory}/Server/public/{PageJSON.Pages[ctx.Request.Url.AbsolutePath]}");
                             switch (PageJSON.Pages[ctx.Request.Url.AbsolutePath].Split('.')[PageJSON.Pages[ctx.Request.Url.AbsolutePath].Split('.').Length - 1])
                             {
                                 case "html":
@@ -511,7 +516,7 @@ namespace KerbalWebProgram
                         else //404
                         {
                             ctx.Response.ContentType = "text/html";
-                            responseString = File.ReadAllText($"{LocationDirectory}Server/public/{PageJSON.Pages["/404"]}");
+                            responseString = File.ReadAllText($"{LocationDirectory}/Server/public/{PageJSON.Pages["/404"]}");
                         }
                         
                     }
