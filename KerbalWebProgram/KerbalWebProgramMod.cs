@@ -12,6 +12,9 @@ using KSP.OAB;
 using BepInEx;
 using BepInEx.Configuration;
 using SpaceWarp;
+using System.Collections.Generic;
+using System.Data;
+using System.Reflection;
 
 namespace KerbalWebProgram
 {
@@ -70,10 +73,14 @@ namespace KerbalWebProgram
         //Api tags
         public abstract ApiResponseData Run(ApiRequestData request);
     }
-    [BepInPlugin("kwp_dev_team.kerbal_web_program", "kerbal_web_program", "0.0.1")]
+    [BepInPlugin("kwp_dev_team.kerbal_web_program", "kerbal_web_program", "0.1.0")]
     [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
     public class KerbalWebProgramMod : BaseSpaceWarpPlugin
     {
+        public static Dictionary<string, Assembly> APIdll = new Dictionary<string, Assembly>();
+        public static Dictionary<string, Type> APIdllType = new Dictionary<string, Type>();
+        private static string LocationFile = Assembly.GetExecutingAssembly().Location;
+        private static string LocationDirectory = Path.GetDirectoryName(LocationFile);
         private static KerbalWebProgramMod Instance { get; set; }
         private bool IsWebLoaded = false;
 
@@ -81,81 +88,125 @@ namespace KerbalWebProgram
         public static pageJSON PageJSON = new pageJSON();
 
         private ConfigEntry<int> port;
+        private static bool Initialized = false;
 
         public override void OnInitialized()
         {
             Instance = this;
-            //init built in apis
-            ApiEndpointsBuiltIn.Init();
+
+
+
 
             PageJSON.Pages = new Dictionary<string, string>();
 
 
             //init local standalone pages
             string jsonString = string.Empty;
-            if (Directory.Exists("./KerbalWebProgram")){}
+            if (Directory.Exists($"{LocationDirectory}/Server")){}
             else
             {
-                Directory.CreateDirectory("./KerbalWebProgram");
+                Directory.CreateDirectory($"{LocationDirectory}/Server");
             }
-            if (Directory.Exists("./KerbalWebProgram/public")){}
+            if (Directory.Exists($"{LocationDirectory}/Server/apis")) { }
             else
             {
-                Directory.CreateDirectory("./KerbalWebProgram/public");
+                Directory.CreateDirectory($"{LocationDirectory}/Server/apis");
             }
-            if (Directory.Exists("./KerbalWebProgram/public/assets")) { }
-            else
+            //dynamic load apis
+
+            //uncompiled .cs apis
+            string[] uncompiledCsFiles = Directory.GetFiles($"{LocationDirectory}/Server/apis", "*.cs");
+            foreach(string fileData in uncompiledCsFiles)
             {
-                Directory.CreateDirectory("./KerbalWebProgram/public/assets");
-            }
-            if (Directory.Exists("./KerbalWebProgram/public/assets/css")) { }
-            else
-            {
-                Directory.CreateDirectory("./KerbalWebProgram/public/assets/css");
-            }
-            if (Directory.Exists("./KerbalWebProgram/public/assets/img")) { }
-            else
-            {
-                Directory.CreateDirectory("./KerbalWebProgram/public/assets/img");
-            }
-            if (Directory.Exists("./KerbalWebProgram/public/assets/js")) { }
-            else
-            {
-                Directory.CreateDirectory("./KerbalWebProgram/public/assets/js");
+
             }
 
-            if (File.Exists("./KerbalWebProgram/public/pages.json"))
+            //compiled .dll apis
+            string[] compiledCsFiles = Directory.GetFiles($"{LocationDirectory}/Server/apis", "*.dll");
+            foreach (string file in compiledCsFiles)
             {
-                jsonString = File.ReadAllText("./KerbalWebProgram/public/pages.json");
+                try
+                {
+                    Debug.Log($"loading {file}");
+                    Assembly apiDll = Assembly.LoadFile(file);
+                    Debug.Log($"{file} loaded as {apiDll.GetName()}");
+                    APIdll.Add(apiDll.GetName().FullName, apiDll);
+                    Type apiType = APIdll[apiDll.GetName().FullName].GetType($"{APIdll[apiDll.GetName().FullName].ExportedTypes.ElementAt(0)}");
+                    Debug.Log(apiType.FullName);
+                    APIdllType.Add(apiType.FullName, apiType);
+                    APIdllType[apiType.FullName].InvokeMember("init", BindingFlags.InvokeMethod, null, null, null);
+                    Debug.Log("invoked");
+                }
+                catch (Exception e) {
+                    Debug.Log(e);
+                }
+               
+
+            }
+
+            if (Directory.Exists($"{LocationDirectory}/Server/public")){}
+            else
+            {
+                Directory.CreateDirectory($"{LocationDirectory}/Server/public");
+            }
+            if (Directory.Exists($"{LocationDirectory}/Server/public/assets")) { }
+            else
+            {
+                Directory.CreateDirectory($"{LocationDirectory}/Server/public/assets");
+            }
+            if (Directory.Exists($"{LocationDirectory}/Server/public/assets/css")) { }
+            else
+            {
+                Directory.CreateDirectory($"{LocationDirectory}/Server/public/assets/css");
+            }
+            if (Directory.Exists($"{LocationDirectory}/Server/public/assets/img")) { }
+            else
+            {
+                Directory.CreateDirectory($"{LocationDirectory}/Server/public/assets/img");
+            }
+            if (Directory.Exists($"{LocationDirectory}/Server/public/assets/js")) { }
+            else
+            {
+                Directory.CreateDirectory($"{LocationDirectory}/Server/public/assets/js");
+            }
+
+            if (File.Exists($"{LocationDirectory}/Server/public/pages.json"))
+            {
+                jsonString = File.ReadAllText($"{LocationDirectory}/Server/public/pages.json");
                 Debug.Log("Exists");
                 PageJSON = JsonConvert.DeserializeObject<pageJSON>(jsonString);
             }
             else
             {
+                pageJSON tmpPageJSON = new pageJSON();
+                jsonString = JsonConvert.SerializeObject(PageJSON);
+                File.WriteAllText($"{LocationDirectory}/Server/public/pages.json", jsonString);
+                /* V0.2.0
                 Debug.Log("Downloading");
                 WebClient wc = new WebClient();
-                wc.DownloadFile("https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/pages.json", "./KerbalWebProgram/public/tmppages.json");
+                wc.DownloadFile("https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/pages.json", $"{LocationDirectory}/Server/public/tmppages.json");
                 
                 pageJSON tmpPageJSON = new pageJSON();
                 tmpPageJSON.Pages = new Dictionary<string, string>();
-                string tmpjsonString = File.ReadAllText("./KerbalWebProgram/public/tmppages.json");
+                string tmpjsonString = File.ReadAllText($"{LocationDirectory}/Server/public/tmppages.json");
                 Debug.Log(tmpjsonString);
                 tmpPageJSON = JsonConvert.DeserializeObject<pageJSON>(tmpjsonString);
                 foreach (var jsonPage in tmpPageJSON.Pages)
                 {
-                    if (File.Exists($"./KerbalWebProgram/public/{jsonPage.Value}")) {
+                    if (File.Exists($"{LocationDirectory}/Server/public/{jsonPage.Value}")) {
                         Debug.Log("Exists");
                     }
                     else
                     {
-                        Debug.Log($"Getting required web file 'https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/{jsonPage.Value}' ./KerbalWebProgram/public/{jsonPage.Value}");
-                        wc.DownloadFile($"https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/{jsonPage.Value}", $"./KerbalWebProgram/public/{jsonPage.Value}");
+                        Debug.Log($"Getting required web file 'https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/{jsonPage.Value}' ./Server/public/{jsonPage.Value}");
+                        wc.DownloadFile($"https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/{jsonPage.Value}", $"{LocationDirectory}/Server/public/{jsonPage.Value}");
                     }
                     PageJSON.Pages.Add(jsonPage.Key, jsonPage.Value);
                 }
 
                 jsonString = JsonConvert.SerializeObject(PageJSON);
-                File.WriteAllText("./KerbalWebProgram/public/pages.json", jsonString);
+                File.WriteAllText($"{LocationDirectory}/Server/public/pages.json", jsonString);
+                */
             }
             foreach (var jsonPage in PageJSON.Pages)
             {
@@ -163,7 +214,7 @@ namespace KerbalWebProgram
             }
 
             Debug.Log(Directory.GetCurrentDirectory());
-
+            Initialized = true;
             Logger.LogInfo("Mod is initialized");
         }
         void Awake()
@@ -173,46 +224,92 @@ namespace KerbalWebProgram
         }
         void Update()
         {
-            if (IsWebLoaded == false)
-            {
-                //init documentation
-                if (Directory.Exists("./KerbalWebProgram/public/docs")) { }
-                else
+            try {
+                if (IsWebLoaded == false && Initialized == true)
                 {
-                    Directory.CreateDirectory("./KerbalWebProgram/public/docs");
-                }
-                string docsPage = $"<html><head><link rel='stylesheet' href='/docs.css'></head><body>";
-                Dictionary<string, string> apiTagType = new();
-                int cT = 0;
-                foreach (var apiData in webAPI)
-                {
-                    cT = (cT + 42) + ((int)DateTime.Now.Ticks / 2) ;
-                    Debug.Log($"{apiData.Value.Name} api does {apiData.Value.Description}");
-                    docsPage = $"{docsPage}<div class='doclink' onclick='document.location=`docs/{apiData.Key}`'><div class='doclinkname'>{apiData.Value.Name}</div><div class='doclinktagarea'>";
-                    
-                    foreach(var apiTag in apiData.Value.Tags)
+                    //init documentation
+                    if (Directory.Exists($"{LocationDirectory}/Server/public/docs")) { }
+                    else
                     {
-                        if (apiTagType.ContainsKey(apiTag)){}
-                        else
+                        Directory.CreateDirectory($"{LocationDirectory}/Server/public/docs");
+                    }
+                    string docsPage = $"<html><head><link rel='stylesheet' href='/docs.css'></head><body>";
+                    Dictionary<string, string> apiTagType = new Dictionary<string, string>();
+
+                    int cT = 0;
+
+                    foreach (var apiData in webAPI)
+                    {
+                        Debug.Log($"key:{apiData.Key}");
+
+                        cT = (cT + 42) + ((int)DateTime.Now.Ticks / 2);
+
+                        Debug.Log($"{apiData.Value.Name} api does {apiData.Value.Description}");
+
+                        docsPage = $"{docsPage}<div class='doclink' onclick='document.location=`docs/{apiData.Key}`'><div class='doclinkname'>{apiData.Value.Name}</div><div class='doclinktagarea'>";
+
+                        foreach (var apiTag in apiData.Value.Tags)
                         {
-                            Random rnd = new Random((int)DateTime.Now.Ticks + cT);
-                            string randomColor = $"{rnd.Next(0, 255)},{rnd.Next(0, 255)},{rnd.Next(0, 255)}";
-                            apiTagType.Add(apiTag, randomColor);
-                            Debug.Log($"new tag color {apiTagType[apiTag]}");
+
+                            if (apiTagType.ContainsKey(apiTag)) { }
+                            else
+                            {
+
+                                Random rnd = new Random((int)DateTime.Now.Ticks + cT);
+
+                                string randomColor = $"{rnd.Next(0, 255)},{rnd.Next(0, 255)},{rnd.Next(0, 255)}";
+
+                                apiTagType.Add(apiTag, randomColor);
+
+                                Debug.Log($"new tag color {apiTagType[apiTag]}");
+
+                            }
+                            docsPage = $"{docsPage}<div class='doclinktag' style='background-color:rgba({apiTagType[apiTag]},0.4);border-color:rgb({apiTagType[apiTag]})'>{apiTag}</div>";
+
                         }
-                        docsPage = $"{docsPage}<div class='doclinktag' style='background-color:rgba({apiTagType[apiTag]},0.4);border-color:rgb({apiTagType[apiTag]})'>{apiTag}</div>";
-                    }
-                    docsPage = $"{docsPage}</div></div>";
-                    //generate api doc page
-                    string apiPageTags = string.Empty;
-                    foreach (var apiTag in apiData.Value.Tags)
-                    {
-                        apiPageTags = $"{apiPageTags}<div class='doclinktag' style='background-color:rgba({apiTagType[apiTag]},0.4);border-color:rgb({apiTagType[apiTag]})'>{apiTag}</div>";
-                    }
-                    string apiPage = @$"
+                        docsPage = $"{docsPage}</div></div>";
+
+                        //generate api doc page
+                        string apiPageTags = string.Empty;
+
+                        foreach (var apiTag in apiData.Value.Tags)
+                        {
+
+                            apiPageTags = $"{apiPageTags}<div class='doclinktag' style='background-color:rgba({apiTagType[apiTag]},0.4);border-color:rgb({apiTagType[apiTag]})'>{apiTag}</div>";
+                        }
+                        string apiParams = string.Empty;
+                        string apiPramList = string.Empty;
+
+                        foreach (var apipram in apiData.Value.parameters)
+                        {
+                            apiPramList = $@"{apiPramList}<h5>{apipram.Name}</h5>";
+                            if (apipram.GetType() == typeof(StringChoicesParameter))
+                            {
+                                apiPramList = $@"{apiPramList}<ul>";
+                                StringChoicesParameter apipramsc = (StringChoicesParameter)apipram;
+                                List<string> choices = apipramsc.choices;
+                                choices.ForEach(c =>
+                                {
+                                    apiPramList = $@"{apiPramList}<li>{c}</li>";
+                                });
+                                apiPramList = $@"{apiPramList}</ul>";
+                            }
+                            apiParams = $@"{apiParams}""{apipram.Name}"":""{apipram.Description}"",";
+                        }
+                        if(apiParams.Length > 1)
+                        {
+                            apiParams = apiParams.Remove(apiParams.Length - 1, 1);
+                        }
+                        
+                        
+
+
+                        string apiPage = @$"
 <html>
     <head>
         <link rel='stylesheet' href='/docs.css'>
+        <link rel=""stylesheet"" href=""https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/tomorrow-night-bright.min.css"" integrity=""sha512-kihsljiamrbQ3b3s3TXoAWNSbzbp+gYIeeva81nQwCj/zICdiT/QnKbWTV7DElmAm3mc4vuTR3fo0ToTe2cpNw=="" crossorigin=""anonymous"" referrerpolicy=""no-referrer"" />
+        <script src=""https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"" integrity=""sha512-bgHRAiTjGrzHzLyKOnpFvaEpGzJet3z4tZnXGjpsCcqOnAH6VGUx9frc5bcIhKTVLEiCO6vEhNAgx5jtLUYrfA=="" crossorigin=""anonymous"" referrerpolicy=""no-referrer""></script>
     </head>
     <body>
         <h1>{apiData.Value.Name} (by {apiData.Value.Author})</h1>
@@ -220,22 +317,56 @@ namespace KerbalWebProgram
         <div class='doclinktagarea'>
             {apiPageTags}
         </div>
-        <p>{apiData.Value.Description}</p>
+        <h4>Api Use:</h4>
+        <pre style=""background-color: #282828;width:calc(100% - 40px);border-radius:5px;""><code style=""background-color: #282828;"" language='javascript'>
+        var data = JSON.stringify(
+            {{""ID"":""User Provided ID"",
+              ""Action"":""{apiData.Key}"",
+              ""parameters"":{{
+                    {apiParams}
+              }}
+            }});
+        var xhr = new XMLHttpRequest();
+
+        xhr.addEventListener(""readystatechange"", function() {{
+            if(this.readyState === 4) {{
+                console.log(this.responseText);
+            }}
+        }});
+
+        xhr.open(""Post"", ""http://localhost:8080/api"");
+        xhr.setRequestHeader(""Content-Type"",""application/json"");
+        xhr.send(data);
+        </code></pre>
+        <h4>Parameters</h4>
+        {apiPramList}
+<script>hljs.highlightAll();</script>
     </body>
 </html>
 ";
-                    File.WriteAllText($"./KerbalWebProgram/public/docs/{apiData.Key}.html", apiPage);
-                    PageJSON.Pages.Add($"/docs/{apiData.Key}", $"docs/{apiData.Key}.html");
+
+                        File.WriteAllText($"{LocationDirectory}/Server/public/docs/{apiData.Key}.html", apiPage);
+
+                        PageJSON.Pages.Add($"/docs/{apiData.Key}", $"docs/{apiData.Key}.html");
+
+
+                    }
+                    docsPage = $"{docsPage}</body></html>";
+
+                    File.WriteAllText($"{LocationDirectory}/Server/public/docs/docs.html", docsPage);
+
+                    PageJSON.Pages.Add("/docs", "docs/docs.html");
+
+                    //init webserver
+                    IsWebLoaded = true;
+
+                    WebServer webServer = new WebServer();
+
+                    webServer.Start();
 
                 }
-                docsPage = $"{docsPage}</body></html>";
-                File.WriteAllText("./KerbalWebProgram/public/docs/docs.html", docsPage);
-                PageJSON.Pages.Add("/docs", "docs/docs.html");
-                //init webserver
-                IsWebLoaded = true;
-                WebServer webServer = new WebServer();
-                webServer.Start();
             }
+            catch (Exception e) { Debug.Log($"{e.Message}|{e.InnerException}|{e.StackTrace}|{e.Source}|{e.Data}|{e.TargetSite}"); }
         }
         void OnGUI()
         {
@@ -322,6 +453,8 @@ namespace KerbalWebProgram
 
                 using (var stream = ctx.Response.OutputStream)
                 {
+                    Debug.Log($"{ctx.Request.Url.AbsolutePath}");
+                    Debug.Log($"{ctx.Request.ContentType}");
                     ApiRequestData data = new ApiRequestData();
                     string responseString = string.Empty;
                     if (ctx.Request.Url.AbsolutePath.StartsWith("/api") && ctx.Request.ContentType == "application/json")
@@ -343,9 +476,9 @@ namespace KerbalWebProgram
                         responseString = JsonConvert.SerializeObject(responseData);
                     }
                     else {
-                        if(PageJSON.Pages.ContainsKey(ctx.Request.Url.AbsolutePath))
+                        if (PageJSON.Pages.ContainsKey(ctx.Request.Url.AbsolutePath))
                         {
-                            responseString = File.ReadAllText($"./KerbalWebProgram/public/{PageJSON.Pages[ctx.Request.Url.AbsolutePath]}");
+                            responseString = File.ReadAllText($"{LocationDirectory}/Server/public/{PageJSON.Pages[ctx.Request.Url.AbsolutePath]}");
                             switch (PageJSON.Pages[ctx.Request.Url.AbsolutePath].Split('.')[PageJSON.Pages[ctx.Request.Url.AbsolutePath].Split('.').Length - 1])
                             {
                                 case "html":
@@ -383,7 +516,7 @@ namespace KerbalWebProgram
                         else //404
                         {
                             ctx.Response.ContentType = "text/html";
-                            responseString = File.ReadAllText($"./KerbalWebProgram/public/{PageJSON.Pages["/404"]}");
+                            responseString = File.ReadAllText($"{LocationDirectory}/Server/public/{PageJSON.Pages["/404"]}");
                         }
                         
                     }
