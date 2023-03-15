@@ -30,7 +30,9 @@ namespace ApiEndpoints
             KerbalWebProgramMod.webAPI.Add("getShipOrbit", new getShipOrbit());
             KerbalWebProgramMod.webAPI.Add("getShiptelemetry", new getShiptelemetry());
             KerbalWebProgramMod.webAPI.Add("getShipThrottle", new getShipThrottle());
+            KerbalWebProgramMod.webAPI.Add("doControlInput", new doControlInput());
             KerbalWebProgramMod.webAPI.Add("getStage", new getStage());
+            KerbalWebProgramMod.webAPI.Add("getShipResourcesAll", new getShipResourcesAll());
             KerbalWebProgramMod.webAPI.Add("getUniverseTime", new getUniverseTime());
             KerbalWebProgramMod.webAPI.Add("setShipAutoPilotMode", new setShipAutoPilotMode());
             KerbalWebProgramMod.webAPI.Add("setShipThrottle", new setShipThrottle());
@@ -50,7 +52,7 @@ namespace ApiEndpoints
         public override string Author { get; set; }
 
         public override List<string> Tags { get; set; }
-        public serverPing(List<KWPParameterType> parameters, string type, string name, string description, string author, List<string> tags)
+        public serverPing()
         {
             parameters = new List<KWPParameterType> {
 
@@ -193,7 +195,9 @@ namespace ApiEndpoints
             response.Data.Add("AltitudeFromTerrain", vesselComponent.AltitudeFromTerrain);
             response.Data.Add("AltitudeFromSeaLevel", vesselComponent.AltitudeFromSeaLevel);
             response.Data.Add("AltitudeFromRadius", vesselComponent.AltitudeFromRadius);
-
+            response.Data.Add("Roll_HorizonRelative", vesselComponent.Roll_HorizonRelative);
+            response.Data.Add("Roll_HorizonRelative", vesselComponent.Yaw_HorizonRelative);
+            response.Data.Add("Roll_HorizonRelative", vesselComponent.Pitch_HorizonRelative);
             return response;
         }
     }
@@ -319,7 +323,7 @@ namespace ApiEndpoints
 
         public setShipThrottle()
         {
-            parameters = new List<KWPParameterType> { new FloatParameter("Throttle", "Throttle change amount. 0.1 will change the throttle by 0.1 evey game update", true, 0f, 1f) };
+            parameters = new List<KWPParameterType> { new FloatParameter("Throttle", "Throttle amount", true, 0f, 100f) };
             Type = "response";
             Name = "Set Ship Throttle";
             Description = "Allows you to update the throttle change, Equivalant of holding Shift or Ctrl";
@@ -343,7 +347,61 @@ namespace ApiEndpoints
             return response;
         }
     }
+    public class doControlInput : KWPapi
+    {
+        public override List<KWPParameterType> parameters { get; set; }
 
+        public override string Type { get; set; }
+
+        public override string Name { get; set; }
+
+        public override string Description { get; set; }
+
+        public override string Author { get; set; }
+
+        public override List<string> Tags { get; set; }
+
+
+        public doControlInput()
+        {
+            parameters = new List<KWPParameterType> { new FloatParameter("Pitch", "Pitch amount", false), new FloatParameter("Yaw", "Pitch amount", false), new FloatParameter("Roll", "Pitch amount", false) };
+            Type = "response";
+            Name = "do Control Input";
+            Description = "Allows you to send control inputs WASDQE equivalant";
+            Author = "KWP dev team";
+            Tags = new List<string> { "Vessel", "Control" };
+        }
+        public override ApiResponseData Run(ApiRequestData request)
+        {
+            ApiResponseData response = new ApiResponseData();
+            response.ID = request.ID;
+            response.Type = "response";
+            response.Data = new Dictionary<string, object>();
+
+            GameManager.Instance.Game.ViewController.TryGetActiveVehicle(out var vessel);
+            var thisvessel = vessel as VesselVehicle;
+            if (request.parameters.ContainsKey("Pitch"))
+            {
+                thisvessel.AtomicSet(null, null, null, request.parameters["Pitch"], null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null);
+                response.Data.Add("Pitch", GameManager.Instance.Game.ViewController.GetActiveVehicle().GetSimVessel().Pitch_HorizonRelative);
+            }
+            if (request.parameters.ContainsKey("Yaw"))
+            {
+                thisvessel.AtomicSet(null, null, request.parameters["Yaw"], null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null);
+                response.Data.Add("Yaw", GameManager.Instance.Game.ViewController.GetActiveVehicle().GetSimVessel().Yaw_HorizonRelative);
+            }
+            if (request.parameters.ContainsKey("Roll"))
+            {
+                thisvessel.AtomicSet(null, request.parameters["Roll"], null, null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null);
+                response.Data.Add("Roll", GameManager.Instance.Game.ViewController.GetActiveVehicle().GetSimVessel().Roll_HorizonRelative);
+            }
+            
+            return response;
+        }
+    }
     public class getShipThrottle : KWPapi
     {
         public override List<KWPParameterType> parameters { get; set; }
@@ -566,13 +624,20 @@ namespace ApiEndpoints
             apiResponseData.ID = apiRequestData.ID;
             apiResponseData.Type = "response";
             apiResponseData.Data = new Dictionary<string, object>();
-            Dictionary<string,float> VesselResources
+            Dictionary<string,float> VesselResources = new Dictionary<string,float>();
             GameManager.Instance.Game.ViewController.GetActiveVehicle().GetSimulationObject().PartOwner.Parts.ForEach(part =>
             {
                 part.PartResourceContainer.ForEach(resource =>
                 {
                     part.PartResourceContainer.GetResourceCapacityUnits(resource);
-                    
+                    if (VesselResources.ContainsKey(GameManager.Instance.Game.ResourceDefinitionDatabase.GetDefinitionData(resource).DisplayName))
+                    {
+                        VesselResources[GameManager.Instance.Game.ResourceDefinitionDatabase.GetDefinitionData(resource).DisplayName] = VesselResources[GameManager.Instance.Game.ResourceDefinitionDatabase.GetDefinitionData(resource).DisplayName] + (float)part.PartResourceContainer.GetResourceCapacityUnits(resource);
+                    }
+                    else
+                    {
+                        VesselResources.Add(GameManager.Instance.Game.ResourceDefinitionDatabase.GetDefinitionData(resource).DisplayName,(float)part.PartResourceContainer.GetResourceCapacityUnits(resource));
+                    }
                 });
             });
             
