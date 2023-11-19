@@ -21,21 +21,20 @@ namespace ApiEndpoints
     {
         public static void init()
         {
-            KerbalWebProgramMod.webAPI.Add("serverPing", new serverPing());
-            KerbalWebProgramMod.webAPI.Add("doStage", new doStage());
-            KerbalWebProgramMod.webAPI.Add("getAllCelestialBodyData", new getAllCelestialBodyData());
-            KerbalWebProgramMod.webAPI.Add("getCelestialBodyData", new getCelestialBodyData());
-            KerbalWebProgramMod.webAPI.Add("getCraftFile", new getCraftFile());
-            KerbalWebProgramMod.webAPI.Add("getMissionTime", new getMissionTime());
-            KerbalWebProgramMod.webAPI.Add("getShipOrbit", new getShipOrbit());
-            KerbalWebProgramMod.webAPI.Add("getShiptelemetry", new getShiptelemetry());
-            KerbalWebProgramMod.webAPI.Add("getShipThrottle", new getShipThrottle());
-            KerbalWebProgramMod.webAPI.Add("doControlInput", new doControlInput());
-            KerbalWebProgramMod.webAPI.Add("getStage", new getStage());
-            KerbalWebProgramMod.webAPI.Add("getShipResourcesAll", new getShipResourcesAll());
-            KerbalWebProgramMod.webAPI.Add("getUniverseTime", new getUniverseTime());
-            KerbalWebProgramMod.webAPI.Add("setShipAutoPilotMode", new setShipAutoPilotMode());
-            KerbalWebProgramMod.webAPI.Add("setShipThrottle", new setShipThrottle());
+            KWPmod.webAPI.Add("serverPing", new serverPing());
+            KWPmod.webAPI.Add("doStage", new doStage());
+            KWPmod.webAPI.Add("getAllCelestialBodyData", new getAllCelestialBodyData());
+            KWPmod.webAPI.Add("getCelestialBodyData", new getCelestialBodyData());
+            KWPmod.webAPI.Add("getCraftFile", new getCraftFile());
+            KWPmod.webAPI.Add("getShipOrbit", new getShipOrbit());
+            KWPmod.webAPI.Add("getShiptelemetry", new getShiptelemetry());
+            KWPmod.webAPI.Add("getShipThrottle", new getShipThrottle());
+            KWPmod.webAPI.Add("doControlInput", new doControlInput());
+            KWPmod.webAPI.Add("getStage", new getStage());
+            KWPmod.webAPI.Add("getShipResourcesAll", new getShipResourcesAll());
+            KWPmod.webAPI.Add("getUniverseTime", new getUniverseTime());
+            KWPmod.webAPI.Add("setShipAutoPilotMode", new setShipAutoPilotMode());
+            KWPmod.webAPI.Add("setShipThrottle", new setShipThrottle());
         }
     }
     //server interaction
@@ -676,40 +675,6 @@ namespace ApiEndpoints
             apiResponseData.Data = new Dictionary<string, object>();
 
             apiResponseData.Data.Add("time", GameManager.Instance.Game.ViewController.universalTime);
-
-            return apiResponseData;
-        }
-    }
-    public class getMissionTime : KWPapi
-    {
-        public override List<KWPParameterType> parameters { get; set; }
-
-        public override string Type { get; set; }
-
-        public override string Name { get; set; }
-
-        public override string Description { get; set; }
-
-        public override string Author { get; set; }
-
-        public override List<string> Tags { get; set; }
-        public getMissionTime()
-        {
-            parameters = new List<KWPParameterType> { };
-            Type = "response";
-            Name = "Get mission time";
-            Description = "This outputs the current mission time of the active vessel";
-            Author = "KWP dev team";
-            Tags = new List<string> { "time" };
-        }
-        public override ApiResponseData Run(ApiRequestData apiRequestData)
-        {
-            ApiResponseData apiResponseData = new ApiResponseData();
-            apiResponseData.ID = apiRequestData.ID;
-            apiResponseData.Type = "response";
-            apiResponseData.Data = new Dictionary<string, object>();
-
-            apiResponseData.Data.Add("time", GameManager.Instance.Game.ViewController);
 
             return apiResponseData;
         }
