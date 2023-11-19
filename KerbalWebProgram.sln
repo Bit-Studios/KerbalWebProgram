@@ -5,6 +5,8 @@ VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KerbalWebProgram", "KerbalWebProgram.csproj", "{DFB60888-4ED3-4255-B1C7-91EEE5159757}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiEndpoints", "..\KerbalWebProgramAPI\ApiEndpoints.csproj", "{5B47A551-21F2-46A3-B4C9-4196E993FCE7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{DFB60888-4ED3-4255-B1C7-91EEE5159757}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFB60888-4ED3-4255-B1C7-91EEE5159757}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFB60888-4ED3-4255-B1C7-91EEE5159757}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B47A551-21F2-46A3-B4C9-4196E993FCE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B47A551-21F2-46A3-B4C9-4196E993FCE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B47A551-21F2-46A3-B4C9-4196E993FCE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B47A551-21F2-46A3-B4C9-4196E993FCE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

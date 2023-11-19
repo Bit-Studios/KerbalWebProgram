@@ -1,20 +1,14 @@
 using UnityEngine;
-using SpaceWarp.API.Mods;
 using System.Net;
 using System.Text;
-using KerbalWebProgram;
 using KerbalWebProgram.KerbalWebProgram;
 using Newtonsoft.Json;
-using Shapes;
 using Random = System.Random;
-using System.Dynamic;
-using KSP.OAB;
 using BepInEx;
-using BepInEx.Configuration;
-using SpaceWarp;
-using System.Collections.Generic;
-using System.Data;
 using System.Reflection;
+using ShadowUtilityLIB;
+using Logger = ShadowUtilityLIB.logging.Logger;
+using KerbalWebProgram.UI;
 
 namespace KerbalWebProgram
 {
@@ -73,26 +67,53 @@ namespace KerbalWebProgram
         //Api tags
         public abstract ApiResponseData Run(ApiRequestData request);
     }
-    [BepInPlugin("kwp_dev_team.kerbal_web_program", "kerbal_web_program", "0.1.0")]
-    [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
-    public class KerbalWebProgramMod : BaseSpaceWarpPlugin
+    [BepInPlugin(KWPmod.ModId, KWPmod.ModName, KWPmod.ModVersion)]
+    [BepInDependency(ShadowUtilityLIBMod.ModId, ShadowUtilityLIBMod.ModVersion)]
+    public sealed class KerbalWebProgramMod : BaseUnityPlugin
+    {
+        public static string ModId = KWPmod.ModId;
+        public static string ModName = KWPmod.ModName;
+        public static string ModVersion = KWPmod.ModVersion;
+
+        void Awake()
+        {
+            KWPmod.Awake();
+        }
+        //void OnDestroy()
+        //{
+        //    KWPmod.Destroy();
+        //}
+        //void Update()
+        //{
+        //    KWPmod.Update();
+        //}
+    }
+    
+    public static class KWPmod
     {
         public static Dictionary<string, Assembly> APIdll = new Dictionary<string, Assembly>();
         public static Dictionary<string, Type> APIdllType = new Dictionary<string, Type>();
         private static string LocationFile = Assembly.GetExecutingAssembly().Location;
         private static string LocationDirectory = Path.GetDirectoryName(LocationFile);
         private static KerbalWebProgramMod Instance { get; set; }
-        private bool IsWebLoaded = false;
-
+        private static bool IsWebLoaded = false;
+        
         public static Dictionary<string, KWPapi> webAPI = new Dictionary<string, KWPapi>();
         public static pageJSON PageJSON = new pageJSON();
+        public const string ModId = "kwp_dev_team.kerbal_web_program";
+        public const string ModName = "kerbal web program";
+        public const string ModVersion = "0.2.0";
+        private static Logger logger = new Logger(ModName, ModVersion);
 
-        private ConfigEntry<int> port;
+        private static int port;
         private static bool Initialized = false;
 
-        public override void OnInitialized()
+        public static List<Browser> browsers = new List<Browser>();
+
+        public static bool FirstTimeLoad = false;
+
+        public static void Awake()
         {
-            Instance = this;
 
 
 
@@ -102,7 +123,7 @@ namespace KerbalWebProgram
 
             //init local standalone pages
             string jsonString = string.Empty;
-            if (Directory.Exists($"{LocationDirectory}/Server")){}
+            if (Directory.Exists($"{LocationDirectory}/Server")) { }
             else
             {
                 Directory.CreateDirectory($"{LocationDirectory}/Server");
@@ -116,7 +137,7 @@ namespace KerbalWebProgram
 
             //uncompiled .cs apis
             string[] uncompiledCsFiles = Directory.GetFiles($"{LocationDirectory}/Server/apis", "*.cs");
-            foreach(string fileData in uncompiledCsFiles)
+            foreach (string fileData in uncompiledCsFiles)
             {
 
             }
@@ -137,14 +158,15 @@ namespace KerbalWebProgram
                     APIdllType[apiType.FullName].InvokeMember("init", BindingFlags.InvokeMethod, null, null, null);
                     Debug.Log("invoked");
                 }
-                catch (Exception e) {
+                catch (Exception e)
+                {
                     Debug.Log(e);
                 }
-               
+
 
             }
 
-            if (Directory.Exists($"{LocationDirectory}/Server/public")){}
+            if (Directory.Exists($"{LocationDirectory}/Server/public")) { }
             else
             {
                 Directory.CreateDirectory($"{LocationDirectory}/Server/public");
@@ -215,14 +237,52 @@ namespace KerbalWebProgram
 
             Debug.Log(Directory.GetCurrentDirectory());
             Initialized = true;
-            Logger.LogInfo("Mod is initialized");
-        }
-        void Awake()
-        {
-            port = Config.Bind("Webserver", "Port", 8080, "The port that the internal webserver will run on");
+            logger.Log("Mod is initialized");
+            port = 8080;
+
+            WebUpdate();
 
         }
-        void Update()
+        //public static void Destroy()
+        //{
+        //    browsers.ForEach(browserLoaded => browserLoaded.Close());
+        //}
+        public static void AddBrowser(string URL, string name, int width, int height, int x,int y)
+        {
+            browsers.Add(new Browser(name, URL, width, height, x, y));
+        }
+        //public static void RemoveBrowser(string name) {
+        //    Browser remBrowser = null;
+        //    browsers.Where((browser) => {
+        //        if( browser.Title == name)
+        //        {
+        //            remBrowser = browser;
+        //            browser.Close();
+        //            return true;
+        //        }
+        //        else
+        //        {
+        //            return false;
+        //        }});
+        //    browsers.Remove(remBrowser);
+        //}
+        //public static void Update()
+        //{
+        //    try
+        //    {
+        //        if (GameManager.Instance.Game.GlobalGameState.GetState() == GameState.MainMenu && FirstTimeLoad == false)
+        //        {
+        //            FirstTimeLoad = true;
+        //            AddBrowser("https://google.com", "KWPloaded", Screen.width / 2, Screen.height / 2, Screen.width / 4, Screen.height / 4);
+        //        }
+
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        //logger.Error($"{e}\n{e.Message}\n{e.InnerException}\n{e.Source}\n{e.Data}\n{e.HelpLink}\n{e.HResult}\n{e.StackTrace}\n{e.TargetSite}\n{e.GetBaseException()}");
+        //    }
+        //}
+        static void WebUpdate()
         {
             try {
                 if (IsWebLoaded == false && Initialized == true)
@@ -363,16 +423,12 @@ namespace KerbalWebProgram
                     WebServer webServer = new WebServer();
 
                     webServer.Start();
+                    
 
                 }
             }
             catch (Exception e) { Debug.Log($"{e.Message}|{e.InnerException}|{e.StackTrace}|{e.Source}|{e.Data}|{e.TargetSite}"); }
         }
-        void OnGUI()
-        {
-
-        }
-        
         internal class WebServer
         {
             public WebServer(){}
@@ -423,12 +479,18 @@ namespace KerbalWebProgram
                 {
                     apiRequestData.parameters = transformedParams;
                     apiResponseData = ApiEndpoint.Run(apiRequestData);
+                    if(apiResponseData == null)
+                    {
+                        apiResponseData.ID = apiRequestData.ID;
+                        apiResponseData.Type = "error";
+                        apiResponseData.Errors = new Dictionary<string, object> { { "Empty","Object Empty"} };
+                    }
                 }
                 return apiResponseData;
             }
             catch (Exception e)
             {
-                Debug.Log(e);
+
             }
             return null;
         }
@@ -453,27 +515,22 @@ namespace KerbalWebProgram
 
                 using (var stream = ctx.Response.OutputStream)
                 {
-                    Debug.Log($"{ctx.Request.Url.AbsolutePath}");
-                    Debug.Log($"{ctx.Request.ContentType}");
                     ApiRequestData data = new ApiRequestData();
                     string responseString = string.Empty;
                     if (ctx.Request.Url.AbsolutePath.StartsWith("/api") && ctx.Request.ContentType == "application/json")
                     {
+                        try
+                        {
+                            ctx.Response.ContentType = "application/json";
+                            data = JsonConvert.DeserializeObject<ApiRequestData>(requestBody);      
+                            ApiResponseData responseData = ApiHandler(data);
+                            responseString = JsonConvert.SerializeObject(responseData);
+                        }
+                        catch (Exception e)
+                        {
 
-                        Debug.Log("=================="); 
-                        Debug.Log(requestBody);
-                        ctx.Response.ContentType = "application/json";
-                        data = JsonConvert.DeserializeObject<ApiRequestData>(requestBody);
-                        Debug.Log("==================");
-                        Debug.Log(data.ID);
-                        Debug.Log(data.Action);
-                        Debug.Log(string.Join(",", data.parameters));
-                        ApiResponseData responseData = ApiHandler(data);
-                        Debug.Log("==================");
-                        Debug.Log(responseData.ID);
-                        Debug.Log(responseData.Data);
-                        Debug.Log(responseData.Type);
-                        responseString = JsonConvert.SerializeObject(responseData);
+                        }
+                        
                     }
                     else {
                         if (PageJSON.Pages.ContainsKey(ctx.Request.Url.AbsolutePath))
@@ -502,7 +559,7 @@ namespace KerbalWebProgram
                                 case "jpg":
                                     ctx.Response.ContentType = "image/jpeg";
                                     break;
-                                case "jepg":
+                                case "jpeg":
                                     ctx.Response.ContentType = "image/jpeg";
                                     break;
                                 case "gif":
