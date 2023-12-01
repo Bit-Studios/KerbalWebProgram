@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Castle.Components.DictionaryAdapter.Xml;
-using KSP;
-using KSP.Game;
-using KSP.Iteration.UI.Binding;
+﻿using KSP.Game;
 using KSP.Sim;
 using KSP.Sim.Definitions;
 using KSP.Sim.impl;
-using KSP.Sim.State;
-using Newtonsoft.Json;
 using Shapes;
-using UnityEngine;
 using KerbalWebProgram;
-using KerbalWebProgram.KerbalWebProgram;
 
 namespace ApiEndpoints
 {
