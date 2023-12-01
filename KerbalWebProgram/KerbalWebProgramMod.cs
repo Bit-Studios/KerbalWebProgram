@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Net;
 using System.Text;
-using KerbalWebProgram.KerbalWebProgram;
+using KSP.Game;
 using Newtonsoft.Json;
 using Random = System.Random;
 using BepInEx;
@@ -69,6 +69,7 @@ namespace KerbalWebProgram
     }
     [BepInPlugin(KWPmod.ModId, KWPmod.ModName, KWPmod.ModVersion)]
     [BepInDependency(ShadowUtilityLIBMod.ModId, ShadowUtilityLIBMod.ModVersion)]
+    [BepInDependency(UitkForKsp2.MyPluginInfo.PLUGIN_GUID, UitkForKsp2.MyPluginInfo.PLUGIN_VERSION)]
     public sealed class KerbalWebProgramMod : BaseUnityPlugin
     {
         public static string ModId = KWPmod.ModId;
@@ -83,10 +84,10 @@ namespace KerbalWebProgram
         //{
         //    KWPmod.Destroy();
         //}
-        //void Update()
-        //{
-        //    KWPmod.Update();
-        //}
+        void Update()
+        {
+            KWPmod.Update();
+        }
     }
     
     public static class KWPmod
@@ -116,131 +117,137 @@ namespace KerbalWebProgram
         {
 
 
-
-
-            PageJSON.Pages = new Dictionary<string, string>();
-
-
-            //init local standalone pages
-            string jsonString = string.Empty;
-            if (Directory.Exists($"{LocationDirectory}/Server")) { }
-            else
-            {
-                Directory.CreateDirectory($"{LocationDirectory}/Server");
-            }
-            if (Directory.Exists($"{LocationDirectory}/Server/apis")) { }
-            else
-            {
-                Directory.CreateDirectory($"{LocationDirectory}/Server/apis");
-            }
-            //dynamic load apis
-
-            //uncompiled .cs apis
-            string[] uncompiledCsFiles = Directory.GetFiles($"{LocationDirectory}/Server/apis", "*.cs");
-            foreach (string fileData in uncompiledCsFiles)
+            try
             {
 
-            }
+                PageJSON.Pages = new Dictionary<string, string>();
 
-            //compiled .dll apis
-            string[] compiledCsFiles = Directory.GetFiles($"{LocationDirectory}/Server/apis", "*.dll");
-            foreach (string file in compiledCsFiles)
-            {
-                try
+
+                //init local standalone pages
+                string jsonString = string.Empty;
+                if (Directory.Exists($"{LocationDirectory}/Server")) { }
+                else
                 {
-                    Debug.Log($"loading {file}");
-                    Assembly apiDll = Assembly.LoadFile(file);
-                    Debug.Log($"{file} loaded as {apiDll.GetName()}");
-                    APIdll.Add(apiDll.GetName().FullName, apiDll);
-                    Type apiType = APIdll[apiDll.GetName().FullName].GetType($"{APIdll[apiDll.GetName().FullName].ExportedTypes.ElementAt(0)}");
-                    Debug.Log(apiType.FullName);
-                    APIdllType.Add(apiType.FullName, apiType);
-                    APIdllType[apiType.FullName].InvokeMember("init", BindingFlags.InvokeMethod, null, null, null);
-                    Debug.Log("invoked");
+                    Directory.CreateDirectory($"{LocationDirectory}/Server");
                 }
-                catch (Exception e)
+                if (Directory.Exists($"{LocationDirectory}/Server/apis")) { }
+                else
                 {
-                    Debug.Log(e);
+                    Directory.CreateDirectory($"{LocationDirectory}/Server/apis");
+                }
+                //dynamic load apis
+
+                //uncompiled .cs apis
+                string[] uncompiledCsFiles = Directory.GetFiles($"{LocationDirectory}/Server/apis", "*.cs");
+                foreach (string fileData in uncompiledCsFiles)
+                {
+
                 }
 
-
-            }
-
-            if (Directory.Exists($"{LocationDirectory}/Server/public")) { }
-            else
-            {
-                Directory.CreateDirectory($"{LocationDirectory}/Server/public");
-            }
-            if (Directory.Exists($"{LocationDirectory}/Server/public/assets")) { }
-            else
-            {
-                Directory.CreateDirectory($"{LocationDirectory}/Server/public/assets");
-            }
-            if (Directory.Exists($"{LocationDirectory}/Server/public/assets/css")) { }
-            else
-            {
-                Directory.CreateDirectory($"{LocationDirectory}/Server/public/assets/css");
-            }
-            if (Directory.Exists($"{LocationDirectory}/Server/public/assets/img")) { }
-            else
-            {
-                Directory.CreateDirectory($"{LocationDirectory}/Server/public/assets/img");
-            }
-            if (Directory.Exists($"{LocationDirectory}/Server/public/assets/js")) { }
-            else
-            {
-                Directory.CreateDirectory($"{LocationDirectory}/Server/public/assets/js");
-            }
-
-            if (File.Exists($"{LocationDirectory}/Server/public/pages.json"))
-            {
-                jsonString = File.ReadAllText($"{LocationDirectory}/Server/public/pages.json");
-                Debug.Log("Exists");
-                PageJSON = JsonConvert.DeserializeObject<pageJSON>(jsonString);
-            }
-            else
-            {
-                pageJSON tmpPageJSON = new pageJSON();
-                jsonString = JsonConvert.SerializeObject(PageJSON);
-                File.WriteAllText($"{LocationDirectory}/Server/public/pages.json", jsonString);
-                /* V0.2.0
-                Debug.Log("Downloading");
-                WebClient wc = new WebClient();
-                wc.DownloadFile("https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/pages.json", $"{LocationDirectory}/Server/public/tmppages.json");
-                
-                pageJSON tmpPageJSON = new pageJSON();
-                tmpPageJSON.Pages = new Dictionary<string, string>();
-                string tmpjsonString = File.ReadAllText($"{LocationDirectory}/Server/public/tmppages.json");
-                Debug.Log(tmpjsonString);
-                tmpPageJSON = JsonConvert.DeserializeObject<pageJSON>(tmpjsonString);
-                foreach (var jsonPage in tmpPageJSON.Pages)
+                //compiled .dll apis
+                string[] compiledCsFiles = Directory.GetFiles($"{LocationDirectory}/Server/apis", "*.dll");
+                foreach (string file in compiledCsFiles)
                 {
-                    if (File.Exists($"{LocationDirectory}/Server/public/{jsonPage.Value}")) {
-                        Debug.Log("Exists");
-                    }
-                    else
+                    try
                     {
-                        Debug.Log($"Getting required web file 'https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/{jsonPage.Value}' ./Server/public/{jsonPage.Value}");
-                        wc.DownloadFile($"https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/{jsonPage.Value}", $"{LocationDirectory}/Server/public/{jsonPage.Value}");
+                        Debug.Log($"loading {file}");
+                        Assembly apiDll = Assembly.LoadFile(file);
+                        Debug.Log($"{file} loaded as {apiDll.GetName()}");
+                        APIdll.Add(apiDll.GetName().FullName, apiDll);
+                        Type apiType = APIdll[apiDll.GetName().FullName].GetType($"{APIdll[apiDll.GetName().FullName].ExportedTypes.ElementAt(0)}");
+                        Debug.Log(apiType.FullName);
+                        APIdllType.Add(apiType.FullName, apiType);
+                        APIdllType[apiType.FullName].InvokeMember("init", BindingFlags.InvokeMethod, null, null, null);
+                        Debug.Log("invoked");
                     }
-                    PageJSON.Pages.Add(jsonPage.Key, jsonPage.Value);
+                    catch (Exception e)
+                    {
+                        Debug.Log(e);
+                    }
+
+
                 }
 
-                jsonString = JsonConvert.SerializeObject(PageJSON);
-                File.WriteAllText($"{LocationDirectory}/Server/public/pages.json", jsonString);
-                */
+                if (Directory.Exists($"{LocationDirectory}/Server/public")) { }
+                else
+                {
+                    Directory.CreateDirectory($"{LocationDirectory}/Server/public");
+                }
+                if (Directory.Exists($"{LocationDirectory}/Server/public/assets")) { }
+                else
+                {
+                    Directory.CreateDirectory($"{LocationDirectory}/Server/public/assets");
+                }
+                if (Directory.Exists($"{LocationDirectory}/Server/public/assets/css")) { }
+                else
+                {
+                    Directory.CreateDirectory($"{LocationDirectory}/Server/public/assets/css");
+                }
+                if (Directory.Exists($"{LocationDirectory}/Server/public/assets/img")) { }
+                else
+                {
+                    Directory.CreateDirectory($"{LocationDirectory}/Server/public/assets/img");
+                }
+                if (Directory.Exists($"{LocationDirectory}/Server/public/assets/js")) { }
+                else
+                {
+                    Directory.CreateDirectory($"{LocationDirectory}/Server/public/assets/js");
+                }
+
+                if (File.Exists($"{LocationDirectory}/Server/public/pages.json"))
+                {
+                    jsonString = File.ReadAllText($"{LocationDirectory}/Server/public/pages.json");
+                    Debug.Log("Exists");
+                    PageJSON = JsonConvert.DeserializeObject<pageJSON>(jsonString);
+                }
+                else
+                {
+                    pageJSON tmpPageJSON = new pageJSON();
+                    jsonString = JsonConvert.SerializeObject(PageJSON);
+                    File.WriteAllText($"{LocationDirectory}/Server/public/pages.json", jsonString);
+                    /* V0.2.0
+                    Debug.Log("Downloading");
+                    WebClient wc = new WebClient();
+                    wc.DownloadFile("https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/pages.json", $"{LocationDirectory}/Server/public/tmppages.json");
+
+                    pageJSON tmpPageJSON = new pageJSON();
+                    tmpPageJSON.Pages = new Dictionary<string, string>();
+                    string tmpjsonString = File.ReadAllText($"{LocationDirectory}/Server/public/tmppages.json");
+                    Debug.Log(tmpjsonString);
+                    tmpPageJSON = JsonConvert.DeserializeObject<pageJSON>(tmpjsonString);
+                    foreach (var jsonPage in tmpPageJSON.Pages)
+                    {
+                        if (File.Exists($"{LocationDirectory}/Server/public/{jsonPage.Value}")) {
+                            Debug.Log("Exists");
+                        }
+                        else
+                        {
+                            Debug.Log($"Getting required web file 'https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/{jsonPage.Value}' ./Server/public/{jsonPage.Value}");
+                            wc.DownloadFile($"https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/{jsonPage.Value}", $"{LocationDirectory}/Server/public/{jsonPage.Value}");
+                        }
+                        PageJSON.Pages.Add(jsonPage.Key, jsonPage.Value);
+                    }
+
+                    jsonString = JsonConvert.SerializeObject(PageJSON);
+                    File.WriteAllText($"{LocationDirectory}/Server/public/pages.json", jsonString);
+                    */
+                }
+                foreach (var jsonPage in PageJSON.Pages)
+                {
+                    Debug.Log($"{jsonPage.Key} goes to {jsonPage.Value}");
+                }
+
+                Debug.Log(Directory.GetCurrentDirectory());
+                Initialized = true;
+                logger.Log("Mod is initialized");
+                port = 8080;
+
+                WebUpdate();
             }
-            foreach (var jsonPage in PageJSON.Pages)
+            catch (Exception e)
             {
-                Debug.Log($"{jsonPage.Key} goes to {jsonPage.Value}");
+                logger.Error($"{e}\n{e.Message}\n{e.InnerException}\n{e.Source}\n{e.Data}\n{e.HelpLink}\n{e.HResult}\n{e.StackTrace}\n{e.TargetSite}\n{e.GetBaseException()}");
             }
-
-            Debug.Log(Directory.GetCurrentDirectory());
-            Initialized = true;
-            logger.Log("Mod is initialized");
-            port = 8080;
-
-            WebUpdate();
 
         }
         //public static void Destroy()
@@ -251,37 +258,40 @@ namespace KerbalWebProgram
         {
             browsers.Add(new Browser(name, URL, width, height, x, y));
         }
-        //public static void RemoveBrowser(string name) {
-        //    Browser remBrowser = null;
-        //    browsers.Where((browser) => {
-        //        if( browser.Title == name)
-        //        {
-        //            remBrowser = browser;
-        //            browser.Close();
-        //            return true;
-        //        }
-        //        else
-        //        {
-        //            return false;
-        //        }});
-        //    browsers.Remove(remBrowser);
-        //}
-        //public static void Update()
-        //{
-        //    try
-        //    {
-        //        if (GameManager.Instance.Game.GlobalGameState.GetState() == GameState.MainMenu && FirstTimeLoad == false)
-        //        {
-        //            FirstTimeLoad = true;
-        //            AddBrowser("https://google.com", "KWPloaded", Screen.width / 2, Screen.height / 2, Screen.width / 4, Screen.height / 4);
-        //        }
+        public static void RemoveBrowser(string name)
+        {
+            Browser remBrowser = null;
+            browsers.Where((browser) =>
+            {
+                if (browser.Title == name)
+                {
+                    remBrowser = browser;
+                    browser.Close();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            });
+            browsers.Remove(remBrowser);
+        }
+        public static void Update()
+        {
+            try
+            {
+                //if (GameManager.Instance.Game.GlobalGameState.GetState() == GameState.MainMenu && FirstTimeLoad == false)
+                //{
+                //    FirstTimeLoad = true;
+                //    //AddBrowser("https://google.com", "KWPloaded", Screen.width / 2, Screen.height / 2, Screen.width / 4, Screen.height / 4);
+                //}
 
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        //logger.Error($"{e}\n{e.Message}\n{e.InnerException}\n{e.Source}\n{e.Data}\n{e.HelpLink}\n{e.HResult}\n{e.StackTrace}\n{e.TargetSite}\n{e.GetBaseException()}");
-        //    }
-        //}
+            }
+            catch (Exception e)
+            {
+                //logger.Error($"{e}\n{e.Message}\n{e.InnerException}\n{e.Source}\n{e.Data}\n{e.HelpLink}\n{e.HResult}\n{e.StackTrace}\n{e.TargetSite}\n{e.GetBaseException()}");
+            }
+        }
         static void WebUpdate()
         {
             try {

@@ -13,7 +13,7 @@ using MouseButton = PuppeteerSharp.Input.MouseButton;
 
 namespace KerbalWebProgram.UI
 {
-	public class Browser : IDisposable
+	public class Browser 
 	{
 		public string Title { get; set; }
 		public string Url { get; set; }
@@ -59,6 +59,9 @@ namespace KerbalWebProgram.UI
 				BrowserMenu.style.paddingRight = 0;
 				BrowserMenu.style.paddingTop = 0;
 				BrowserMenu.focusable = true;
+
+				
+
 				VisualElement ToolBar = Element.VisualElement($"{Title}-ToolBar");
 				ToolBar.style.width = width;
 				ToolBar.style.height = 15;
@@ -83,7 +86,7 @@ namespace KerbalWebProgram.UI
 				ToolBarButtonClose.style.paddingLeft = 2;
 				ToolBarButtonClose.style.paddingRight = 2;
 				ToolBarButtonClose.style.top = 3.5f;
-				ToolBarButtonClose.style.right = 5;
+				ToolBarButtonClose.style.right = 10;
 				ToolBarButtonClose.style.fontSize = 12;
 				ToolBarButtonClose.style.color = Color.white;
 				ToolBarButtonClose.style.backgroundColor = Color.red;
@@ -91,10 +94,31 @@ namespace KerbalWebProgram.UI
 				ToolBarButtonClose.style.borderLeftColor = new StyleColor(new Color32(255, 255, 255, 0));
 				ToolBarButtonClose.style.borderTopColor = new StyleColor(new Color32(255, 255, 255, 0));
 				ToolBarButtonClose.style.borderBottomColor = new StyleColor(new Color32(255, 255, 255, 0));
-				ToolBarButtonClose.clickable = new Clickable(() => {
+				
+                ToolBarButtonClose.clickable = new Clickable(() => {
 					Close();
 				});
 				ToolBar.Add(ToolBarButtonClose);
+
+				Label MessageLabel = Element.Label($"{Title}-MessageLabel", $"Loading");
+                MessageLabel.style.position = Position.Absolute;
+                MessageLabel.style.width = width;
+                MessageLabel.style.height = height;
+                MessageLabel.style.paddingTop = 0;
+                MessageLabel.style.paddingBottom = 0;
+                MessageLabel.style.paddingLeft = 0;
+                MessageLabel.style.paddingRight = 0;
+				MessageLabel.style.top = 0;
+				MessageLabel.style.right = 0;
+				MessageLabel.style.fontSize = 30;
+				MessageLabel.style.color = Color.white;
+				MessageLabel.style.unityTextAlign = TextAnchor.MiddleCenter;
+				
+				MessageLabel.style.borderRightColor = new StyleColor(new Color32(255, 255, 255, 0));
+				MessageLabel.style.borderLeftColor = new StyleColor(new Color32(255, 255, 255, 0));
+				MessageLabel.style.borderTopColor = new StyleColor(new Color32(255, 255, 255, 0));
+				MessageLabel.style.borderBottomColor = new StyleColor(new Color32(255, 255, 255, 0));
+				BrowserMenu.Add(MessageLabel);
 
 				//Label ToolBarLabelKeyboard = Element.Label($"{Title}-ToolBarLabelKeyboard", $"Input");
 				//ToolBarLabelKeyboard.style.position = Position.Absolute;
@@ -192,11 +216,13 @@ namespace KerbalWebProgram.UI
 						Thread.Sleep(16);
 						var taskwait = page.ScreenshotBase64Async();
 						Screenshot = taskwait.Result;
-					}
+                        window.rootVisualElement.Q<Label>($"{Title}-MessageLabel").visible = false;
+                    }
 					catch (Exception e)
 					{
-						//logger.Error($"{e}\n{e.Message}\n{e.InnerException}\n{e.Source}\n{e.Data}\n{e.HelpLink}\n{e.HResult}\n{e.StackTrace}\n{e.TargetSite}\n{e.GetBaseException()}");
-					}
+						window.rootVisualElement.Q<Label>($"{Title}-MessageLabel").visible = true;
+                        //logger.Error($"{e}\n{e.Message}\n{e.InnerException}\n{e.Source}\n{e.Data}\n{e.HelpLink}\n{e.HResult}\n{e.StackTrace}\n{e.TargetSite}\n{e.GetBaseException()}");
+                    }
 				}
 			})).Start();
 			//yield return new WaitForSeconds(5);
@@ -219,6 +245,7 @@ namespace KerbalWebProgram.UI
 			
 			try
 			{
+
 				using var browserFetcher = new BrowserFetcher();
 				await browserFetcher.DownloadAsync();
 				browser = await Puppeteer.LaunchAsync(new LaunchOptions

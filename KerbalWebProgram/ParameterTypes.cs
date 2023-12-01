@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace KerbalWebProgram.KerbalWebProgram
+namespace KerbalWebProgram
 {
     public class ParameterValidationException: Exception
     {
