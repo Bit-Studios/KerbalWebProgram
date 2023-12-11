@@ -188,10 +188,6 @@ namespace KerbalWebProgram.UI
 					page.Mouse.WheelAsync((decimal)evt.delta.x * 100, (decimal)evt.delta.y * 100);
 				});
 				window = Window.CreateFromElement(BrowserMenu);
-				PanelSettings panelSettings = new PanelSettings();
-				panelSettings.themeUss = window.panelSettings.themeUss;
-				panelSettings.themeStyleSheet = window.panelSettings.themeStyleSheet;
-				window.panelSettings = panelSettings;
 				BrowserScreenshot = new Texture2D(width, height);
 			}
 			catch (Exception e)

@@ -67,26 +67,23 @@ namespace KerbalWebProgram
         //Api tags
         public abstract ApiResponseData Run(ApiRequestData request);
     }
-    [BepInPlugin(KWPmod.ModId, KWPmod.ModName, KWPmod.ModVersion)]
+    [BepInPlugin("kwp_dev_team.kerbal_web_program", "kerbal web program", "0.2.0")]
     [BepInDependency(ShadowUtilityLIBMod.ModId, ShadowUtilityLIBMod.ModVersion)]
     [BepInDependency(UitkForKsp2.MyPluginInfo.PLUGIN_GUID, UitkForKsp2.MyPluginInfo.PLUGIN_VERSION)]
-    public sealed class KerbalWebProgramMod : BaseUnityPlugin
+    public class KerbalWebProgramMod : BaseUnityPlugin
     {
-        public static string ModId = KWPmod.ModId;
-        public static string ModName = KWPmod.ModName;
-        public static string ModVersion = KWPmod.ModVersion;
+        public string ModId = "kwp_dev_team.kerbal_web_program";
+        public string ModName = "kerbal web program";
+        public string ModVersion = "0.2.0";
 
-        void Awake()
+        public void Start()
         {
             KWPmod.Awake();
         }
-        //void OnDestroy()
-        //{
-        //    KWPmod.Destroy();
-        //}
         void Update()
         {
             KWPmod.Update();
+            KWPmod.WebUpdate();
         }
     }
     
@@ -115,8 +112,6 @@ namespace KerbalWebProgram
 
         public static void Awake()
         {
-
-
             try
             {
 
@@ -242,7 +237,7 @@ namespace KerbalWebProgram
                 logger.Log("Mod is initialized");
                 port = 8080;
 
-                WebUpdate();
+                
             }
             catch (Exception e)
             {
@@ -250,10 +245,10 @@ namespace KerbalWebProgram
             }
 
         }
-        //public static void Destroy()
-        //{
-        //    browsers.ForEach(browserLoaded => browserLoaded.Close());
-        //}
+        public static void Destroy()
+        {
+            browsers.ForEach(browserLoaded => browserLoaded.Close());
+        }
         public static void AddBrowser(string URL, string name, int width, int height, int x,int y)
         {
             browsers.Add(new Browser(name, URL, width, height, x, y));
@@ -280,19 +275,19 @@ namespace KerbalWebProgram
         {
             try
             {
-                //if (GameManager.Instance.Game.GlobalGameState.GetState() == GameState.MainMenu && FirstTimeLoad == false)
-                //{
-                //    FirstTimeLoad = true;
-                //    //AddBrowser("https://google.com", "KWPloaded", Screen.width / 2, Screen.height / 2, Screen.width / 4, Screen.height / 4);
-                //}
+                if (GameManager.Instance.Game.GlobalGameState.GetState() == GameState.MainMenu && FirstTimeLoad == false)
+                {
+                    FirstTimeLoad = true;
+                    AddBrowser("https://google.com", "KWPloaded", Screen.width / 2, Screen.height / 2, Screen.width / 4, Screen.height / 4);
+                }
 
             }
             catch (Exception e)
             {
-                //logger.Error($"{e}\n{e.Message}\n{e.InnerException}\n{e.Source}\n{e.Data}\n{e.HelpLink}\n{e.HResult}\n{e.StackTrace}\n{e.TargetSite}\n{e.GetBaseException()}");
+                logger.Error($"{e}\n{e.Message}\n{e.InnerException}\n{e.Source}\n{e.Data}\n{e.HelpLink}\n{e.HResult}\n{e.StackTrace}\n{e.TargetSite}\n{e.GetBaseException()}");
             }
         }
-        static void WebUpdate()
+        public static void WebUpdate()
         {
             try {
                 if (IsWebLoaded == false && Initialized == true)
