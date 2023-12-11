@@ -380,14 +380,14 @@
 		<Reference Include="UnityEngine.TLSModule">
 			<HintPath>..\external_dlls\UnityEngine.TLSModule.dll</HintPath>
 		</Reference>
-		<Reference Include="UnityEngine.UI" Publicize="true">
-			<HintPath>..\external_dlls\UnityEngine.UI.dll</HintPath>
+		<Reference Include="UnityEngine.UI">
+		  <HintPath>..\external_dlls\UnityEngine.UI.dll</HintPath>
 		</Reference>
-		<Reference Include="UnityEngine.UIElementsModule" Publicize="true">
-			<HintPath>..\external_dlls\UnityEngine.UIElementsModule.dll</HintPath>
+		<Reference Include="UnityEngine.UIElementsModule">
+		  <HintPath>..\external_dlls\UnityEngine.UIElementsModule.dll</HintPath>
 		</Reference>
-		<Reference Include="UnityEngine.UIModule" Publicize="true">
-			<HintPath>..\external_dlls\UnityEngine.UIModule.dll</HintPath>
+		<Reference Include="UnityEngine.UIModule">
+		  <HintPath>..\external_dlls\UnityEngine.UIModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.UmbraModule">
 			<HintPath>..\external_dlls\UnityEngine.UmbraModule.dll</HintPath>
