@@ -6,13 +6,18 @@
     <title>Kerbal Web program 0.2.0 wiki</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
     <style>
         body {
             margin: 0px;
             padding: 0px;
         }
-        .contentArea{
-            margin-left: 100px; margin-right: 100px;
+
+        .contentArea {
+            margin-left: 100px;
+            margin-right: 100px;
         }
     </style>
 </head>
@@ -45,7 +50,54 @@
         </div>
     </nav>
     <div class="contentArea">
-        
+        <h5 class="display-5" style="text-align: center;">Installation</h5>
+        <ol class="list-group list-group-numbered">
+            <li class="list-group-item">Install this mod using ckan, do not manually install</li>
+        </ol>
+        <h5 class="display-5" style="text-align: center;">Quick start guide</h5>
+        <ol class="list-group list-group-numbered">
+            <li class="list-group-item">Important locations
+                <ol class="list-group list-group-numbered">
+                    <li class="list-group-item">Web server: <mark>Kerbal Space Program
+                            2\BepInEx\plugins\kerbal_web_program\Server\public</mark></li>
+                    <li class="list-group-item">Buttons: <mark>Kerbal Space Program
+                            2\BepInEx\plugins\kerbal_web_program\Buttons</mark></li>
+                    <li class="list-group-item">Button Images: <mark>Kerbal Space Program
+                            2\BepInEx\plugins\kerbal_web_program\assets\images</mark></li>
+                </ol>
+            </li>
+            <li class="list-group-item">Creating a button
+                <ol class="list-group list-group-numbered">
+                    <li class="list-group-item">Edit and then save json into the buttons folder: yourbuttonsname.json
+                        <pre><code>
+{
+    "Name": "Your Buttons Name",
+    "Description": "What does it open?",
+    "URL": "URL to your content",//http://localhost:8080/yourfile
+    "Image": "your image.png",
+    "Show": [
+        true,
+        true
+    ],
+    "SizeMode":"reletive",//reletive = 1920 / 2,  absolute = 1920
+    "Dims": [
+        2,
+        2
+    ],
+    "Position": [//screensize 1920 / 2
+        2, 
+        2
+    ]
+}
+                        </code></pre>
+                    </li>
+                    <li class="list-group-item">Create an image for your button, needs to be png format</li>
+                    <li class="list-group-item">create an html file into the webserver folder yourfile.html, edit to what you want</li>
+                    <li class="list-group-item">edit the pages.json add <mark>"/yourfile":"yourfile.html"</mark></li>
+                    <li class="list-group-item">you can now boot ksp2 and test your new button</li>
+                </ol>
+            </li>
+        </ol>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
