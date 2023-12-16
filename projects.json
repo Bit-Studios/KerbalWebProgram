@@ -1,6 +1,34 @@
 {
     "apis":[
         {
+            "name":"Kerbal Web Program base api",
+            "description":"The included basic api",
+            "version":"0.2.0",
+            "download":"https://example.com",
+            "repo":"https://example.com"
+        },
+        {
+            "name":"test api",
+            "description":"This is some description",
+            "version":"0.0.0",
+            "download":"https://example.com",
+            "repo":"https://example.com"
+        },
+        {
+            "name":"test api",
+            "description":"This is some description",
+            "version":"0.0.0",
+            "download":"https://example.com",
+            "repo":"https://example.com"
+        },
+        {
+            "name":"test api",
+            "description":"This is some description",
+            "version":"0.0.0",
+            "download":"https://example.com",
+            "repo":"https://example.com"
+        },
+        {
             "name":"test api",
             "description":"This is some description",
             "version":"0.0.0",
@@ -9,6 +37,34 @@
         }
     ],
     "projects":[
+        {
+            "name":"test project",
+            "description":"This is some description",
+            "version":"0.0.0",
+            "download":"https://example.com",
+            "repo":"https://example.com"
+        },
+        {
+            "name":"test project",
+            "description":"This is some description",
+            "version":"0.0.0",
+            "download":"https://example.com",
+            "repo":"https://example.com"
+        },
+        {
+            "name":"test project",
+            "description":"This is some description",
+            "version":"0.0.0",
+            "download":"https://example.com",
+            "repo":"https://example.com"
+        },
+        {
+            "name":"test project",
+            "description":"This is some description",
+            "version":"0.0.0",
+            "download":"https://example.com",
+            "repo":"https://example.com"
+        },
         {
             "name":"test project",
             "description":"This is some description",

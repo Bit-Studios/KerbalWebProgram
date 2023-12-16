@@ -16,6 +16,11 @@
             margin-left: 100px;
             margin-right: 100px;
         }
+        #apiprojectarea{
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+        }
     </style>
     <script>
         window.onload = (event) => {
@@ -24,7 +29,32 @@
             xhr.addEventListener("readystatechange", function () {
                 if (this.readyState === 4) {
                     globalThis.projectsJson = JSON.parse(this.responseText)
-                    console.log(globalThis.projectsJson );
+                    var apiprojectarea = document.getElementById("apiprojectarea")
+                    var projectarea = document.getElementById("projectarea")
+                    globalThis.projectsJson.apis.forEach((apiProject)=>{
+                        apiprojectarea.innerHTML = `${apiprojectarea.innerHTML}
+                        <div class="card" style="width:250px">
+  <h5 class="card-header">${apiProject.name} <span class="badge text-bg-success">${apiProject.version}</span></h5>
+  <div class="card-body">
+    <p class="card-text">${apiProject.description}</p>
+    <a href="${apiProject.download}" class="btn btn-primary">Download</a>
+    <a href="${apiProject.repo}" class="btn btn-success">Repo</a>
+  </div>
+</div>
+                        `
+                    })
+                    globalThis.projectsJson.projects.forEach((apiProject)=>{
+                        projectarea.innerHTML = `${projectarea.innerHTML}
+                        <div class="card" style="width:250px">
+  <h5 class="card-header">${apiProject.name} <span class="badge text-bg-success">${apiProject.version}</span></h5>
+  <div class="card-body">
+    <p class="card-text">${apiProject.description}</p>
+    <a href="${apiProject.download}" class="btn btn-primary">Download</a>
+    <a href="${apiProject.repo}" class="btn btn-success">Repo</a>
+  </div>
+</div>
+                        `
+                    })
                 }
             });
 
@@ -62,7 +92,14 @@
         </div>
     </nav>
     <div class="contentArea">
-
+        <h5 class="display-5" style="text-align: center;">Community API's</h5>
+        <div id="apiprojectarea">
+            
+        </div>
+        <h5 class="display-5" style="text-align: center;">Community Projects</h5>
+        <div id="projectarea">
+            
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
