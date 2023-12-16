@@ -1,0 +1,20 @@
+{
+    "apis":[
+        {
+            "name":"test api",
+            "description":"This is some description",
+            "version":"0.0.0",
+            "download":"https://example.com",
+            "repo":"https://example.com"
+        }
+    ],
+    "projects":[
+        {
+            "name":"test project",
+            "description":"This is some description",
+            "version":"0.0.0",
+            "download":"https://example.com",
+            "repo":"https://example.com"
+        }
+    ]
+}
