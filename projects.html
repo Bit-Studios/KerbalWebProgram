@@ -19,7 +19,18 @@
     </style>
     <script>
         window.onload = (event) => {
-            
+            var xhr = new XMLHttpRequest();
+
+            xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === 4) {
+                    globalThis.projectsJson = JSON.parse(this.responseText)
+                    console.log(globalThis.projectsJson );
+                }
+            });
+
+            xhr.open("Get", "https://kwp.kerbal.wiki/projects.json");
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(data);
         };
     </script>
 </head>
