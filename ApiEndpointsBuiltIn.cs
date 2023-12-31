@@ -312,7 +312,7 @@ namespace ApiEndpoints
 
         public setShipThrottle()
         {
-            parameters = new List<KWPParameterType> { new FloatParameter("Throttle", "Throttle amount", true, 0f, 100f) };
+            parameters = new List<KWPParameterType> { new FloatParameter("Throttle", "Throttle amount", true, 0f, 1f) };
             Type = "response";
             Name = "Set Ship Throttle";
             Description = "Allows you to update the throttle change, Equivalant of holding Shift or Ctrl";
@@ -321,18 +321,21 @@ namespace ApiEndpoints
         }
         public override ApiResponseData Run(ApiRequestData request)
         {
-            ApiResponseData response = new ApiResponseData();
-            response.ID = request.ID;
-            response.Type = "response";
-            response.Data = new Dictionary<string, object>();
+            
+                ApiResponseData response = new ApiResponseData();
+                response.ID = request.ID;
+                response.Type = "response";
+                response.Data = new Dictionary<string, object>();
 
-            GameManager.Instance.Game.ViewController.TryGetActiveVehicle(out var vessel);
-            var thisvessel = vessel as VesselVehicle;
+                GameManager.Instance.Game.ViewController.TryGetActiveVehicle(out var vessel);
+                var thisvessel = vessel as VesselVehicle;
 
-            thisvessel.AtomicSet((float)request.parameters["Throttle"], null, null, null, null, null, null, null, null, null, null, null, null,
-        null, null, null, null, null);
-            response.Data.Add("Throttle", GameManager.Instance.Game.ViewController.GetActiveVehicle().FlightControlInput.mainThrottle);
+                thisvessel.AtomicSet(request.parameters["Throttle"], null, null, null, null, null, null, null, null, null, null, null, null,
+            null, null, null, null, null);
+                response.Data.Add("Throttle", GameManager.Instance.Game.ViewController.GetActiveVehicle().FlightControlInput.mainThrottle);
 
+            
+            
             return response;
         }
     }
