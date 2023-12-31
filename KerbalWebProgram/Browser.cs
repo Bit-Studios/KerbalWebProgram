@@ -44,8 +44,16 @@ namespace KerbalWebProgram.UI
 			try
 			{
 				VisualElement BrowserMenu = Element.Root(Title);
-			   
-				BrowserMenu.style.position = Position.Absolute;
+                VisualElement ToolBar = Element.VisualElement($"{Title}-ToolBar");
+                ShadowUtilityLIB.DragManipulator dr = new()
+                {
+                    deadzone = new Vector2[2] { new Vector2(0, 0), new Vector2(0, 0) },
+                    MoveME = BrowserMenu
+                };
+                ToolBar.AddManipulator(dr);
+
+
+                BrowserMenu.style.position = Position.Absolute;
 				BrowserMenu.style.width = Width;
 				BrowserMenu.style.height = Height;
 				BrowserMenu.style.left = ScreenX;
@@ -62,8 +70,9 @@ namespace KerbalWebProgram.UI
 
 				
 
-				VisualElement ToolBar = Element.VisualElement($"{Title}-ToolBar");
-				ToolBar.style.width = width;
+				
+
+                ToolBar.style.width = width;
 				ToolBar.style.height = 15;
 				ToolBar.style.top = -15;
 				ToolBar.style.backgroundColor = Color.black;
@@ -185,10 +194,11 @@ namespace KerbalWebProgram.UI
 				BrowserMenu.RegisterCallback<WheelEvent>((evt) =>
 				{
 					logger.Log($"Mouse delta {evt.delta} mousePosition {evt.mousePosition}");
-					page.Mouse.WheelAsync((decimal)evt.delta.x * 100, (decimal)evt.delta.y * 100);
+					page.Mouse.WheelAsync((decimal)evt.delta.x * 500, (decimal)evt.delta.y * 500);
 				});
 				window = Window.CreateFromElement(BrowserMenu);
-				BrowserScreenshot = new Texture2D(width, height);
+                window.panelSettings = KWPmod.UIPanelSettings;
+                BrowserScreenshot = new Texture2D(width, height);
 			}
 			catch (Exception e)
 			{

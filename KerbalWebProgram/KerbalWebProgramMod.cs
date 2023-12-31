@@ -9,6 +9,11 @@ using System.Reflection;
 using ShadowUtilityLIB;
 using Logger = ShadowUtilityLIB.logging.Logger;
 using KerbalWebProgram.UI;
+using UnityEngine.UIElements;
+using ShadowUtilityLIB.UI;
+using UitkForKsp2.API;
+using System.Collections.Concurrent;
+using Shapes;
 
 namespace KerbalWebProgram
 {
@@ -76,17 +81,38 @@ namespace KerbalWebProgram
         public string ModName = "kerbal web program";
         public string ModVersion = "0.2.0";
 
+        public static ConcurrentDictionary<string, ApiRequestData> apiRequestData = new ConcurrentDictionary<string, ApiRequestData>();
+        public static ConcurrentDictionary<string, ApiResponseData> apiResponseData = new ConcurrentDictionary<string, ApiResponseData>();
         public void Start()
         {
             KWPmod.Awake();
         }
         void Update()
         {
-            KWPmod.Update();
-            KWPmod.WebUpdate();
+            if (KWPmod.Initialized)
+            {
+                KWPmod.Update();
+                KWPmod.WebUpdate();
+                apiRequestData.ForEach((KeyPair) =>
+                {
+                    apiResponseData.TryAdd(KeyPair.Value.ID, KWPmod.ApiHandler(KeyPair.Value));
+                });
+                apiRequestData.Clear();
+            }
+            
         }
     }
-    
+    public class KWPButton
+    {
+        public string Name { get; set; } = "google";
+        public string Description { get; set; } = "opens google";
+        public string URL { get; set; } = "https://google.com";
+        public string Image { get; set; } = "internet.png";
+        public List<bool> Show {  get; set; } = new List<bool>() { true,true};
+        public string SizeMode { get; set; } = "reletive";//reletive absolute
+        public List<int> Dims { get; set; } = new List<int> { 2, 2 };
+        public List<int> Position { get; set; } = new List<int> { 2, 2 };
+    }
     public static class KWPmod
     {
         public static Dictionary<string, Assembly> APIdll = new Dictionary<string, Assembly>();
@@ -103,8 +129,12 @@ namespace KerbalWebProgram
         public const string ModVersion = "0.2.0";
         private static Logger logger = new Logger(ModName, ModVersion);
 
+        public static UIDocument AppTrayBar;
+
         private static int port;
-        private static bool Initialized = false;
+        public static bool Initialized = false;
+
+        public static PanelSettings UIPanelSettings;
 
         public static List<Browser> browsers = new List<Browser>();
 
@@ -115,6 +145,7 @@ namespace KerbalWebProgram
             try
             {
 
+                UIPanelSettings = Manager.PanelSettings;
                 PageJSON.Pages = new Dictionary<string, string>();
 
 
@@ -145,19 +176,19 @@ namespace KerbalWebProgram
                 {
                     try
                     {
-                        Debug.Log($"loading {file}");
+                        logger.Log($"loading {file}");
                         Assembly apiDll = Assembly.LoadFile(file);
-                        Debug.Log($"{file} loaded as {apiDll.GetName()}");
+                        logger.Log($"{file} loaded as {apiDll.GetName()}");
                         APIdll.Add(apiDll.GetName().FullName, apiDll);
                         Type apiType = APIdll[apiDll.GetName().FullName].GetType($"{APIdll[apiDll.GetName().FullName].ExportedTypes.ElementAt(0)}");
-                        Debug.Log(apiType.FullName);
+                        logger.Log(apiType.FullName);
                         APIdllType.Add(apiType.FullName, apiType);
                         APIdllType[apiType.FullName].InvokeMember("init", BindingFlags.InvokeMethod, null, null, null);
-                        Debug.Log("invoked");
+                        logger.Log("invoked");
                     }
                     catch (Exception e)
                     {
-                        Debug.Log(e);
+                        logger.Error($"{e}\n{e.Message}\n{e.InnerException}\n{e.Source}\n{e.Data}\n{e.HelpLink}\n{e.HResult}\n{e.StackTrace}\n{e.TargetSite}\n{e.GetBaseException()}");
                     }
 
 
@@ -192,7 +223,7 @@ namespace KerbalWebProgram
                 if (File.Exists($"{LocationDirectory}/Server/public/pages.json"))
                 {
                     jsonString = File.ReadAllText($"{LocationDirectory}/Server/public/pages.json");
-                    Debug.Log("Exists");
+                    logger.Log("Exists");
                     PageJSON = JsonConvert.DeserializeObject<pageJSON>(jsonString);
                 }
                 else
@@ -201,23 +232,23 @@ namespace KerbalWebProgram
                     jsonString = JsonConvert.SerializeObject(PageJSON);
                     File.WriteAllText($"{LocationDirectory}/Server/public/pages.json", jsonString);
                     /* V0.2.0
-                    Debug.Log("Downloading");
+                    logger.Log("Downloading");
                     WebClient wc = new WebClient();
                     wc.DownloadFile("https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/pages.json", $"{LocationDirectory}/Server/public/tmppages.json");
 
                     pageJSON tmpPageJSON = new pageJSON();
                     tmpPageJSON.Pages = new Dictionary<string, string>();
                     string tmpjsonString = File.ReadAllText($"{LocationDirectory}/Server/public/tmppages.json");
-                    Debug.Log(tmpjsonString);
+                    logger.Log(tmpjsonString);
                     tmpPageJSON = JsonConvert.DeserializeObject<pageJSON>(tmpjsonString);
                     foreach (var jsonPage in tmpPageJSON.Pages)
                     {
                         if (File.Exists($"{LocationDirectory}/Server/public/{jsonPage.Value}")) {
-                            Debug.Log("Exists");
+                            logger.Log("Exists");
                         }
                         else
                         {
-                            Debug.Log($"Getting required web file 'https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/{jsonPage.Value}' ./Server/public/{jsonPage.Value}");
+                            logger.Log($"Getting required web file 'https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/{jsonPage.Value}' ./Server/public/{jsonPage.Value}");
                             wc.DownloadFile($"https://raw.githubusercontent.com/Bit-Studios/KerbalWebProgram/public/{jsonPage.Value}", $"{LocationDirectory}/Server/public/{jsonPage.Value}");
                         }
                         PageJSON.Pages.Add(jsonPage.Key, jsonPage.Value);
@@ -229,10 +260,33 @@ namespace KerbalWebProgram
                 }
                 foreach (var jsonPage in PageJSON.Pages)
                 {
-                    Debug.Log($"{jsonPage.Key} goes to {jsonPage.Value}");
+                    logger.Log($"{jsonPage.Key} goes to {jsonPage.Value}");
                 }
+                if (Directory.Exists($"{LocationDirectory}/Buttons")) { }
+                else
+                {
+                    Directory.CreateDirectory($"{LocationDirectory}/Buttons");
+                }
+                GenerateAppTray();
+                string[] ButtonJsons = Directory.GetFiles($"{LocationDirectory}/Buttons", "*.json");
+                foreach (string file in ButtonJsons)
+                {
+                    try
+                    {
+                        
+                        logger.Log($"loading button {file}");
+                        KWPButton ThisButton = JsonConvert.DeserializeObject<KWPButton>(File.ReadAllText(file));
+                        AddAppTrayButton(ThisButton);
+                    }
+                    catch (Exception e)
+                    {
+                        logger.Error($"{e}\n{e.Message}\n{e.InnerException}\n{e.Source}\n{e.Data}\n{e.HelpLink}\n{e.HResult}\n{e.StackTrace}\n{e.TargetSite}\n{e.GetBaseException()}");
+                    }
 
-                Debug.Log(Directory.GetCurrentDirectory());
+
+                }
+                logger.Log(Directory.GetCurrentDirectory());
+                
                 Initialized = true;
                 logger.Log("Mod is initialized");
                 port = 8080;
@@ -244,6 +298,96 @@ namespace KerbalWebProgram
                 logger.Error($"{e}\n{e.Message}\n{e.InnerException}\n{e.Source}\n{e.Data}\n{e.HelpLink}\n{e.HResult}\n{e.StackTrace}\n{e.TargetSite}\n{e.GetBaseException()}");
             }
 
+        }
+        public static void GenerateAppTray()
+        {
+            VisualElement AppTray = Element.Root("apptray");
+
+            AppTray.style.position = Position.Absolute;
+            AppTray.style.width = 300;
+            AppTray.style.height = 10;
+            AppTray.style.right = 230;
+            AppTray.style.bottom = 70;
+            AppTray.style.marginBottom = 0;
+            AppTray.style.marginRight = 0;
+            AppTray.style.marginLeft = 0;
+            AppTray.style.marginTop = 0;
+            AppTray.style.paddingBottom = 0;
+            AppTray.style.paddingLeft = 0;
+            AppTray.style.paddingRight = 0;
+            AppTray.style.paddingTop = 0;
+            AppTray.style.backgroundColor = new StyleColor(new Color(0.05f, 0.12f ,0.18f, 1));
+            AppTray.focusable = true;
+
+            AppTrayBar = Window.CreateFromElement(AppTray); 
+            AppTrayBar.rootVisualElement.style.visibility = Visibility.Hidden;
+            var enabled = false;
+            void ToggleButton(bool evt)
+            {
+                if (enabled)
+                {
+                    enabled = false;
+                    AppTrayBar.rootVisualElement.style.visibility = Visibility.Hidden;
+
+                }
+                else
+                {
+                    AppTrayBar.rootVisualElement.style.visibility = Visibility.Visible;
+
+                    enabled = true;
+                }
+            }
+            AppBar.Add(AssetManager.GetAsset("kwp.png"), AssetManager.GetAsset("kwp.png"), "KWP", "KWP", ToggleButton, ToggleButton, new bool[] { true,true });
+        }
+        public static void AddAppTrayButton(KWPButton ThisButton)
+        {
+            VisualElement ThisAppTrayButton = new VisualElement();
+
+            ThisAppTrayButton.style.width = 300;
+            ThisAppTrayButton.style.height = 20;
+
+            ThisAppTrayButton.style.flexDirection = FlexDirection.Row;
+            
+            VisualElement ThisAppTrayButton_Image = new VisualElement();
+            ThisAppTrayButton_Image.style.width = 20;
+            ThisAppTrayButton_Image.style.height = 20;
+            ThisAppTrayButton_Image.style.marginRight = 10;
+            ThisAppTrayButton_Image.style.backgroundImage = AssetManager.GetAsset(ThisButton.Image);
+            ThisAppTrayButton.Add(ThisAppTrayButton_Image);
+            Label ThisAppTrayButton_Label = new Label();
+            ThisAppTrayButton_Label.style.width = 260;
+            ThisAppTrayButton_Label.style.height = 20;
+            ThisAppTrayButton_Label.text = ThisButton.Name;
+            ThisAppTrayButton.Add(ThisAppTrayButton_Label);
+            var enabled = true;
+            ThisAppTrayButton.RegisterCallback<ClickEvent>((evt) =>
+            {
+               
+                if (enabled)
+                {
+                    enabled = false;
+                    if (ThisButton.SizeMode == "reletive")
+                    {
+                        AddBrowser(ThisButton.URL, ThisButton.Name, Screen.width / ThisButton.Dims[0], Screen.height / ThisButton.Dims[1], Screen.width / ThisButton.Position[0], Screen.height / ThisButton.Position[1]);
+                    }
+                    if (ThisButton.SizeMode == "absolute")
+                    {
+                        AddBrowser(ThisButton.URL, ThisButton.Name, ThisButton.Dims[0], ThisButton.Dims[1], Screen.width / ThisButton.Position[0], Screen.height / ThisButton.Position[1]);
+                    }
+                }
+                else
+                {
+                    RemoveBrowser(ThisButton.Name);
+                    enabled = true;
+                }
+            });
+            AppTrayBar.rootVisualElement.Add(ThisAppTrayButton);
+            AppTrayBar.rootVisualElement.style.height = AppTrayBar.rootVisualElement.style.height.value.value + 20;
+
+        }
+        public static void GenerateButtonJson()
+        {
+            File.WriteAllText($"{LocationDirectory}/Buttons/example.json", JsonConvert.SerializeObject(new KWPButton()));
         }
         public static void Destroy()
         {
@@ -278,13 +422,13 @@ namespace KerbalWebProgram
                 if (GameManager.Instance.Game.GlobalGameState.GetState() == GameState.MainMenu && FirstTimeLoad == false)
                 {
                     FirstTimeLoad = true;
-                    AddBrowser("https://google.com", "KWPloaded", Screen.width / 2, Screen.height / 2, Screen.width / 4, Screen.height / 4);
+                    AddBrowser("http://localhost:8080/", "KWPloaded", Screen.width / 2, Screen.height / 2, Screen.width / 4, Screen.height / 4);
                 }
 
             }
             catch (Exception e)
             {
-                logger.Error($"{e}\n{e.Message}\n{e.InnerException}\n{e.Source}\n{e.Data}\n{e.HelpLink}\n{e.HResult}\n{e.StackTrace}\n{e.TargetSite}\n{e.GetBaseException()}");
+                //logger.Error($"{e}\n{e.Message}\n{e.InnerException}\n{e.Source}\n{e.Data}\n{e.HelpLink}\n{e.HResult}\n{e.StackTrace}\n{e.TargetSite}\n{e.GetBaseException()}");
             }
         }
         public static void WebUpdate()
@@ -305,11 +449,11 @@ namespace KerbalWebProgram
 
                     foreach (var apiData in webAPI)
                     {
-                        Debug.Log($"key:{apiData.Key}");
+                        logger.Log($"key:{apiData.Key}");
 
                         cT = (cT + 42) + ((int)DateTime.Now.Ticks / 2);
 
-                        Debug.Log($"{apiData.Value.Name} api does {apiData.Value.Description}");
+                        logger.Log($"{apiData.Value.Name} api does {apiData.Value.Description}");
 
                         docsPage = $"{docsPage}<div class='doclink' onclick='document.location=`docs/{apiData.Key}`'><div class='doclinkname'>{apiData.Value.Name}</div><div class='doclinktagarea'>";
 
@@ -326,7 +470,7 @@ namespace KerbalWebProgram
 
                                 apiTagType.Add(apiTag, randomColor);
 
-                                Debug.Log($"new tag color {apiTagType[apiTag]}");
+                                logger.Log($"new tag color {apiTagType[apiTag]}");
 
                             }
                             docsPage = $"{docsPage}<div class='doclinktag' style='background-color:rgba({apiTagType[apiTag]},0.4);border-color:rgb({apiTagType[apiTag]})'>{apiTag}</div>";
@@ -432,7 +576,7 @@ namespace KerbalWebProgram
 
                 }
             }
-            catch (Exception e) { Debug.Log($"{e.Message}|{e.InnerException}|{e.StackTrace}|{e.Source}|{e.Data}|{e.TargetSite}"); }
+            catch (Exception e) { logger.Log($"{e.Message}|{e.InnerException}|{e.StackTrace}|{e.Source}|{e.Data}|{e.TargetSite}"); }
         }
         internal class WebServer
         {
@@ -443,7 +587,7 @@ namespace KerbalWebProgram
                 HttpListener listener = new HttpListener();
                 listener.Prefixes.Add("http://*:8080/");
                 listener.Start();
-                Debug.Log("Listening");
+                logger.Log("Listening");
 
                 for (; ; )
                 {
@@ -454,7 +598,7 @@ namespace KerbalWebProgram
         }
         
         
-        static ApiResponseData ApiHandler(ApiRequestData apiRequestData)
+        public static ApiResponseData ApiHandler(ApiRequestData apiRequestData)
         {
             try
             {
@@ -527,15 +671,42 @@ namespace KerbalWebProgram
                         try
                         {
                             ctx.Response.ContentType = "application/json";
-                            data = JsonConvert.DeserializeObject<ApiRequestData>(requestBody);      
-                            ApiResponseData responseData = ApiHandler(data);
-                            responseString = JsonConvert.SerializeObject(responseData);
+                            data = JsonConvert.DeserializeObject<ApiRequestData>(requestBody);
+                            if(KerbalWebProgramMod.apiRequestData.TryAdd(data.ID, data))
+                            {
+                                while (!KerbalWebProgramMod.apiResponseData.ContainsKey(data.ID))
+                                {
+                                    Thread.Sleep(50);
+                                }
+                                ApiResponseData responseData = KerbalWebProgramMod.apiResponseData[data.ID];
+                                responseString = JsonConvert.SerializeObject(responseData);
+                                KerbalWebProgramMod.apiResponseData.TryRemove(data.ID, out _);
+                            }
+                            else
+                            {
+                                ApiResponseData responseData = new()
+                                {
+                                    ID = data.ID,
+                                    Type = "error",
+                                    Errors = new Dictionary<string, object> { { "internal", "internal error" } }
+                                };
+                                responseString = JsonConvert.SerializeObject(responseData);
+
+                            }
+                            
+
                         }
                         catch (Exception e)
                         {
-
+                            
                         }
-                        
+                        ctx.Response.StatusCode = (int)HttpStatusCode.OK;
+                        ctx.Response.StatusDescription = "OK";
+
+                        byte[] buffer = Encoding.UTF8.GetBytes(responseString);
+                        stream.Write(buffer, 0, buffer.Length);
+                        stream.Close();
+
                     }
                     else {
                         if (PageJSON.Pages.ContainsKey(ctx.Request.Url.AbsolutePath))
@@ -580,18 +751,17 @@ namespace KerbalWebProgram
                             ctx.Response.ContentType = "text/html";
                             responseString = File.ReadAllText($"{LocationDirectory}/Server/public/{PageJSON.Pages["/404"]}");
                         }
-                        
+                        ctx.Response.StatusCode = (int)HttpStatusCode.OK;
+                        ctx.Response.StatusDescription = "OK";
+
+                        byte[] buffer = Encoding.UTF8.GetBytes(responseString);
+                        stream.Write(buffer, 0, buffer.Length);
+                        stream.Close();
+
                     }
 
-
-
-                    byte[] buffer = Encoding.UTF8.GetBytes(responseString);
-                    stream.Write(buffer, 0, buffer.Length);
-                    stream.Close();
+                    
                 }
-
-                ctx.Response.StatusCode = (int)HttpStatusCode.OK;
-                ctx.Response.StatusDescription = "OK";
 
             }
 

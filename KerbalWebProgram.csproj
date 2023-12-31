@@ -23,9 +23,6 @@
 		<Reference Include="0Harmony">
 			<HintPath>..\external_dlls\0Harmony.dll</HintPath>
 		</Reference>
-		<Reference Include="0Harmony20">
-			<HintPath>..\external_dlls\0Harmony20.dll</HintPath>
-		</Reference>
 		<Reference Include="Ak.Wwise.Api.WAAPI">
 			<HintPath>..\external_dlls\Ak.Wwise.Api.WAAPI.dll</HintPath>
 		</Reference>
@@ -44,10 +41,10 @@
 		<Reference Include="AmplifyShaderEditor.Samples.BuiltIn">
 			<HintPath>..\external_dlls\AmplifyShaderEditor.Samples.BuiltIn.dll</HintPath>
 		</Reference>
-		<Reference Include="Assembly-CSharp">
+		<Reference Include="Assembly-CSharp" Publicize="true">
 			<HintPath>..\external_dlls\Assembly-CSharp.dll</HintPath>
 		</Reference>
-		<Reference Include="Assembly-CSharp-firstpass">
+		<Reference Include="Assembly-CSharp-firstpass" Publicize="true">
 			<HintPath>..\external_dlls\Assembly-CSharp-firstpass.dll</HintPath>
 		</Reference>
 		<Reference Include="Backtrace.Unity">
@@ -153,7 +150,7 @@
 		  <HintPath>..\external_dlls\PuppeteerSharp.dll</HintPath>
 		</Reference>
 		<Reference Include="ShadowUtilityLIB">
-			<HintPath>..\external_dlls\ShadowUtilityLIB.dll</HintPath>
+		  <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program 2\BepInEx\plugins\ShadowUtilityLIB\ShadowUtilityLIB.dll</HintPath>
 		</Reference>
 		<Reference Include="ShapesRuntime">
 			<HintPath>..\external_dlls\ShapesRuntime.dll</HintPath>
