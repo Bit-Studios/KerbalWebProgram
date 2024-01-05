@@ -2,6 +2,7 @@
     "apis":[
         {
             "name":"Kerbal Web Program base api",
+            "author":"KWP dev team",
             "description":"The included basic api",
             "version":"0.2.0",
             "download":"https://github.com/Bit-Studios/KerbalWebProgram/releases/download/0.2.0-Standard-API/ApiEndpoints.dll",
@@ -9,6 +10,7 @@
         },
         {
             "name":"Kerbal Deck Api",
+            "author":"Drewdus",
             "description":"Adds API endpoints for the Kerbal Deck project",
             "version":"0.0.1",
             "download":"https://example.com",

@@ -37,10 +37,14 @@
                         <div class="card" style="width:250px">
   <h5 class="card-header">${apiProject.name} <span class="badge text-bg-success">${apiProject.version}</span></h5>
   <div class="card-body">
+    
     <p class="card-text">${apiProject.description}</p>
-    <a href="${apiProject.download}" class="btn btn-primary">Download</a>
+    <a class="btn btn-primary">Download</a>
     <a href="${apiProject.repo}" class="btn btn-success">Repo</a>
   </div>
+  <div class="card-footer">
+    <span class="badge  bg-secondary">${apiProject.author}</span>
+      </div>
 </div>
                         `
                     })
@@ -50,9 +54,12 @@
   <h5 class="card-header">${apiProject.name} <span class="badge text-bg-success">${apiProject.version}</span></h5>
   <div class="card-body">
     <p class="card-text">${apiProject.description}</p>
-    <a href="${apiProject.download}" class="btn btn-primary">Download</a>
+    <a class="btn btn-primary">Download</a>
     <a href="${apiProject.repo}" class="btn btn-success">Repo</a>
   </div>
+  <div class="card-footer">
+    <span class="badge  bg-secondary">${apiProject.author}</span>
+      </div>
 </div>
                         `
                     })
